@@ -1,8 +1,8 @@
 import OpenAI from "openai";
 import { get } from "lodash";
 
-const API_KEY = "sk-proj-TPVP0gr6t7SUOrtvlLWtT3BlbkFJdL64JXXJGcSSLr9oG7HA";
-const ASSISTANT_ID = "asst_FGtZnKjW03eHWGJuGj91w8AD";
+const API_KEY = process.env.OPENAI_API_KEY;
+const ASSISTANT_ID = process.env.OPENAI_API_ASSISTANT_ID;
 
 const openai = new OpenAI({
   apiKey: API_KEY,
