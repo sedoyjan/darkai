@@ -1,0 +1,148 @@
+{
+  "calendar": {
+    "agendaItem": {
+      "noEventsToday": ""
+    }
+  },
+  "common": {
+    "accept": "接受",
+    "cancel": "取消",
+    "delete": "删除",
+    "newTask": "新任务"
+  },
+  "components": {
+    "priority": {
+      "high": "高",
+      "low": "低",
+      "lowest": "最低",
+      "medium": "中"
+    },
+    "proBadge": {
+      "pro": "专业版"
+    },
+    "taskViewer": {
+      "addSubtask": "添加子任务"
+    }
+  },
+  "layout": {
+    "tabs": {
+      "calendar": "日历",
+      "profile": "个人资料",
+      "tasks": "任务"
+    }
+  },
+  "reminders": {
+    "1dayBefore": "提前1天",
+    "1hourBefore": "提前1小时",
+    "1weekBefore": "提前1周",
+    "30minBefore": "提前30分钟",
+    "disable": "禁用",
+    "onDate": "在日期",
+    "requiresDueDate": "需要截止日期"
+  },
+  "screens": {
+    "calendar": {
+      "title": "日历"
+    },
+    "developerSettings": {
+      "clearLaunchCount": "",
+      "clearOnboardingState": "",
+      "clearTasks": "清除任务",
+      "recordingMode": "录制模式",
+      "toggleSubscription": "切换订阅"
+    },
+    "dueDateBottomSheet": {
+      "time": "时间"
+    },
+    "languages": {
+      "title": "语言"
+    },
+    "options": {
+      "showCompletedTasks": "显示已完成的任务"
+    },
+    "privacyPolicy": {
+      "title": "隐私政策"
+    },
+    "profile": {
+      "buttons": {
+        "changeLanguage": "更改语言",
+        "clearData": "清除数据",
+        "deleteAccount": "删除帐户",
+        "devMenu": "开发者菜单",
+        "privacyPolicy": "隐私政策",
+        "rateApp": "评价应用",
+        "signOut": "登出",
+        "subscribe": "启用高级功能 ✨",
+        "terms": "条款和条件"
+      },
+      "deleteAccount": {
+        "description": "确定要删除您的帐户吗？此操作不可逆转。",
+        "title": "删除帐户"
+      },
+      "robot": {
+        "text": "请登录以便在您的设备间共享任务。",
+        "title": "欢迎！"
+      },
+      "title": "个人资料"
+    },
+    "signin": {
+      "imAgreeWith": "我同意 ",
+      "privacyPolicy": "隐私政策",
+      "subtitle": "要开始使用AI功能，请使用您的Apple ID登录",
+      "termsAndConditions": "条款和条件",
+      "title": "登录",
+      "welcome": "欢迎来到SubTask AI 🚀"
+    },
+    "taskEditor": {
+      "description": "描述",
+      "dueDate": "截止日期",
+      "reminders": "提醒",
+      "title": "任务标题"
+    },
+    "tasks": {
+      "createNewTask": "创建新任务",
+      "createTask": "创建任务",
+      "generateSubtasksWithAi": "使用AI生成 ✨",
+      "robotNoTasksText": "您还没有任何任务。让我们创建一个吧！",
+      "robotWelcome": "欢迎！",
+      "subtasks": "子任务",
+      "subtasksHelperText": "您可以使用我们的AI生成器添加子任务。它将帮助您将任务分解为更小的步骤。",
+      "title": "任务"
+    },
+    "termsAndConditions": {
+      "title": "条款和条件"
+    },
+    "titles": {
+      "developerSettings": "开发者设置"
+    }
+  },
+  "screns": {
+    "onboarding": {
+      "organize": {
+        "subtitle": "将任务分解为可管理的子任务并轻松优先处理。",
+        "title": "高效组织"
+      },
+      "premium": {
+        "subtitle": "解锁所有功能，最大限度地提高您的生产力。今天开始您的免费试用吧！",
+        "title": "开始使用高级版"
+      },
+      "progress": {
+        "subtitle": "通过视觉指标监控您的进展并保持动力。",
+        "title": "跟踪您的进展"
+      },
+      "reminders": {
+        "subtitle": "设置截止日期和提醒，确保您保持在正轨上。",
+        "title": "不遗漏任何期限"
+      },
+      "welcome": {
+        "subtitle": "提升生产力的终极AI任务管理器。",
+        "title": "欢迎使用SubTask"
+      }
+    },
+    "profile": {
+      "signInButton": {
+        "label": "登录"
+      }
+    }
+  }
+}

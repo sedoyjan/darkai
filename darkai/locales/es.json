@@ -1,0 +1,148 @@
+{
+  "calendar": {
+    "agendaItem": {
+      "noEventsToday": ""
+    }
+  },
+  "common": {
+    "accept": "Aceptar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "newTask": "Nueva tarea"
+  },
+  "components": {
+    "priority": {
+      "high": "Alta",
+      "low": "Baja",
+      "lowest": "Muy baja",
+      "medium": "Media"
+    },
+    "proBadge": {
+      "pro": "PRO"
+    },
+    "taskViewer": {
+      "addSubtask": "Agregar subtarea"
+    }
+  },
+  "layout": {
+    "tabs": {
+      "calendar": "Calendario",
+      "profile": "Perfil",
+      "tasks": "Tareas"
+    }
+  },
+  "reminders": {
+    "1dayBefore": "1 día antes",
+    "1hourBefore": "1 hora antes",
+    "1weekBefore": "1 semana antes",
+    "30minBefore": "30 minutos antes",
+    "disable": "Desactivar",
+    "onDate": "En la fecha",
+    "requiresDueDate": "Requiere fecha de vencimiento"
+  },
+  "screens": {
+    "calendar": {
+      "title": "Calendario"
+    },
+    "developerSettings": {
+      "clearLaunchCount": "",
+      "clearOnboardingState": "",
+      "clearTasks": "Limpiar tareas",
+      "recordingMode": "Modo de grabación",
+      "toggleSubscription": "Alternar suscripción"
+    },
+    "dueDateBottomSheet": {
+      "time": "Hora"
+    },
+    "languages": {
+      "title": "Idiomas"
+    },
+    "options": {
+      "showCompletedTasks": "Mostrar tareas completadas"
+    },
+    "privacyPolicy": {
+      "title": "Política de privacidad"
+    },
+    "profile": {
+      "buttons": {
+        "changeLanguage": "Cambiar idioma",
+        "clearData": "Borrar datos",
+        "deleteAccount": "Eliminar cuenta",
+        "devMenu": "Menú de desarrollador",
+        "privacyPolicy": "Política de privacidad",
+        "rateApp": "Calificar app",
+        "signOut": "Cerrar sesión",
+        "subscribe": "Habilitar funciones premium ✨",
+        "terms": "Términos y condiciones"
+      },
+      "deleteAccount": {
+        "description": "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.",
+        "title": "Eliminar cuenta"
+      },
+      "robot": {
+        "text": "Por favor, inicia sesión para poder compartir tareas entre tus dispositivos.",
+        "title": "¡Bienvenido!"
+      },
+      "title": "Perfil"
+    },
+    "signin": {
+      "imAgreeWith": "Estoy de acuerdo con ",
+      "privacyPolicy": "Política de privacidad",
+      "subtitle": "Para comenzar a usar las funciones de IA, inicia sesión con tu ID de Apple",
+      "termsAndConditions": "Términos y condiciones",
+      "title": "Iniciar sesión",
+      "welcome": "Bienvenido a SubTask AI 🚀"
+    },
+    "taskEditor": {
+      "description": "Descripción",
+      "dueDate": "Fecha de vencimiento",
+      "reminders": "Notificaciones",
+      "title": "Título de la tarea"
+    },
+    "tasks": {
+      "createNewTask": "Crear nueva tarea",
+      "createTask": "Crear tarea",
+      "generateSubtasksWithAi": "Generar con IA ✨",
+      "robotNoTasksText": "Aún no tienes ninguna tarea. ¡Vamos a crear una!",
+      "robotWelcome": "¡Bienvenido!",
+      "subtasks": "Subtareas",
+      "subtasksHelperText": "Puedes agregar subtareas usando nuestro generador con IA. Te ayudará a dividir la tarea en pasos más pequeños.",
+      "title": "Tareas"
+    },
+    "termsAndConditions": {
+      "title": "Términos y condiciones"
+    },
+    "titles": {
+      "developerSettings": "Configuraciones de desarrollador"
+    }
+  },
+  "screns": {
+    "onboarding": {
+      "organize": {
+        "subtitle": "Desglosa las tareas en subtareas manejables y prioriza con facilidad.",
+        "title": "Organiza Eficientemente"
+      },
+      "premium": {
+        "subtitle": "Desbloquea todas las funciones y maximiza tu productividad. ¡Empieza tu prueba gratuita hoy!",
+        "title": "Empieza con Premium"
+      },
+      "progress": {
+        "subtitle": "Monitorea tu progreso con indicadores visuales y mantente motivado.",
+        "title": "Sigue Tu Progreso"
+      },
+      "reminders": {
+        "subtitle": "Establece fechas de vencimiento y recordatorios para asegurarte de mantenerte en el buen camino.",
+        "title": "No Pierdas Ningún Plazo"
+      },
+      "welcome": {
+        "subtitle": "Tu gestor de tareas impulsado por IA definitivo para aumentar la productividad.",
+        "title": "Bienvenido a SubTask"
+      }
+    },
+    "profile": {
+      "signInButton": {
+        "label": "Iniciar sesión"
+      }
+    }
+  }
+}

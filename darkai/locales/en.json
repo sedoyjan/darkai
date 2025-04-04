@@ -1,0 +1,144 @@
+{
+  "calendar": {
+    "agendaItem": {
+      "noEventsToday": "No events today"
+    }
+  },
+  "common": {
+    "accept": "Accept",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "newTask": "New task"
+  },
+  "components": {
+    "priority": {
+      "high": "High",
+      "low": "Low",
+      "lowest": "Lowest",
+      "medium": "Medium"
+    },
+    "proBadge": {
+      "pro": "PRO"
+    },
+    "taskViewer": {
+      "addSubtask": "Add subtask"
+    }
+  },
+  "layout": {
+    "tabs": {
+      "calendar": "Calendar",
+      "profile": "Profile",
+      "tasks": "Tasks"
+    }
+  },
+  "reminders": {
+    "1dayBefore": "1 day before",
+    "1hourBefore": "1 hour before",
+    "1weekBefore": "1 week before",
+    "30minBefore": "30 minutes before",
+    "disable": "Disable",
+    "onDate": "On date",
+    "requiresDueDate": "Requires due date"
+  },
+  "screens": {
+    "calendar": {
+      "title": "Calendar"
+    },
+    "developerSettings": {
+      "clearLaunchCount": "Clear launch count",
+      "clearOnboardingState": "Clear onboarding state",
+      "clearTasks": "Clear tasks",
+      "recordingMode": "Recording mode",
+      "toggleSubscription": "Toggle subscription"
+    },
+    "dueDateBottomSheet": {
+      "time": "Time"
+    },
+    "languages": {
+      "title": "Languages"
+    },
+    "options": {
+      "showCompletedTasks": "Show completed tasks"
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy"
+    },
+    "profile": {
+      "buttons": {
+        "changeLanguage": "Change language",
+        "clearData": "Clear data",
+        "deleteAccount": "Delete account",
+        "devMenu": "Developer menu",
+        "privacyPolicy": "Privacy Policy",
+        "rateApp": "Rate app",
+        "signOut": "Sign out",
+        "subscribe": "Enable premium features ✨",
+        "terms": "Terms and Conditions"
+      },
+      "deleteAccount": {
+        "description": "Are you sure you want to delete your account? This action is irreversible.",
+        "title": "Delete account"
+      },
+      "robot": {
+        "text": "Please sign in to be able to share tasks across your devices.",
+        "title": "Welcome!"
+      },
+      "title": "Profile"
+    },
+    "signin": {
+      "imAgreeWith": "I'm agree with ",
+      "privacyPolicy": "Privacy Policy",
+      "subtitle": "To start using AI features please sign in with your Apple ID",
+      "termsAndConditions": "Terms and Conditions",
+      "title": "Sign In",
+      "welcome": "Welcome to SubTask AI 🚀"
+    },
+    "taskEditor": {
+      "description": "Description",
+      "dueDate": "Due date",
+      "reminders": "Notifications",
+      "title": "Task title"
+    },
+    "tasks": {
+      "createNewTask": "Create new task",
+      "createTask": "Create task",
+      "generateSubtasksWithAi": "Generate with AI ✨",
+      "robotNoTasksText": "You don't have any tasks yet. Let's create one!",
+      "robotWelcome": "Welcome!",
+      "subtasks": "Subtasks",
+      "subtasksHelperText": "You can add subtasks using our AI-powered generator. It will help you to break down the task into smaller steps.",
+      "title": "Tasks"
+    },
+    "termsAndConditions": {
+      "title": "Terms and Conditions"
+    },
+    "titles": {
+      "developerSettings": "Developer settings"
+    }
+  },
+  "screns": {
+    "onboarding": {
+      "organize": {
+        "subtitle": "Break down tasks into manageable subtasks and prioritize with ease.",
+        "title": "Organize Efficiently"
+      },
+      "progress": {
+        "subtitle": "Monitor your progress with visual indicators and stay motivated.",
+        "title": "Track Your Progress"
+      },
+      "reminders": {
+        "subtitle": "Set due dates and reminders to ensure you stay on track.",
+        "title": "Never Miss a Deadline"
+      },
+      "welcome": {
+        "subtitle": "Your ultimate AI-powered task manager to boost productivity.",
+        "title": "Welcome to SubTask"
+      }
+    },
+    "profile": {
+      "signInButton": {
+        "label": "Sign in"
+      }
+    }
+  }
+}

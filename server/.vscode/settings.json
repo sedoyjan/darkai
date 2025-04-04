@@ -1,0 +1,9 @@
+{
+  "betterTypeScriptErrors.prettify": true,
+  "search.exclude": {
+    "**/prisma/prisma-client-js": true
+  },
+  "files.exclude": {
+    "**/prisma/prisma-client-js": true
+  }
+}

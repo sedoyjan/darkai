@@ -1,0 +1,9 @@
+.history
+node_modules
+ios
+.expo
+app/(tabs)/(tasks)/promo.tsx
+assets/animations/typing.json
+scripts/reset-project.js
+plugins
+expo-env.d.ts

@@ -1,0 +1,4 @@
+{
+  "entry": ["utils.ts"],
+  "project": ["**/*.{js,ts}"]
+}

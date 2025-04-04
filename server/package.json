@@ -1,0 +1,46 @@
+{
+  "name": "dark-ai-server",
+  "version": "1.0.0",
+  "description": "Subtask AI Server",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_ENV=development bun run --watch --inspect src/index.ts",
+    "db": "docker-compose up",
+    "dev:concurrently": "concurrently \"docker-compose up\" \"bun run dev\"",
+    "start": "NODE_ENV=production bun src/index.ts",
+    "generate": "bun prisma generate",
+    "migrate": "bun prisma migrate",
+    "push": "bun prisma db push",
+    "studio": "bun prisma studio",
+    "deploy": "cd .. && git subtree push --prefix server heroku master",
+    "pg": "heroku pg:info -a subtaskai"
+  },
+  "dependencies": {
+    "@elysiajs/bearer": "^1.1.1",
+    "@elysiajs/cors": "^1.1.0",
+    "@elysiajs/cron": "^1.1.0",
+    "@elysiajs/swagger": "^1.1.0",
+    "@prisma/client": "5.14.0",
+    "axios": "^1.7.3",
+    "concurrently": "^9.1.2",
+    "date-fns": "^3.6.0",
+    "elysia": "1.1.4",
+    "firebase-admin": "^12.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "openai": "^4.53.2",
+    "telegraf": "^4.16.3",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/jwk-to-pem": "^2.0.3",
+    "@types/lodash": "^4.17.7",
+    "@types/uuid": "^9.0.8",
+    "bun-types": "latest",
+    "instagram-private-api": "^1.46.1",
+    "prisma": "^5.17.0",
+    "prismabox": "^1.1.8"
+  },
+  "module": "src/index.js"
+}
