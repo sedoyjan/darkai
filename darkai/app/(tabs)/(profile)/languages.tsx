@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, ListRenderItem, StyleSheet } from 'react-native';
-import { LocaleConfig } from 'react-native-calendars';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { apiClient } from '@/api';
@@ -31,7 +30,6 @@ export default function LanguagesScreen() {
 
   const onSelectLanguage = useCallback(
     (language: Lang) => async () => {
-      LocaleConfig.defaultLocale = language.key;
       i18n.changeLanguage(language.key);
       dispatch(
         setLanguageCode({

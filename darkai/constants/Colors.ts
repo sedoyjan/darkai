@@ -1,5 +1,3 @@
-import { Theme as CalendarTheme } from 'react-native-calendars/src/types';
-
 export const Colors = {
   /**
    * Darker start color of the gradient
@@ -146,42 +144,6 @@ export const TaskColors = [
   Colors.color9,
   Colors.color10,
 ];
-
-export const calendarTheme: CalendarTheme = {
-  backgroundColor: Colors.gradientStart,
-  calendarBackground: Colors.gradientStart,
-  textSectionTitleColor: Colors.primaryText,
-  textSectionTitleDisabledColor: Colors.semiWhite,
-  selectedDayBackgroundColor: Colors.primaryText,
-  selectedDayTextColor: Colors.black,
-  todayTextColor: Colors.primaryText,
-  dayTextColor: Colors.primaryText,
-  textDisabledColor: Colors.semiWhite,
-  dotColor: Colors.primaryText,
-  selectedDotColor: Colors.primaryText,
-  arrowColor: Colors.primaryText,
-  disabledArrowColor: Colors.semiWhite,
-  monthTextColor: Colors.primaryText,
-  indicatorColor: Colors.primaryText,
-  textDayFontFamily: 'monospace',
-  textMonthFontFamily: 'monospace',
-  textDayHeaderFontFamily: 'monospace',
-  textDayFontWeight: '300',
-  textMonthFontWeight: 'bold',
-  textDayHeaderFontWeight: '300',
-  textDayFontSize: 16,
-  textMonthFontSize: 16,
-  textDayHeaderFontSize: 16,
-  todayBackgroundColor: Colors.borderColor,
-  todayDotColor: Colors.accentColor1,
-  stylesheet: {
-    expandable: {
-      main: {
-        backgroundColor: 'red',
-      },
-    },
-  },
-};
 
 export const PRIORITY_COLORS = {
   0: Colors.primaryText,

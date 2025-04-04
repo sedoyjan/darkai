@@ -1,5 +1,8 @@
 import admin from "firebase-admin";
-import firebaseConfig from "../../subtaskai-firebase-adminsdk.json";
+import { decodeConfig } from "../../utils";
+
+const FIREBASE_CONFIG = process.env.FIREBASE_CONFIG as string;
+const firebaseConfig = decodeConfig(FIREBASE_CONFIG);
 
 const config = {
   credential: admin.credential.cert({

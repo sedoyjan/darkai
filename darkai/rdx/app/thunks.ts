@@ -5,7 +5,6 @@ import {
   signInAsync,
 } from 'expo-apple-authentication';
 import { getCalendars, getLocales } from 'expo-localization';
-import { LocaleConfig } from 'react-native-calendars';
 import Purchases from 'react-native-purchases';
 
 import { apiClient } from '@/api';
@@ -64,11 +63,9 @@ export const localeConfigThunk = createAsyncThunk<
     dispatch(setLocale({ locale }));
     if (storedLanguageCode) {
       i18n.changeLanguage(storedLanguageCode);
-      LocaleConfig.defaultLocale = storedLanguageCode;
     } else {
       if (LANGUAGE_CODES.includes(languageCode)) {
         i18n.changeLanguage(languageCode);
-        LocaleConfig.defaultLocale = languageCode;
       }
     }
   }
