@@ -43,22 +43,7 @@ export default function TabLayout() {
             },
           }}
         />
-        <Tabs.Screen
-          name="(calendar)"
-          options={{
-            // tabBarButton: () => null,
-            title: t('layout.tabs.calendar'),
-            tabBarIcon: ({ focused }) => (
-              <TabBarIcon
-                name={focused ? 'calendar' : 'calendar-outline'}
-                color={Colors.primaryText}
-              />
-            ),
-            tabBarItemStyle: {
-              paddingBottom: 4,
-            },
-          }}
-        />
+
         <Tabs.Screen
           name="(profile)"
           options={{

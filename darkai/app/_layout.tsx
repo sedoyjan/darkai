@@ -138,14 +138,7 @@ export default function RootLayout() {
                               gestureEnabled: false,
                             }}
                           />
-                          <Stack.Screen
-                            name="createTaskBottomSheet"
-                            options={formSheetOptions}
-                          />
-                          <Stack.Screen
-                            name="editTaskBottomSheet"
-                            options={formSheetOptions}
-                          />
+
                           <Stack.Screen
                             name="termsModal"
                             options={{
@@ -157,26 +150,6 @@ export default function RootLayout() {
                             options={{
                               presentation: 'modal',
                             }}
-                          />
-
-                          <Stack.Screen
-                            name="optionsBottomSheet"
-                            options={formSheetOptions}
-                          />
-
-                          <Stack.Screen
-                            name="dueDateBottomSheet"
-                            options={formSheetOptions}
-                          />
-
-                          <Stack.Screen
-                            name="priorityBottomSheet"
-                            options={formSheetOptions}
-                          />
-
-                          <Stack.Screen
-                            name="reminderBottomSheet"
-                            options={formSheetOptions}
                           />
                         </Stack>
                       </ThemeProvider>
