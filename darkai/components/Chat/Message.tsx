@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: Colors.white,
     borderWidth: 1.5,
     borderCurve: 'continuous',
@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   wrapper: {
-    backgroundColor: Colors.white,
-    padding: 8,
+    backgroundColor: Colors.semiTransparentBg,
+    paddingHorizontal: 10,
     borderRadius: 12,
     gap: 8,
     borderWidth: 1,
@@ -62,8 +62,12 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 8,
   },
+  textWrapper: {
+    paddingVertical: 8,
+  },
   text: {
     maxWidth: 200,
+    color: Colors.primaryText,
   },
   captionRowLeft: {
     flexDirection: 'row',
@@ -120,22 +124,15 @@ export const Message = ({
     };
   }, [type]);
 
-  const placeholder = useMemo(() => {
-    return { blurhash: imageHash };
-  }, [imageHash]);
-
   const messageCreatedAt = getMessageTime(createdAt);
   const isBot = type === ChatMessageType.BOT;
+
   return (
     <View style={rowStyle}>
       <View style={styles.innerWrapper}>
         {isBot ? (
           <View style={styles.avatar}>
-            <Image
-              style={styles.avatarImage}
-              source={avatarImage}
-              // contentFit="contain"
-            />
+            <Image style={styles.avatarImage} source={avatarImage} />
           </View>
         ) : null}
         <View style={styles.outWrapper}>
@@ -146,7 +143,9 @@ export const Message = ({
                 {isBot ? (
                   <Markdown style={markdownStyles}>{text}</Markdown>
                 ) : (
-                  <Text style={styles.text}>{text}</Text>
+                  <View style={styles.textWrapper}>
+                    <Text style={styles.text}>{text}</Text>
+                  </View>
                 )}
               </>
             ) : null}

@@ -1,7 +1,7 @@
 {
   "name": "com.sedoyjan.darkai",
   "main": "expo-router/entry",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "scripts": {
     "start": "expo start",
     "watch:del": "watchman watch-del '/Users/sedoyjan/PET/winberry' ; watchman watch-project '/Users/sedoyjan/PET/winberry'",

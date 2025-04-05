@@ -11,8 +11,8 @@ import {
 
 import { Colors } from '@/constants/Colors';
 
-import { CheckBox } from './CheckBox';
 import { Icon, IconName } from '../blocks/Icon';
+import { CheckBox } from './CheckBox';
 
 const styles = StyleSheet.create({
   row: {
@@ -95,7 +95,7 @@ export const SettingsButton = ({
   caption,
   rightCaption,
   onPress,
-  iconBackgroundColor = 'gray',
+  iconBackgroundColor = Colors.borderColor,
   isCheckbox = false,
   children,
 }: SettingsButtonProps) => {

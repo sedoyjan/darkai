@@ -1,14 +1,9 @@
 {
-  "calendar": {
-    "agendaItem": {
-      "noEventsToday": "No events today"
-    }
-  },
   "common": {
     "accept": "Accept",
     "cancel": "Cancel",
     "delete": "Delete",
-    "newTask": "New task"
+    "upgradeToPlus": ""
   },
   "components": {
     "priority": {
@@ -19,46 +14,29 @@
     },
     "proBadge": {
       "pro": "PRO"
-    },
-    "taskViewer": {
-      "addSubtask": "Add subtask"
     }
   },
   "layout": {
     "tabs": {
-      "calendar": "Calendar",
-      "profile": "Profile",
-      "tasks": "Tasks"
+      "chat": "Chat",
+      "profile": "Profile"
     }
   },
-  "reminders": {
-    "1dayBefore": "1 day before",
-    "1hourBefore": "1 hour before",
-    "1weekBefore": "1 week before",
-    "30minBefore": "30 minutes before",
-    "disable": "Disable",
-    "onDate": "On date",
-    "requiresDueDate": "Requires due date"
-  },
   "screens": {
-    "calendar": {
-      "title": "Calendar"
+    "chat": {
+      "botMessages": {
+        "no-messages": "Hey! We still don't have any messages here. Tell me about your goals and I'll help you to achieve them.",
+        "outOfMessages": "Looks like you are out of messages. Please subscribe to continue using the app."
+      }
     },
     "developerSettings": {
       "clearLaunchCount": "Clear launch count",
       "clearOnboardingState": "Clear onboarding state",
-      "clearTasks": "Clear tasks",
       "recordingMode": "Recording mode",
       "toggleSubscription": "Toggle subscription"
     },
-    "dueDateBottomSheet": {
-      "time": "Time"
-    },
     "languages": {
       "title": "Languages"
-    },
-    "options": {
-      "showCompletedTasks": "Show completed tasks"
     },
     "privacyPolicy": {
       "title": "Privacy Policy"
@@ -98,16 +76,6 @@
       "dueDate": "Due date",
       "reminders": "Notifications",
       "title": "Task title"
-    },
-    "tasks": {
-      "createNewTask": "Create new task",
-      "createTask": "Create task",
-      "generateSubtasksWithAi": "Generate with AI ✨",
-      "robotNoTasksText": "You don't have any tasks yet. Let's create one!",
-      "robotWelcome": "Welcome!",
-      "subtasks": "Subtasks",
-      "subtasksHelperText": "You can add subtasks using our AI-powered generator. It will help you to break down the task into smaller steps.",
-      "title": "Tasks"
     },
     "termsAndConditions": {
       "title": "Terms and Conditions"

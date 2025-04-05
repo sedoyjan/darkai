@@ -1,8 +1,9 @@
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useIsFocused } from '@react-navigation/native';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   NativeScrollEvent,
@@ -48,9 +49,7 @@ const styles = StyleSheet.create({
 
 export default function ChatScreen() {
   const { t } = useTranslation();
-  const [photo, setPhoto] = useState<
-    CameraCapturedPicture | ImagePickerAsset | null
-  >(null);
+  const bottomTabBarHeight = useBottomTabBarHeight();
   const messages = useAppSelector(selectChatMessages);
   const dispatch = useAppDispatch();
   const listRef = useRef<FlashList<ChatMessage>>(null);
@@ -213,7 +212,10 @@ export default function ChatScreen() {
 
   return (
     <Background>
-      <SafeAreaKeyboardAvoidingView edges={['top']}>
+      <SafeAreaKeyboardAvoidingView
+        edges={['top']}
+        tabBarHeight={bottomTabBarHeight}
+      >
         <Header title="Chat" withBackButton={false} />
         <View style={styles.container}>
           <FlashList
@@ -227,7 +229,6 @@ export default function ChatScreen() {
           />
           <ChatInput
             isDisabled={isChatDisabled}
-            imageUri={photo?.uri}
             onSendTextMessage={onSendTextMessage}
           />
         </View>

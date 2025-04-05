@@ -50,13 +50,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function WelcomeScreen() {
+export default function SignInScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const isTermsAccepted = useAppSelector(selectIsTermsAccepted);
   const isPrivacyAccepted = useAppSelector(selectIsPrivacyAccepted);
   const route = useRoute<RouteProp<RootParamList, 'SignIn'>>();
+  const { text: messageText, imageUri: messageImageUrl } = route.params;
   const isSignInFlowInProgress = useAppSelector(selectIsSignInFlowInProgress);
 
   const onTermsPress = useCallback(() => {

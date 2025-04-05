@@ -24,6 +24,14 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     infoPlist: {
       UIBackgroundModes: ['fetch', 'remote-notification'],
       FirebaseAppDelegateProxyEnabled: '@NO',
+      NSAppTransportSecurity: {
+        NSExceptionDomains: {
+          '85.222.235.31': {
+            NSExceptionAllowsInsecureHTTPLoads: true,
+            NSIncludesSubdomains: false,
+          },
+        },
+      },
     },
     config: {
       usesNonExemptEncryption: false,
@@ -58,9 +66,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'expo-splash-screen',
       {
         image: './assets/images/splash-icon.png',
-        imageWidth: 250,
+        imageWidth: 200,
         resizeMode: 'contain',
-        backgroundColor: '#061A2E',
+        backgroundColor: '#020202',
       },
     ],
     [

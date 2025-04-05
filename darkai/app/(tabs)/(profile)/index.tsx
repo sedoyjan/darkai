@@ -12,6 +12,7 @@ import { Header } from '@/components/Header';
 import { Helper } from '@/components/Helper';
 import { SettingsButton } from '@/components/SettingsButton';
 import { Colors } from '@/constants/Colors';
+import { LANGUAGES } from '@/i18n';
 import {
   selectHasActiveSubscription,
   selectIsDeveloper,
@@ -20,7 +21,6 @@ import {
 import { deleteAccountThunk, signOutThunk } from '@/rdx/app/thunks';
 import { useAppDispatch, useAppSelector } from '@/rdx/store';
 import { toast } from '@/utils';
-import { LANGUAGES } from '@/i18n';
 
 const styles = StyleSheet.create({
   container: {
@@ -177,7 +177,7 @@ export default function ProfileScreen() {
             <View style={styles.premiumWrapper}>
               {hasActiveSubscription ? (
                 <LinearGradient
-                  colors={['#00FF00', '#32CD32']}
+                  colors={['#F3FF09', '#C4F244']}
                   style={styles.premiumGradient}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
@@ -253,7 +253,7 @@ export default function ProfileScreen() {
           ) : null}
           {user ? (
             <SettingsButton
-              iconBackgroundColor={Colors.errorColor}
+              // iconBackgroundColor={Colors.errorColor}
               icon="trash"
               label={t('screens.profile.buttons.deleteAccount')}
               onPress={onDeleteAccount}
@@ -262,7 +262,7 @@ export default function ProfileScreen() {
           ) : null}
           {user ? (
             <SettingsButton
-              iconBackgroundColor={Colors.errorColor}
+              // iconBackgroundColor={Colors.errorColor}
               icon="log-out"
               label={t('screens.profile.buttons.signOut')}
               onPress={onSignOut}
@@ -270,8 +270,8 @@ export default function ProfileScreen() {
           ) : null}
           {isDeveloper ? (
             <SettingsButton
-              iconBackgroundColor={Colors.doneColor}
-              icon="settings-outline"
+              // iconBackgroundColor={Colors.doneColor}
+              icon="settings"
               label={t('screens.profile.buttons.devMenu')}
               onPress={() => {
                 router.push('/devMenu');

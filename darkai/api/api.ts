@@ -26,6 +26,19 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
+ * @interface GetAnalytics200Response
+ */
+export interface GetAnalytics200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetAnalytics200Response
+     */
+    'success': boolean;
+}
+/**
+ * 
+ * @export
  * @interface GetChatGetMessages200Response
  */
 export interface GetChatGetMessages200Response {
@@ -148,19 +161,6 @@ export interface GetUserMe200Response {
      * @memberof GetUserMe200Response
      */
     'hasFreeRequests': boolean;
-}
-/**
- * 
- * @export
- * @interface PostAnalyticsLaunch200Response
- */
-export interface PostAnalyticsLaunch200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PostAnalyticsLaunch200Response
-     */
-    'success': boolean;
 }
 /**
  * 
@@ -288,6 +288,35 @@ export interface PostUserUpdateLocaleRequest {
  */
 export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAnalytics: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/analytics/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
         /**
          * 
          * @param {number} [page] 
@@ -595,6 +624,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAnalytics(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAnalytics200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAnalytics(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAnalytics']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
@@ -623,7 +663,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostAnalyticsLaunch200Response>> {
+        async postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAnalytics200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postAnalyticsLaunch(body, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.postAnalyticsLaunch']?.[localVarOperationServerIndex]?.url;
@@ -710,6 +750,14 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAnalytics(options?: RawAxiosRequestConfig): AxiosPromise<GetAnalytics200Response> {
+            return localVarFp.getAnalytics(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
@@ -732,7 +780,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): AxiosPromise<PostAnalyticsLaunch200Response> {
+        postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): AxiosPromise<GetAnalytics200Response> {
             return localVarFp.postAnalyticsLaunch(body, options).then((request) => request(axios, basePath));
         },
         /**
@@ -796,6 +844,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getAnalytics(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getAnalytics(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {number} [page] 

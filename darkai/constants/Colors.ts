@@ -3,11 +3,11 @@ export const Colors = {
   /**
    * Darker start color of the gradient
    */
-  gradientStart: '#002F5E',
+  gradientStart: '#140033',
   /**
    * Darker end color of the gradient
    */
-  gradientEnd: '#061A2E',
+  gradientEnd: '#020202',
 
   /**
    * Deep purple start color for CTA buttons
@@ -116,6 +116,7 @@ export const Colors = {
    */
   color10: 'rgba(240, 255, 240, 0.25)',
 
+  semiTransparentBg: 'rgba(255, 255, 255, 0.15)',
   borderColor: 'rgba(255, 255, 255, 0.2)',
   transparent: 'rgba(0, 0, 0, 0)',
   semiWhite: 'rgba(255, 255, 255, 0.5)',
