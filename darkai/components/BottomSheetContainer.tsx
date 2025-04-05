@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
 import { Background } from './Background';
-import { Icon } from './Icon';
+import { Icon } from '../blocks/Icon';
 
 const styles = StyleSheet.create({
   wrapper: {

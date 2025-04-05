@@ -5,7 +5,7 @@ import { initReactI18next } from 'react-i18next';
 
 import en from './locales/en.json';
 import { selectLanguageCode, selectLocale } from './rdx/app/selectors';
-import { useAppSelector } from './rdx/store';
+import { store, useAppSelector } from './rdx/store';
 
 export const DATE_LOCALES = {
   en: dateEn,
@@ -24,8 +24,6 @@ export const LANGUAGE_CODES = LANGUAGES.map(lang => lang.key);
 
 // export const LANGUAGES = ['en', 'es', 'fr', 'ja', 'ko', 'zh-CN', 'zh-TW'];
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
@@ -44,6 +42,16 @@ export default i18n;
 export const useLanguage = () => {
   const languageCode = useAppSelector(selectLanguageCode);
   const locale = useAppSelector(selectLocale);
+
+  const lang = languageCode || locale?.currencyCode || 'en';
+
+  return lang as LangKey;
+};
+
+export const getLanguage = () => {
+  const state = store.getState();
+  const languageCode = selectLanguageCode(state);
+  const locale = selectLocale(state);
 
   const lang = languageCode || locale?.currencyCode || 'en';
 

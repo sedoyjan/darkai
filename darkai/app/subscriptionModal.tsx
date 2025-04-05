@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Background } from '@/components/Background';
 import { setHasActiveSubscription } from '@/rdx/app/slice';
 import { useAppDispatch } from '@/rdx/store';
-import { decomposeTaskThunk } from '@/rdx/tasks/thunks';
 import { sharedStyles } from '@/sharedStyles';
 
 import { RootParamList } from './_layout';
@@ -27,9 +26,6 @@ export default function SubscriptionModalScreen() {
 
   const onSuccess = useCallback(async () => {
     dispatch(setHasActiveSubscription({ hasActiveSubscription: true }));
-    if (route.params.taskId) {
-      dispatch(decomposeTaskThunk({ id: route.params.taskId }));
-    }
     if (router.canGoBack()) {
       router.back();
     }

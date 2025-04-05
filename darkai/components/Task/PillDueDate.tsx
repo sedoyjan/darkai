@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Colors } from '@/constants/Colors';
 import { DATE_LOCALES, useLanguage } from '@/i18n';
 
-import { Icon } from '../Icon';
+import { Icon } from '../../blocks/Icon';
 
 interface PillDueDateProps {
   date: number;

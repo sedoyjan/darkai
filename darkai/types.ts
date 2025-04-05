@@ -53,3 +53,20 @@ export type User = Omit<
   | 'updatePhoneNumber'
   | 'verifyBeforeUpdateEmail'
 >;
+
+export enum ChatMessageType {
+  USER = 'USER',
+  BOT = 'BOT',
+  SYSTEM = 'SYSTEM',
+}
+
+export type ChatMessage = Omit<
+  PostChatSendMessage200ResponseMessage,
+  'imageUrl' | 'imageHash' | 'summaryId' | 'createdAt'
+> & {
+  imageUrl?: string;
+  imageHash?: string;
+  summaryId?: string;
+  createdAt: string;
+  type: ChatMessageType;
+};

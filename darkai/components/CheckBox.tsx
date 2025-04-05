@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import { Icon } from './Icon';
+import { Icon } from '../blocks/Icon';
 
 interface CheckBoxProps {
   value: boolean;

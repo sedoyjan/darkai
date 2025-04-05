@@ -1,4 +1,5 @@
 export const Colors = {
+  white: '#FFFFFF',
   /**
    * Darker start color of the gradient
    */

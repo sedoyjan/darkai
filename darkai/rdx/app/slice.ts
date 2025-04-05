@@ -94,9 +94,6 @@ export const appSlice = createSlice({
     setLocale: (state, action: PayloadAction<{ locale: Locale }>) => {
       state.locale = action.payload.locale;
     },
-    setCalendar: (state, action: PayloadAction<{ calendar: Calendar }>) => {
-      state.calendar = action.payload.calendar;
-    },
     setUser: (state, action: PayloadAction<{ user: User | null }>) => {
       state.user = action.payload.user;
     },
@@ -156,7 +153,6 @@ export const appReducer = appSlice.reducer;
 export const {
   setUser,
   setFcmToken,
-  setCalendar,
   setLocale,
   setIdentityToken,
   setProductAndDiscount,

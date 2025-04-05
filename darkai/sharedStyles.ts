@@ -1,6 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 import { Colors } from './constants/Colors';
+
+const windowWidth = Dimensions.get('window').width;
+
+export const markdownStyles = StyleSheet.create({
+  body: {
+    maxWidth: windowWidth - 120,
+  },
+});
 
 export const sharedStyles = StyleSheet.create({
   gap: {

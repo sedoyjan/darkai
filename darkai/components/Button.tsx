@@ -12,7 +12,7 @@ import {
 
 import { Colors, CtaGradientColors } from '@/constants/Colors';
 
-import { Icon, IconName } from './Icon';
+import { Icon, IconName } from '../blocks/Icon';
 import { ProBadge } from './ProBadge';
 
 interface ButtonProps {

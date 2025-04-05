@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
 
-import { Icon } from './Icon';
+import { Icon } from '../blocks/Icon';
 
 const styles = StyleSheet.create({
   proWrapper: {

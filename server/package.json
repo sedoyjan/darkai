@@ -10,8 +10,10 @@
     "dev:concurrently": "concurrently \"docker-compose up\" \"bun run dev\"",
     "start": "NODE_ENV=production bun src/index.ts",
     "generate": "bun prisma generate",
+    "gen": "bun prisma generate",
     "migrate": "bun prisma migrate",
     "push": "bun prisma db push",
+    "dbpush": "bun prisma db push",
     "studio": "bun prisma studio",
     "deploy": "cd .. && git subtree push --prefix server heroku master",
     "pg": "heroku pg:info -a subtaskai"

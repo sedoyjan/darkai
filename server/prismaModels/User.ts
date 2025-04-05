@@ -8,7 +8,7 @@ export const UserPlain = t.Object(
   {
     id: t.String(),
     email: __nullable__(t.String()),
-    dispalyName: t.String(),
+    displayName: t.String(),
     fcmToken: t.Array(t.String(), { additionalProperties: false }),
     locale: t.String(),
     identityToken: t.String(),
@@ -20,12 +20,34 @@ export const UserPlain = t.Object(
   { additionalProperties: false },
 );
 
-export const UserRelations = t.Object({}, { additionalProperties: false });
+export const UserRelations = t.Object(
+  {
+    Message: t.Array(
+      t.Object(
+        {
+          id: t.String(),
+          userId: t.String(),
+          text: t.String(),
+          imageUrl: __nullable__(t.String()),
+          imageHash: __nullable__(t.String()),
+          createdAt: t.Date(),
+          type: t.Union(
+            [t.Literal("SYSTEM"), t.Literal("USER"), t.Literal("BOT")],
+            { additionalProperties: false },
+          ),
+        },
+        { additionalProperties: false },
+      ),
+      { additionalProperties: false },
+    ),
+  },
+  { additionalProperties: false },
+);
 
 export const UserPlainInputCreate = t.Object(
   {
     email: t.Optional(__nullable__(t.String())),
-    dispalyName: t.String(),
+    displayName: t.String(),
     fcmToken: t.Array(t.String(), { additionalProperties: false }),
     locale: t.String(),
     identityToken: t.String(),
@@ -38,7 +60,7 @@ export const UserPlainInputCreate = t.Object(
 export const UserPlainInputUpdate = t.Object(
   {
     email: t.Optional(__nullable__(t.String())),
-    dispalyName: t.Optional(t.String()),
+    displayName: t.Optional(t.String()),
     fcmToken: t.Optional(t.Array(t.String(), { additionalProperties: false })),
     locale: t.Optional(t.String()),
     identityToken: t.Optional(t.String()),
@@ -49,12 +71,58 @@ export const UserPlainInputUpdate = t.Object(
 );
 
 export const UserRelationsInputCreate = t.Object(
-  {},
+  {
+    Message: t.Optional(
+      t.Object(
+        {
+          connect: t.Array(
+            t.Object(
+              {
+                id: t.String({ additionalProperties: false }),
+              },
+              { additionalProperties: false },
+            ),
+            { additionalProperties: false },
+          ),
+        },
+        { additionalProperties: false },
+      ),
+    ),
+  },
   { additionalProperties: false },
 );
 
 export const UserRelationsInputUpdate = t.Partial(
-  t.Object({}, { additionalProperties: false }),
+  t.Object(
+    {
+      Message: t.Partial(
+        t.Object(
+          {
+            connect: t.Array(
+              t.Object(
+                {
+                  id: t.String({ additionalProperties: false }),
+                },
+                { additionalProperties: false },
+              ),
+              { additionalProperties: false },
+            ),
+            disconnect: t.Array(
+              t.Object(
+                {
+                  id: t.String({ additionalProperties: false }),
+                },
+                { additionalProperties: false },
+              ),
+              { additionalProperties: false },
+            ),
+          },
+          { additionalProperties: false },
+        ),
+      ),
+    },
+    { additionalProperties: false },
+  ),
 );
 
 export const UserWhere = t.Partial(
@@ -67,7 +135,7 @@ export const UserWhere = t.Partial(
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
           email: t.String(),
-          dispalyName: t.String(),
+          displayName: t.String(),
           fcmToken: t.Array(t.String(), { additionalProperties: false }),
           locale: t.String(),
           identityToken: t.String(),
@@ -116,7 +184,7 @@ export const UserWhereUnique = t.Recursive(
             {
               id: t.String(),
               email: t.String(),
-              dispalyName: t.String(),
+              displayName: t.String(),
               fcmToken: t.Array(t.String(), { additionalProperties: false }),
               locale: t.String(),
               identityToken: t.String(),
@@ -139,7 +207,7 @@ export const UserSelect = t.Partial(
     {
       id: t.Boolean(),
       email: t.Boolean(),
-      dispalyName: t.Boolean(),
+      displayName: t.Boolean(),
       fcmToken: t.Boolean(),
       locale: t.Boolean(),
       identityToken: t.Boolean(),
@@ -147,6 +215,7 @@ export const UserSelect = t.Partial(
       expirationAtMs: t.Boolean(),
       createdAt: t.Boolean(),
       requestsCount: t.Boolean(),
+      Message: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -154,7 +223,10 @@ export const UserSelect = t.Partial(
 );
 
 export const UserInclude = t.Partial(
-  t.Object({ _count: t.Boolean() }, { additionalProperties: false }),
+  t.Object(
+    { Message: t.Boolean(), _count: t.Boolean() },
+    { additionalProperties: false },
+  ),
 );
 
 export const UserOrderBy = t.Partial(
@@ -166,7 +238,7 @@ export const UserOrderBy = t.Partial(
       email: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      dispalyName: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      displayName: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       fcmToken: t.Union([t.Literal("asc"), t.Literal("desc")], {

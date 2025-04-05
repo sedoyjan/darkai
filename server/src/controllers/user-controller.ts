@@ -92,6 +92,12 @@ export const UserController = (app: Elysia) => {
         const { fcmToken, identityToken, email, uid, locale, appUserId } =
           context.body;
 
+        console.log("🚀 ~ appUserId", appUserId);
+        console.log("🚀 ~ uid", uid);
+        console.log("🚀 ~ identityToken", identityToken);
+        console.log("🚀 ~ fcmToken", fcmToken);
+        console.log("🚀 ~ email", email);
+
         const existingUser = await db.user.findFirst({
           where: {
             OR: [
@@ -112,7 +118,7 @@ export const UserController = (app: Elysia) => {
               email,
               fcmToken: [fcmToken],
               identityToken,
-              dispalyName: "",
+              displayName: "",
               locale,
               appUserId: appUserId,
             },

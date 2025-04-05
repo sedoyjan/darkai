@@ -6,7 +6,7 @@ import { Colors } from '@/constants/Colors';
 import { useTimerKey } from '@/hooks/useTimerKey';
 import { DATE_LOCALES, useLanguage } from '@/i18n';
 
-import { Icon } from '../Icon';
+import { Icon } from '../../blocks/Icon';
 
 interface PillReminderProps {
   date?: number;

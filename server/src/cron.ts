@@ -10,7 +10,7 @@ export const Cron = (app: Elysia) => {
       pattern: Patterns.everySenconds(30),
       run() {
         const memoryUsage = process.memoryUsage();
-        console.log("Memory Usage Resident_Set_Size:", toMB(memoryUsage.rss));
+        // console.log("Memory Usage Resident_Set_Size:", toMB(memoryUsage.rss));
       },
     })
   );

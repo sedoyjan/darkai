@@ -9,7 +9,7 @@ import Animated, {
 
 import { Colors } from '@/constants/Colors';
 
-import { Icon } from '../Icon';
+import { Icon } from '../../blocks/Icon';
 
 interface TaskRightActionButtonProps {
   progressAnimatedValue: SharedValue<number>;

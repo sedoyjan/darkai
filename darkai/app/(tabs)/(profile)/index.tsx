@@ -19,8 +19,8 @@ import {
 } from '@/rdx/app/selectors';
 import { deleteAccountThunk, signOutThunk } from '@/rdx/app/thunks';
 import { useAppDispatch, useAppSelector } from '@/rdx/store';
-import { clearTasks } from '@/rdx/tasks/slice';
 import { toast } from '@/utils';
+import { LANGUAGES } from '@/i18n';
 
 const styles = StyleSheet.create({
   container: {
@@ -114,12 +114,11 @@ export default function ProfileScreen() {
         text: 'Clear',
         style: 'destructive',
         onPress: async () => {
-          await dispatch(clearTasks());
           toast('Data cleared');
         },
       },
     ]);
-  }, [dispatch]);
+  }, []);
 
   const onChangeLanguage = useCallback(async () => {
     router.push('/languages');
@@ -215,13 +214,15 @@ export default function ProfileScreen() {
           </View>
         )}
         <ScrollView style={styles.content}>
-          <SettingsButton
-            icon="language-outline"
-            label={t('screens.profile.buttons.changeLanguage')}
-            onPress={onChangeLanguage}
-            withSeparator
-            withArrow
-          />
+          {LANGUAGES.length > 1 ? (
+            <SettingsButton
+              icon="language-outline"
+              label={t('screens.profile.buttons.changeLanguage')}
+              onPress={onChangeLanguage}
+              withSeparator
+              withArrow
+            />
+          ) : null}
           <SettingsButton
             icon="star"
             label={t('screens.profile.buttons.rateApp')}

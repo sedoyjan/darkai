@@ -87,7 +87,7 @@ export default function RootLayout() {
   const init = useCallback(async () => {
     sharedRouter.setRouter(router);
     await store.dispatch(initThunk());
-    router.replace('/(tabs)/(tasks)');
+    router.replace('/(tabs)/chat');
     SplashScreen.hideAsync();
   }, [router]);
 

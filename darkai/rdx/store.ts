@@ -27,7 +27,7 @@ if (__DEV__) {
 middlewares.push(syncMiddleware);
 
 const persistConfig: PersistConfig<RootState> = {
-  key: 'root',
+  key: 'darkai',
   version: 2,
   storage: AsyncStorage,
   whitelist: ['tasks', 'settings', 'app'],

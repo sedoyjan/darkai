@@ -19,7 +19,7 @@ import { BottomSheetBackground } from '@/components/BottomSheetBackground';
 import { Colors } from '@/constants/Colors';
 
 import { CustomBackdrop } from './CustomBackdrop';
-import { Icon } from './Icon';
+import { Icon } from '../blocks/Icon';
 import { useKeyboardHeightContext } from './KeyboardHeightContextProvider';
 
 const ANIMATION_CONFIG: WithSpringConfig = {

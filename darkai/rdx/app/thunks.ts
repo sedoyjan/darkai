@@ -4,7 +4,7 @@ import {
   AppleAuthenticationScope,
   signInAsync,
 } from 'expo-apple-authentication';
-import { getCalendars, getLocales } from 'expo-localization';
+import { getLocales } from 'expo-localization';
 import Purchases from 'react-native-purchases';
 
 import { apiClient } from '@/api';
@@ -22,12 +22,6 @@ import { sharedRouter } from '@/services/sharedRouter';
 import { User } from '@/types';
 
 import { RootState } from '..';
-import { clearTasks, dropTaskGenerating } from '../tasks/slice';
-import {
-  decomposeTaskThunk,
-  fetchTasksThunk,
-  syncLocalTasksThunk,
-} from '../tasks/thunks';
 import {
   selectFcmToken,
   selectHasActiveSubscription,
@@ -39,7 +33,6 @@ import {
   selectUser,
 } from './selectors';
 import {
-  setCalendar,
   setFcmToken,
   setHasActiveSubscription,
   setHasFreeRequests,
@@ -69,17 +62,13 @@ export const localeConfigThunk = createAsyncThunk<
       }
     }
   }
-  const calendars = getCalendars();
-  if (calendars.length) {
-    dispatch(setCalendar({ calendar: calendars[0] }));
-  }
 });
 
 export const postUserLoginThunk = createAsyncThunk<
   void,
   undefined,
   { state: RootState }
->('app/postUserLoginThunk', async (_, { dispatch, getState }) => {
+>('app/postUserLoginThunk', async (_, { getState }) => {
   const state = getState();
   const { isConfigured } = await configurePurchases();
 
@@ -104,7 +93,6 @@ export const postUserLoginThunk = createAsyncThunk<
     analytics.logLogin({
       method: 'apple',
     });
-    await dispatch(syncLocalTasksThunk());
   } catch (error) {
     console.error('postUserLogin error', error);
   }
@@ -119,7 +107,6 @@ export const initThunk = createAsyncThunk<
   const isDeveloper = selectIsDeveloper(initialState);
 
   dispatch(setLaunchCount({ count: selectLaunchCount(initialState) + 1 }));
-  dispatch(dropTaskGenerating());
   dispatch(localeConfigThunk());
 
   if (!IS_DEV) {
@@ -152,6 +139,7 @@ export const initThunk = createAsyncThunk<
     messaging.onTokenRefresh(newToken => {
       dispatch(setFcmToken({ fcmToken: newToken }));
     });
+
     dispatch(setFcmToken({ fcmToken: token }));
   } catch (error) {
     console.error('messaging.getToken error', error);
@@ -164,7 +152,6 @@ export const initThunk = createAsyncThunk<
   }
 
   setUserId(user.uid);
-  dispatch(fetchTasksThunk());
 
   let hasFreeRequests = false;
 
@@ -207,7 +194,6 @@ export const signOutThunk = createAsyncThunk<
 
   dispatch(setUser({ user: null }));
   dispatch(setIdentityToken({ identityToken: null }));
-  dispatch(clearTasks());
 });
 
 export const deleteAccountThunk = createAsyncThunk<
@@ -227,41 +213,13 @@ export const deleteAccountThunk = createAsyncThunk<
     });
 });
 
-export const tryToDecomposeTaskWithAiThunk = createAsyncThunk<
-  void,
-  { taskId: string },
-  { state: RootState }
->(
-  'app/tryToDecomposeTaskWithAiThunk',
-  async ({ taskId }, { dispatch, getState }) => {
-    const state = getState();
-    const user = selectUser(state);
-    const hasActiveSubscription = selectHasActiveSubscription(state);
-    // const hasFreeRequests = selectHasFreeRequests(getState());
-
-    if (!user) {
-      sharedRouter.getRouter().push(`/signin?taskId=${taskId}`);
-      return;
-    }
-
-    const { data } = await apiClient.getUserMe();
-    dispatch(setHasFreeRequests({ value: data.hasFreeRequests }));
-    const hasFreeRequests = data.hasFreeRequests;
-
-    if (hasFreeRequests || hasActiveSubscription) {
-      dispatch(decomposeTaskThunk({ id: taskId }));
-    } else {
-      sharedRouter.getRouter().push(`/subscriptionModal?taskId=${taskId}`);
-    }
-  },
-);
-
 export const signInThunk = createAsyncThunk<
   void,
   { redirectScreen?: string },
   { state: RootState }
 >('app/signIn', async ({ redirectScreen }, { dispatch }) => {
   dispatch(setIsSignInFlowInProgress({ isSignInFlowInProgress: true }));
+  console.log('signInThunk 1');
   try {
     const credential = await signInAsync({
       requestedScopes: [
@@ -269,10 +227,13 @@ export const signInThunk = createAsyncThunk<
         AppleAuthenticationScope.EMAIL,
       ],
     });
+    console.log('signInThunk 2');
 
     const appleCredential = auth.AppleAuthProvider.credential(
       credential.identityToken,
     );
+
+    console.log('appleCredential', appleCredential);
 
     let fbCredential: FirebaseAuthTypes.UserCredential | null = null;
     try {
@@ -289,7 +250,6 @@ export const signInThunk = createAsyncThunk<
       const user = fbCredential.user.toJSON() as User;
 
       dispatch(setUser({ user }));
-      dispatch(fetchTasksThunk());
       await dispatch(postUserLoginThunk());
 
       if (redirectScreen) {
@@ -304,4 +264,23 @@ export const signInThunk = createAsyncThunk<
     );
   }
   dispatch(setIsSignInFlowInProgress({ isSignInFlowInProgress: false }));
+});
+
+export const setupMessagingThunk = createAsyncThunk<
+  void,
+  undefined,
+  { state: RootState }
+>('app/setupMessagingThunk', async (_, { dispatch, getState }) => {
+  try {
+    await messaging.requestPermission();
+    const token = await messaging.getToken();
+
+    messaging.onTokenRefresh(newToken => {
+      dispatch(setFcmToken({ fcmToken: newToken }));
+    });
+
+    dispatch(setFcmToken({ fcmToken: token }));
+  } catch (error) {
+    console.error('messaging.getToken error', error);
+  }
 });

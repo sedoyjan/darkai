@@ -29,9 +29,9 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen
-          name="(tasks)"
+          name="chat"
           options={{
-            title: t('layout.tabs.tasks'),
+            title: t('layout.tabs.chat'),
             tabBarIcon: ({ focused }) => (
               <TabBarIcon
                 name={focused ? 'home' : 'home-outline'}

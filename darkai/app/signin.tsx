@@ -13,7 +13,6 @@ import { Header } from '@/components/Header';
 import { Spacer } from '@/components/Spacer';
 import { Colors } from '@/constants/Colors';
 import { selectIsSignInFlowInProgress } from '@/rdx/app/selectors';
-import { tryToDecomposeTaskWithAiThunk } from '@/rdx/app/thunks';
 import {
   selectIsPrivacyAccepted,
   selectIsTermsAccepted,
@@ -92,10 +91,7 @@ export default function WelcomeScreen() {
     if (router.canGoBack()) {
       router.back();
     }
-    if (route.params.taskId) {
-      dispatch(tryToDecomposeTaskWithAiThunk({ taskId: route.params.taskId }));
-    }
-  }, [dispatch, route.params.taskId, router]);
+  }, [router]);
 
   const isButtonEnabled =
     isTermsAccepted && isPrivacyAccepted && !isSignInFlowInProgress;

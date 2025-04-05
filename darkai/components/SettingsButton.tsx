@@ -12,7 +12,7 @@ import {
 import { Colors } from '@/constants/Colors';
 
 import { CheckBox } from './CheckBox';
-import { Icon, IconName } from './Icon';
+import { Icon, IconName } from '../blocks/Icon';
 
 const styles = StyleSheet.create({
   row: {

@@ -8,6 +8,7 @@ import { UserController } from "./controllers/user-controller";
 import { getApplePublicKeys } from "./utils";
 import { RevenueCatController } from "./controllers/revenue-cat-controller";
 import { telegramService } from "./services/telegram";
+import { ChatController } from "./controllers/chat-controller";
 
 const IS_DEV = process.env.NODE_ENV === "development";
 
@@ -39,6 +40,7 @@ app
   .use(AnalyticsController)
   .use(UserController)
   .use(RevenueCatController)
+  .use(ChatController)
   .use(Cron)
   .onError(({ code }) => {
     if (code === "NOT_FOUND") return "Route not found :(";

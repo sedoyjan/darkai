@@ -16,7 +16,7 @@ import { useAppSelector } from '@/rdx/store';
 import { Task } from '@/types';
 
 import { Button } from '../Button';
-import { Icon } from '../Icon';
+import { Icon } from '../../blocks/Icon';
 import { Input } from '../Input';
 
 interface TaskEditorBottomSheetProps {

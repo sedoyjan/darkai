@@ -21,8 +21,6 @@ import {
   setLaunchCount,
 } from '@/rdx/app/slice';
 import { useAppDispatch, useAppSelector } from '@/rdx/store';
-import { selectTasksCount } from '@/rdx/tasks/selectors';
-import { clearTasks } from '@/rdx/tasks/slice';
 import { sharedStyles } from '@/sharedStyles';
 import { reloadApp } from '@/utils/reloadApp';
 
@@ -46,7 +44,6 @@ export default function DeveloperSettingsScreen() {
   const isOnboardingPassed = useAppSelector(selectIsOnboardingPassed);
   const isOnboardingSkipped = useAppSelector(selectIsOnboardingSkipped);
   const launchCount = useAppSelector(selectLaunchCount);
-  const tasksCount = useAppSelector(selectTasksCount);
 
   return (
     <Background>
@@ -77,15 +74,7 @@ export default function DeveloperSettingsScreen() {
             value={isRecordingMode}
             withSeparator
           />
-          <SettingsButton
-            label={t('screens.developerSettings.clearTasks')}
-            // eslint-disable-next-line react/jsx-no-literals
-            rightCaption={`tasks count: ${tasksCount}`}
-            onPress={() => {
-              dispatch(clearTasks());
-            }}
-            withSeparator
-          />
+
           <SettingsButton
             label={t('screens.developerSettings.clearLaunchCount')}
             // eslint-disable-next-line react/jsx-no-literals
