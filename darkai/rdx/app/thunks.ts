@@ -233,8 +233,6 @@ export const signInThunk = createAsyncThunk<
       credential.identityToken,
     );
 
-    console.log('appleCredential', appleCredential);
-
     let fbCredential: FirebaseAuthTypes.UserCredential | null = null;
     try {
       fbCredential = await fbAuth.signInWithCredential(appleCredential);

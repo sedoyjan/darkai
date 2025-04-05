@@ -6,9 +6,9 @@ import { IS_DEV } from './const';
 import { fbAuth } from './services/firebase';
 
 const LOCAL_SERVER = 'http://localhost:3000';
-const REMOTE_SERVER = 'https://server.com';
+const REMOTE_SERVER = 'http://85.222.235.31:5005';
 
-const BASE_PATH = IS_DEV ? LOCAL_SERVER : REMOTE_SERVER;
+const BASE_PATH = !IS_DEV ? LOCAL_SERVER : REMOTE_SERVER;
 console.info('🚀 ~ BASE_PATH:', BASE_PATH);
 
 const config = new Configuration({
