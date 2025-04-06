@@ -2,48 +2,25 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { router } from 'expo-router';
 import { useCallback } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
 import { Button } from '@/blocks/Button';
 import { Background } from '@/components/Background';
+import { ChatListItem } from '@/components/ChatListItem';
 import { Header } from '@/components/Header';
 import { SafeAreaKeyboardAvoidingView } from '@/components/SafeAreaKeyboardAvoidingView';
 import { Spacer } from '@/components/Spacer';
-import { Colors } from '@/constants/Colors';
 import { useChats } from '@/rdx/chat/hooks/useChats';
 import { sharedStyles } from '@/sharedStyles';
 import { Chat } from '@/types';
 import { uuid } from '@/utils';
-import { getMessagesByChatIdThunk } from '@/rdx/chat/thunks';
-import { useAppDispatch } from '@/rdx/store';
 
 export default function ChatsScreen() {
-  const dispatch = useAppDispatch();
   const chats = useChats();
   const bottomTabBarHeight = useBottomTabBarHeight();
 
   const renderItem = useCallback<ListRenderItem<Chat>>(({ item }) => {
-    return (
-      <TouchableOpacity
-        style={{
-          padding: 16,
-          backgroundColor: Colors.semiTransparentBg,
-          marginBottom: 8,
-          borderRadius: 8,
-          marginHorizontal: 16,
-        }}
-        onPress={() => {
-          dispatch(
-            getMessagesByChatIdThunk({
-              chatId: item.id,
-            }),
-          );
-          router.push(`/(tabs)/(chats)/${item.id}?title=${item.title}`);
-        }}
-      >
-        <Text style={{ color: 'white' }}>{item.title}</Text>
-      </TouchableOpacity>
-    );
+    return <ChatListItem key={item.id} chat={item} />;
   }, []);
 
   return (

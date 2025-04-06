@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexShrink: 1,
     justifyContent: 'flex-end',
-    paddingBottom: 8,
+    paddingBottom: 16,
     paddingHorizontal: 16,
   },
   innerWrapper: {
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: Colors.semiTransparentBg,
     paddingHorizontal: 10,
+    paddingVertical: 8,
     borderRadius: 12,
     gap: 8,
     borderWidth: 1,
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   textWrapper: {
-    paddingVertical: 8,
+    paddingVertical: 0,
   },
   text: {
     maxWidth: 200,
@@ -84,8 +85,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   animationWrapper: {
-    height: 16,
-    width: 24,
+    height: 24,
+    width: 28,
     position: 'relative',
     overflow: 'hidden',
   },
@@ -109,7 +110,6 @@ export const Message = ({
   children,
   isTyping,
   createdAt,
-  imageHash,
 }: MessageProps) => {
   const rowStyle = useMemo<ViewStyle>(() => {
     let justifyContent: 'flex-start' | 'flex-end' | 'center' = 'flex-end';

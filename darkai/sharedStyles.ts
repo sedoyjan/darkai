@@ -6,7 +6,8 @@ const windowWidth = Dimensions.get('window').width;
 
 export const markdownStyles = StyleSheet.create({
   body: {
-    maxWidth: windowWidth - 120,
+    marginVertical: -8,
+    maxWidth: windowWidth - 130,
     padding: 0,
     gap: 0,
     color: Colors.primaryText,

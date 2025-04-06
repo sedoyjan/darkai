@@ -14,14 +14,17 @@ export const selectMessagesByChatId = (state: RootState, chatId: string) => {
   return state.chat.chatsMap[chatId]?.messages || NO_MESSAGES;
 };
 
-export const selectIsBotTyping = (state: RootState) => state.chat.isBotTyping;
+export const selectIsBotTyping = (state: RootState, chatId: string) => {
+  return state.chat.chatsParamsMap[chatId]?.isTyping || false;
+};
 
-export const selectIsLoading = (state: RootState) => state.chat.isLoading;
+export const selectIsLoading = (state: RootState, chatId: string) => {
+  return state.chat.chatsParamsMap[chatId]?.isLoading || false;
+};
 
 export const selectIsChatDisabled = createSelector(
   [selectHasActiveSubscription, selectHasFreeRequests, selectIsAuthenticated],
   (hasActiveSubscription, hasFreeRequests, isAuthenticated) => {
-    return false;
     return !hasActiveSubscription && !hasFreeRequests && isAuthenticated;
   },
 );
@@ -31,12 +34,12 @@ export const makeSelectChatMessages = () =>
     [
       (state: RootState, chatId: string) =>
         selectMessagesByChatId(state, chatId),
-      selectIsBotTyping,
+      (state: RootState, chatId: string) => selectIsBotTyping(state, chatId),
+      (state: RootState, chatId: string) => selectIsLoading(state, chatId),
       selectIsChatDisabled,
-      selectIsLoading,
       (_state: RootState, chatId: string) => chatId,
     ],
-    (messages, isBotTyping, isChatDisabled, isLoading, chatId) => {
+    (messages, isBotTyping, isLoading, isChatDisabled, chatId) => {
       const mergedMessages = [...messages];
 
       if (isChatDisabled && !isLoading) {
@@ -77,7 +80,6 @@ export const makeSelectChatMessages = () =>
   );
 
 const NO_CHATS: Chat[] = [];
-
 export const selectChats = (state: RootState) => {
   const chats = Object.values(state.chat.chatsMap).sort((chatA, chatB) => {
     return (
@@ -90,6 +92,5 @@ export const selectChats = (state: RootState) => {
 export const selectCurrentPage = (state: RootState) => state.chat.currentPage;
 export const selectTotalPages = (state: RootState) => state.chat.currentPage;
 export const selectTotalMessages = (state: RootState) => state.chat.currentPage;
-export const selectIsChatLoading = (state: RootState) => state.chat.isLoading;
 export const selectHasMoreMessages = (state: RootState) =>
   state.chat.hasMoreMessages;

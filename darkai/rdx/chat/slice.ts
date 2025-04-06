@@ -2,21 +2,28 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Chat, ChatMessage } from '@/types';
 
+interface ChatsParams {
+  isTyping: boolean;
+  isLoading: boolean;
+}
+
+const initialChatsParams: ChatsParams = {
+  isTyping: false,
+  isLoading: false,
+};
 export interface ChatState {
+  chatsParamsMap: Record<string, ChatsParams>;
   chatsMap: Record<string, Chat>;
-  isBotTyping: boolean;
   currentPage: number;
   totalPages: number;
-  isLoading: boolean;
   hasMoreMessages: boolean;
 }
 
 const initialState: ChatState = {
+  chatsParamsMap: {},
   chatsMap: {},
-  isBotTyping: false,
   currentPage: 0,
   totalPages: 0,
-  isLoading: false,
   hasMoreMessages: true,
 };
 
@@ -57,12 +64,42 @@ export const chatSlice = createSlice({
       }
     },
 
-    setIsBotTyping: (state, action: PayloadAction<{ isTyping: boolean }>) => {
-      state.isBotTyping = action.payload.isTyping;
+    setIsBotTyping: (
+      state,
+      action: PayloadAction<{ chatId: string; isTyping: boolean }>,
+    ) => {
+      const chatId = action.payload.chatId;
+      const chat = state.chatsMap[chatId];
+      if (chat) {
+        state.chatsParamsMap[chatId] = {
+          ...state.chatsParamsMap[chatId],
+          isTyping: action.payload.isTyping,
+        };
+      } else {
+        state.chatsParamsMap[chatId] = {
+          ...initialChatsParams,
+          isTyping: action.payload.isTyping,
+        };
+      }
     },
 
-    setIsLoading: (state, action: PayloadAction<{ isLoading: boolean }>) => {
-      state.isLoading = action.payload.isLoading;
+    setIsLoading: (
+      state,
+      action: PayloadAction<{ chatId: string; isLoading: boolean }>,
+    ) => {
+      const chatId = action.payload.chatId;
+      const chat = state.chatsMap[chatId];
+      if (chat) {
+        state.chatsParamsMap[chatId] = {
+          ...state.chatsParamsMap[chatId],
+          isLoading: action.payload.isLoading,
+        };
+      } else {
+        state.chatsParamsMap[chatId] = {
+          isTyping: false,
+          isLoading: action.payload.isLoading,
+        };
+      }
     },
 
     setChatsArrayToMap: (

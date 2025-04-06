@@ -10,25 +10,24 @@ export const DebugController = (app: Elysia) => {
       async () => {
         console.log("Starting follow-up debug process...");
 
-        const followUpDelayHours = 1; // Задержка в часах (24–48)
-        const maxFollowUps = 2; // Максимальное количество follow-up сообщений
+        const followUpDelayHours = 0;
+        const maxFollowUps = 2;
 
-        // Находим все чаты, где можно отправить follow-up
         const chats = await db.chat.findMany({
           where: {
-            followUpCount: { lt: maxFollowUps }, // Только чаты с менее чем 2 follow-up
+            followUpCount: { lt: maxFollowUps },
           },
           include: {
             messages: {
               orderBy: { createdAt: "desc" },
-              take: 1, // Последнее сообщение
+              take: 1,
             },
-            user: true, // Для отправки push-уведомления
+            user: true,
           },
         });
 
         const now = new Date();
-        const followUpDelayMs = followUpDelayHours * 60 * 60 * 1000; // Переводим часы в миллисекунды
+        const followUpDelayMs = followUpDelayHours * 60 * 60 * 1000;
 
         let processedChats = 0;
         let sentFollowUps = 0;
@@ -37,12 +36,11 @@ export const DebugController = (app: Elysia) => {
           processedChats++;
 
           const lastMessage = chat.messages[0];
-          if (!lastMessage) continue; // Пропускаем пустые чаты
+          if (!lastMessage) continue;
 
           const lastMessageTime = new Date(lastMessage.createdAt).getTime();
           const timeSinceLastMessage = now.getTime() - lastMessageTime;
 
-          // Проверяем, прошло ли достаточно времени и не отправлялось ли уже follow-up недавно
           const lastFollowUpSentAt = chat.lastFollowUpSentAt
             ? new Date(chat.lastFollowUpSentAt).getTime()
             : null;
@@ -54,7 +52,6 @@ export const DebugController = (app: Elysia) => {
             timeSinceLastMessage >= followUpDelayMs &&
             (!timeSinceLastFollowUp || timeSinceLastFollowUp >= followUpDelayMs)
           ) {
-            // Получаем последние 2–4 сообщения для контекста
             const recentMessages = await db.message.findMany({
               where: { chatId: chat.id },
               orderBy: { createdAt: "desc" },
@@ -74,14 +71,12 @@ export const DebugController = (app: Elysia) => {
                 return "";
               })
               .join("\n");
-            console.log("Recent messages for follow-up:", text);
 
             const { data: followUpText } = await getAiResponse(
               FOLLOWUP_ASSISTANT_ID,
               text
             );
 
-            // Сохраняем follow-up сообщение в чат
             await db.message.create({
               data: {
                 text: followUpText,
@@ -91,7 +86,6 @@ export const DebugController = (app: Elysia) => {
               },
             });
 
-            // Обновляем чат: добавляем timestamp и увеличиваем счётчик follow-up
             await db.chat.update({
               where: { id: chat.id },
               data: {

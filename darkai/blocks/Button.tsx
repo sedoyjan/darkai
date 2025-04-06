@@ -80,8 +80,8 @@ export const Button = ({
       opacity: isBlocked ? 0.7 : 1,
 
       ...(isGhost ? { backgroundColor: Colors.transparent } : {}),
-      ...(isSuccess ? { backgroundColor: Colors.green } : {}),
-      ...(isCTA ? { backgroundColor: Colors.secondaryColor } : {}),
+      ...(isSuccess ? { backgroundColor: Colors.doneColor } : {}),
+      ...(isCTA ? { backgroundColor: Colors.doneColor } : {}),
       ...(isSmall
         ? {
             paddingVertical: 4,
