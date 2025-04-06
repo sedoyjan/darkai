@@ -26,15 +26,52 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
- * @interface GetAnalytics200Response
+ * @interface DeleteChatDeleteChat200Response
  */
-export interface GetAnalytics200Response {
+export interface DeleteChatDeleteChat200Response {
     /**
      * 
      * @type {boolean}
-     * @memberof GetAnalytics200Response
+     * @memberof DeleteChatDeleteChat200Response
      */
     'success': boolean;
+}
+/**
+ * 
+ * @export
+ * @interface GetChatGetChats200ResponseInner
+ */
+export interface GetChatGetChats200ResponseInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChatGetChats200ResponseInner
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChatGetChats200ResponseInner
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChatGetChats200ResponseInner
+     */
+    'threadId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChatGetChats200ResponseInner
+     */
+    'updatedAt': string;
+    /**
+     * 
+     * @type {PostChatSendMessage200ResponseMessage}
+     * @memberof GetChatGetChats200ResponseInner
+     */
+    'lastMessage'?: PostChatSendMessage200ResponseMessage;
 }
 /**
  * 
@@ -44,73 +81,16 @@ export interface GetAnalytics200Response {
 export interface GetChatGetMessages200Response {
     /**
      * 
-     * @type {Array<GetChatGetMessages200ResponseMessagesInner>}
+     * @type {Array<PostChatSendMessage200ResponseMessage>}
      * @memberof GetChatGetMessages200Response
      */
-    'messages': Array<GetChatGetMessages200ResponseMessagesInner>;
+    'messages': Array<PostChatSendMessage200ResponseMessage>;
     /**
      * 
      * @type {GetChatGetMessages200ResponsePagination}
      * @memberof GetChatGetMessages200Response
      */
     'pagination': GetChatGetMessages200ResponsePagination;
-}
-/**
- * 
- * @export
- * @interface GetChatGetMessages200ResponseMessagesInner
- */
-export interface GetChatGetMessages200ResponseMessagesInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof GetChatGetMessages200ResponseMessagesInner
-     */
-    'id': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetChatGetMessages200ResponseMessagesInner
-     */
-    'userId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetChatGetMessages200ResponseMessagesInner
-     */
-    'text': string;
-    /**
-     * 
-     * @type {GetChatGetMessages200ResponseMessagesInnerCreatedAt}
-     * @memberof GetChatGetMessages200ResponseMessagesInner
-     */
-    'createdAt': GetChatGetMessages200ResponseMessagesInnerCreatedAt;
-    /**
-     * 
-     * @type {GetChatGetMessages200ResponseMessagesInnerType}
-     * @memberof GetChatGetMessages200ResponseMessagesInner
-     */
-    'type': GetChatGetMessages200ResponseMessagesInnerType;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetChatGetMessages200ResponseMessagesInner
-     */
-    'chatId': string | null;
-}
-/**
- * 
- * @export
- * @interface GetChatGetMessages200ResponseMessagesInnerCreatedAt
- */
-export interface GetChatGetMessages200ResponseMessagesInnerCreatedAt {
-}
-/**
- * 
- * @export
- * @interface GetChatGetMessages200ResponseMessagesInnerType
- */
-export interface GetChatGetMessages200ResponseMessagesInnerType {
 }
 /**
  * 
@@ -164,16 +144,73 @@ export interface GetUserMe200Response {
 export interface PostChatSendMessage200Response {
     /**
      * 
-     * @type {GetChatGetMessages200ResponseMessagesInner}
+     * @type {PostChatSendMessage200ResponseMessage}
      * @memberof PostChatSendMessage200Response
      */
-    'message': GetChatGetMessages200ResponseMessagesInner;
+    'message': PostChatSendMessage200ResponseMessage;
     /**
      * 
      * @type {string}
      * @memberof PostChatSendMessage200Response
      */
-    'chatId'?: string;
+    'threadId': string;
+}
+/**
+ * 
+ * @export
+ * @interface PostChatSendMessage200ResponseMessage
+ */
+export interface PostChatSendMessage200ResponseMessage {
+    /**
+     * 
+     * @type {string}
+     * @memberof PostChatSendMessage200ResponseMessage
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostChatSendMessage200ResponseMessage
+     */
+    'userId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostChatSendMessage200ResponseMessage
+     */
+    'text': string;
+    /**
+     * 
+     * @type {PostChatSendMessage200ResponseMessageCreatedAt}
+     * @memberof PostChatSendMessage200ResponseMessage
+     */
+    'createdAt': PostChatSendMessage200ResponseMessageCreatedAt;
+    /**
+     * 
+     * @type {PostChatSendMessage200ResponseMessageType}
+     * @memberof PostChatSendMessage200ResponseMessage
+     */
+    'type': PostChatSendMessage200ResponseMessageType;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostChatSendMessage200ResponseMessage
+     */
+    'chatId': string | null;
+}
+/**
+ * 
+ * @export
+ * @interface PostChatSendMessage200ResponseMessageCreatedAt
+ */
+export interface PostChatSendMessage200ResponseMessageCreatedAt {
+}
+/**
+ * 
+ * @export
+ * @interface PostChatSendMessage200ResponseMessageType
+ */
+export interface PostChatSendMessage200ResponseMessageType {
 }
 /**
  * 
@@ -186,7 +223,7 @@ export interface PostChatSendMessageRequest {
      * @type {string}
      * @memberof PostChatSendMessageRequest
      */
-    'chatId'?: string;
+    'chatId': string;
     /**
      * 
      * @type {string}
@@ -284,6 +321,42 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
+         * @param {string} chatId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteChatDeleteChat: async (chatId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'chatId' is not null or undefined
+            assertParamExists('deleteChatDeleteChat', 'chatId', chatId)
+            const localVarPath = `/chat/deleteChat`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (chatId !== undefined) {
+                localVarQueryParameter['chatId'] = chatId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -313,12 +386,80 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {string} chatId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatGetChat: async (chatId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'chatId' is not null or undefined
+            assertParamExists('getChatGetChat', 'chatId', chatId)
+            const localVarPath = `/chat/getChat`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (chatId !== undefined) {
+                localVarQueryParameter['chatId'] = chatId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatGetChats: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/chat/getChats`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} chatId 
          * @param {number} [page] 
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getChatGetMessages: async (page?: number, limit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getChatGetMessages: async (chatId: string, page?: number, limit?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'chatId' is not null or undefined
+            assertParamExists('getChatGetMessages', 'chatId', chatId)
             const localVarPath = `/chat/getMessages`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -330,6 +471,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (chatId !== undefined) {
+                localVarQueryParameter['chatId'] = chatId;
+            }
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
@@ -618,10 +763,22 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} chatId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAnalytics(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAnalytics200Response>> {
+        async deleteChatDeleteChat(chatId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteChatDeleteChat200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteChatDeleteChat(chatId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.deleteChatDeleteChat']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAnalytics(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteChatDeleteChat200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAnalytics(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAnalytics']?.[localVarOperationServerIndex]?.url;
@@ -629,13 +786,37 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} chatId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getChatGetChat(chatId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetChatGetChats200ResponseInner>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getChatGetChat(chatId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getChatGetChat']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getChatGetChats(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GetChatGetChats200ResponseInner>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getChatGetChats(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getChatGetChats']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} chatId 
          * @param {number} [page] 
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getChatGetMessages(page?: number, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetChatGetMessages200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getChatGetMessages(page, limit, options);
+        async getChatGetMessages(chatId: string, page?: number, limit?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetChatGetMessages200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getChatGetMessages(chatId, page, limit, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getChatGetMessages']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -657,7 +838,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAnalytics200Response>> {
+        async postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteChatDeleteChat200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postAnalyticsLaunch(body, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.postAnalyticsLaunch']?.[localVarOperationServerIndex]?.url;
@@ -744,21 +925,48 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @param {string} chatId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAnalytics(options?: RawAxiosRequestConfig): AxiosPromise<GetAnalytics200Response> {
+        deleteChatDeleteChat(chatId: string, options?: RawAxiosRequestConfig): AxiosPromise<DeleteChatDeleteChat200Response> {
+            return localVarFp.deleteChatDeleteChat(chatId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAnalytics(options?: RawAxiosRequestConfig): AxiosPromise<DeleteChatDeleteChat200Response> {
             return localVarFp.getAnalytics(options).then((request) => request(axios, basePath));
         },
         /**
          * 
+         * @param {string} chatId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatGetChat(chatId: string, options?: RawAxiosRequestConfig): AxiosPromise<GetChatGetChats200ResponseInner> {
+            return localVarFp.getChatGetChat(chatId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatGetChats(options?: RawAxiosRequestConfig): AxiosPromise<Array<GetChatGetChats200ResponseInner>> {
+            return localVarFp.getChatGetChats(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} chatId 
          * @param {number} [page] 
          * @param {number} [limit] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getChatGetMessages(page?: number, limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<GetChatGetMessages200Response> {
-            return localVarFp.getChatGetMessages(page, limit, options).then((request) => request(axios, basePath));
+        getChatGetMessages(chatId: string, page?: number, limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<GetChatGetMessages200Response> {
+            return localVarFp.getChatGetMessages(chatId, page, limit, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -774,7 +982,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): AxiosPromise<GetAnalytics200Response> {
+        postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): AxiosPromise<DeleteChatDeleteChat200Response> {
             return localVarFp.postAnalyticsLaunch(body, options).then((request) => request(axios, basePath));
         },
         /**
@@ -840,6 +1048,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
 export class DefaultApi extends BaseAPI {
     /**
      * 
+     * @param {string} chatId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public deleteChatDeleteChat(chatId: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).deleteChatDeleteChat(chatId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -850,14 +1069,36 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
+     * @param {string} chatId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getChatGetChat(chatId: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getChatGetChat(chatId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getChatGetChats(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getChatGetChats(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} chatId 
      * @param {number} [page] 
      * @param {number} [limit] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getChatGetMessages(page?: number, limit?: number, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getChatGetMessages(page, limit, options).then((request) => request(this.axios, this.basePath));
+    public getChatGetMessages(chatId: string, page?: number, limit?: number, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getChatGetMessages(chatId, page, limit, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { ChatMessage, ChatMessageType } from '@/types';
+import { Chat, ChatMessage, ChatMessageType } from '@/types';
 
 import { RootState } from '..';
 import {
@@ -21,6 +21,7 @@ export const selectIsLoading = (state: RootState) => state.chat.isLoading;
 export const selectIsChatDisabled = createSelector(
   [selectHasActiveSubscription, selectHasFreeRequests, selectIsAuthenticated],
   (hasActiveSubscription, hasFreeRequests, isAuthenticated) => {
+    return false;
     return !hasActiveSubscription && !hasFreeRequests && isAuthenticated;
   },
 );
@@ -75,13 +76,15 @@ export const makeSelectChatMessages = () =>
     },
   );
 
+const NO_CHATS: Chat[] = [];
+
 export const selectChats = (state: RootState) => {
-  console.log('selectChats', state.chat.chatsMap);
-  return Object.values(state.chat.chatsMap).sort((chatA, chatB) => {
+  const chats = Object.values(state.chat.chatsMap).sort((chatA, chatB) => {
     return (
       new Date(chatB.updatedAt).getTime() - new Date(chatA.updatedAt).getTime()
     );
   });
+  return chats.length ? chats : NO_CHATS;
 };
 
 export const selectCurrentPage = (state: RootState) => state.chat.currentPage;

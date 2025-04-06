@@ -1,14 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { ChatMessage } from '@/types';
+import { Chat, ChatMessage } from '@/types';
 
-interface Chat {
-  id: string;
-  title: string;
-  threadId?: string;
-  updatedAt: string;
-  messages: ChatMessage[];
-}
 export interface ChatState {
   chatsMap: Record<string, Chat>;
   isBotTyping: boolean;
@@ -19,26 +12,7 @@ export interface ChatState {
 }
 
 const initialState: ChatState = {
-  chatsMap: {
-    '111': {
-      id: '111',
-      title: 'Chat 1',
-      messages: [],
-      updatedAt: new Date().toISOString(),
-    },
-    '222': {
-      id: '222',
-      title: 'Chat 2',
-      messages: [],
-      updatedAt: new Date().toISOString(),
-    },
-    '333': {
-      id: '333',
-      title: 'Chat 3',
-      messages: [],
-      updatedAt: new Date().toISOString(),
-    },
-  },
+  chatsMap: {},
   isBotTyping: false,
   currentPage: 0,
   totalPages: 0,
@@ -90,15 +64,45 @@ export const chatSlice = createSlice({
     setIsLoading: (state, action: PayloadAction<{ isLoading: boolean }>) => {
       state.isLoading = action.payload.isLoading;
     },
+
+    setChatsArrayToMap: (
+      state,
+      action: PayloadAction<{ chatsArray: Chat[] }>,
+    ) => {
+      const chatsArray = action.payload.chatsArray;
+      chatsArray.forEach(chat => {
+        state.chatsMap[chat.id] = chat;
+      });
+    },
+
+    setMessagesByChatId: (
+      state,
+      action: PayloadAction<{ chatId: string; messages: ChatMessage[] }>,
+    ) => {
+      const chatId = action.payload.chatId;
+      const chat = state.chatsMap[chatId];
+      if (chat) {
+        chat.messages = action.payload.messages;
+      } else {
+        state.chatsMap[chatId] = {
+          id: chatId,
+          title: '',
+          messages: action.payload.messages,
+          updatedAt: new Date().toISOString(),
+        };
+      }
+    },
   },
 });
 
 export const chatReducer = chatSlice.reducer;
 
 export const {
+  setChatsArrayToMap,
   pushMessage,
   setIsBotTyping,
   resetChatState,
   setIsLoading,
   updateThreadId,
+  setMessagesByChatId,
 } = chatSlice.actions;

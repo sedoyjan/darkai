@@ -82,9 +82,6 @@ export default function RootLayout() {
   }, [pathname, params]);
 
   const init = useCallback(async () => {
-    const r = await apiClient.getAnalytics().catch(e => {
-      console.log('getAnalytics error', Object.keys(e), e.message);
-    });
     sharedRouter.setRouter(router);
     await store.dispatch(initThunk());
     router.replace('/(tabs)/(chats)');

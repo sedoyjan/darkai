@@ -22,6 +22,7 @@ import { sharedRouter } from '@/services/sharedRouter';
 import { User } from '@/types';
 
 import { RootState } from '..';
+import { getChatsThunk } from '../chat/thunks';
 import {
   selectFcmToken,
   selectHasActiveSubscription,
@@ -103,6 +104,7 @@ export const initThunk = createAsyncThunk<
   undefined,
   { state: RootState }
 >('app/initThunk', async (_, { dispatch, getState }) => {
+  console.log('🚀 ~ > ~ initThunk:');
   const initialState = getState();
   const isDeveloper = selectIsDeveloper(initialState);
 
@@ -147,6 +149,7 @@ export const initThunk = createAsyncThunk<
   }
 
   const user = selectUser(getState());
+  console.log('🚀 ~ > ~ user:', user);
   if (!user) {
     return;
   }
@@ -163,6 +166,7 @@ export const initThunk = createAsyncThunk<
   }
 
   dispatch(setHasFreeRequests({ value: hasFreeRequests }));
+  dispatch(getChatsThunk());
 
   const state = getState();
   const isOnboardingPassed = selectIsOnboardingPassed(state);

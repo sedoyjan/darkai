@@ -3,7 +3,7 @@ import { RouteProp, useIsFocused, useRoute } from '@react-navigation/native';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   NativeScrollEvent,
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 
 export default function ChatScreen() {
   const route = useRoute<RouteProp<ChatsParamList, 'Chat'>>();
-  const chatId = route.params.chatId;
+  const { chatId, title } = route.params;
   const { t } = useTranslation();
   const bottomTabBarHeight = useBottomTabBarHeight();
   const { messages, sendMessage } = useChat(chatId);
@@ -60,6 +60,8 @@ export default function ChatScreen() {
   const currentPage = useAppSelector(selectCurrentPage);
   const isLoadingPrevMessagesRef = useRef(false);
   const isChatDisabled = useAppSelector(selectIsChatDisabled);
+
+  const [pageTitle, setPageTitle] = useState(title);
 
   const scrollToEnd = useCallback(() => {
     if (messages.length > 0) {
@@ -185,15 +187,16 @@ export default function ChatScreen() {
   );
 
   const onSendTextMessage = useCallback(
-    async (text: string) => {
-      if (!text.trim() || isChatDisabled) return;
+    async (rawText: string) => {
+      const text = rawText.trim();
+      setPageTitle(title);
       await dispatch(setupMessagingThunk());
       sendMessage({ text });
       requestAnimationFrame(() => {
         scrollToEnd();
       });
     },
-    [dispatch, isChatDisabled, scrollToEnd, sendMessage],
+    [dispatch, scrollToEnd, sendMessage, title],
   );
 
   const onScroll = useCallback(
@@ -218,7 +221,7 @@ export default function ChatScreen() {
         edges={['top']}
         tabBarHeight={bottomTabBarHeight}
       >
-        <Header title={chatId} withBackButton />
+        <Header title={pageTitle} withBackButton />
         <View style={styles.container}>
           <FlashList
             onScroll={onScroll}

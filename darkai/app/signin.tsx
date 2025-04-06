@@ -111,6 +111,7 @@ export default function SignInScreen() {
         <Text style={styles.title}>{t('screens.signin.welcome')}</Text>
         <Text style={styles.subtitle}>{t('screens.signin.subtitle')}</Text>
         <Spacer />
+        <Spacer />
 
         <View style={styles.linkWrapper}>
           <CheckBox onChange={onTermsCheck} value={isTermsAccepted} />

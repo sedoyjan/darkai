@@ -6,6 +6,7 @@ import { apiClient } from '@/api';
 import { eventEmitter } from '@/EventEmitter';
 import { sharedRouter } from '@/services/sharedRouter';
 import { ChatMessageType } from '@/types';
+import { uuid } from '@/utils';
 import { delay } from '@/utils/utils';
 
 import { RootState } from '..';
@@ -14,9 +15,11 @@ import { setHasFreeRequests } from '../app/slice';
 import { selectIsBotTyping } from './selectors';
 import {
   pushMessage,
+  setChatsArrayToMap,
   setIsBotTyping,
   setIsLoading,
-  setMessages,
+  setMessagesByChatId,
+  updateThreadId,
 } from './slice';
 
 export const getMessagesThunk = createAsyncThunk<
@@ -37,22 +40,22 @@ export const getMessagesThunk = createAsyncThunk<
 
     const { data } = await apiClient.getChatGetMessages(page, 20);
 
-    dispatch(
-      setMessages({
-        page: data.pagination.page,
-        shouldKeepExisting: page > 1,
-        hasMoreMessages: !!data.messages.length,
-        messages: data.messages.map(m => {
-          return {
-            ...m,
-            imageUrl: m.imageUrl || undefined,
-            imageHash: m.imageHash || undefined,
-            createdAt: m.createdAt as string,
-            type: m.type as ChatMessageType,
-          };
-        }),
-      }),
-    );
+    // dispatch(
+    //   setMessages({
+    //     page: data.pagination.page,
+    //     shouldKeepExisting: page > 1,
+    //     hasMoreMessages: !!data.messages.length,
+    //     messages: data.messages.map(m => {
+    //       return {
+    //         ...m,
+    //         imageUrl: m.imageUrl || undefined,
+    //         imageHash: m.imageHash || undefined,
+    //         createdAt: m.createdAt as string,
+    //         type: m.type as ChatMessageType,
+    //       };
+    //     }),
+    //   }),
+    // );
     eventEmitter.emit('receivedMessages');
   } catch (error) {
     console.log('getMessagesThunk', { error });
@@ -62,9 +65,9 @@ export const getMessagesThunk = createAsyncThunk<
 
 export const sendMessageThunk = createAsyncThunk<
   void,
-  { text: string },
+  { text: string; chatId: string },
   { state: RootState }
->('app/sendMessageThunk', async ({ text }, { dispatch, getState }) => {
+>('app/sendMessageThunk', async ({ text, chatId }, { dispatch, getState }) => {
   const state = getState();
   const locale = selectLocale(state);
   const user = selectUser(state);
@@ -82,15 +85,18 @@ export const sendMessageThunk = createAsyncThunk<
 
   dispatch(
     pushMessage({
+      chatId,
       message: {
+        chatId,
+        id: uuid(),
         createdAt: new Date().toISOString(),
-        id: Math.random().toString(),
         text,
         type: ChatMessageType.USER,
-        userId: '1',
+        userId: '',
       },
     }),
   );
+
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
   await delay(200);
@@ -106,17 +112,28 @@ export const sendMessageThunk = createAsyncThunk<
 
     try {
       const { data } = await apiClient.postChatSendMessage({
+        chatId,
         type: 'user',
         text,
         locale: locale?.languageCode || 'en',
       });
 
+      const { message, threadId } = data;
+
+      dispatch(
+        updateThreadId({
+          chatId,
+          threadId,
+        }),
+      );
+
       dispatch(
         pushMessage({
+          chatId,
           message: {
-            ...data.message,
-            createdAt: data.message.createdAt as string,
-            type: data.message.type as ChatMessageType,
+            ...message,
+            createdAt: message.createdAt as string,
+            type: message.type as ChatMessageType,
           },
         }),
       );
@@ -130,4 +147,56 @@ export const sendMessageThunk = createAsyncThunk<
   dispatch(setIsBotTyping({ isTyping: false }));
   const { data: latestData } = await apiClient.getUserMe();
   dispatch(setHasFreeRequests({ hasFreeRequests: latestData.hasFreeRequests }));
+});
+
+export const getChatsThunk = createAsyncThunk<
+  void,
+  undefined,
+  { state: RootState }
+>('app/getChatsThunk', async (_, { dispatch, getState }) => {
+  const state = getState();
+  const user = selectUser(state);
+
+  if (!user) {
+    return;
+  }
+
+  const { data } = await apiClient.getChatGetChats();
+  dispatch(
+    setChatsArrayToMap({
+      chatsArray: data.map(chat => {
+        return {
+          ...chat,
+          messages: [],
+        };
+      }),
+    }),
+  );
+});
+
+export const getMessagesByChatIdThunk = createAsyncThunk<
+  void,
+  { chatId: string },
+  { state: RootState }
+>('app/getChatsThunk', async ({ chatId }, { dispatch, getState }) => {
+  const state = getState();
+  const user = selectUser(state);
+
+  if (!user) {
+    return;
+  }
+
+  const { data } = await apiClient.getChatGetMessages(chatId, 1, 20);
+  dispatch(
+    setMessagesByChatId({
+      chatId,
+      messages: data.messages.map(m => {
+        return {
+          ...m,
+          createdAt: m.createdAt as string,
+          type: m.type as ChatMessageType,
+        };
+      }),
+    }),
+  );
 });

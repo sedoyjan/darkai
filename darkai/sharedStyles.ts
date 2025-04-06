@@ -229,8 +229,8 @@ export const sharedStyles = StyleSheet.create({
     fontSize: 24,
   },
   image: {
-    width: 124,
-    height: 124,
+    width: 160,
+    height: 160,
     alignSelf: 'center',
     borderRadius: 16,
     marginBottom: 32,

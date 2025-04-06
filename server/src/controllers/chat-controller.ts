@@ -4,6 +4,7 @@ import { MessagePlain } from "../../prismaModels/Message";
 import { isAuthenticated } from "../middlewares/auth";
 import { db } from "../db";
 import { generateDarkAIStrategy } from "../ai";
+import { ChatPlain } from "../../prismaModels/Chat";
 
 const formatDate = (date: Date) => {
   const d = new Date(date);
@@ -14,34 +15,113 @@ export const ChatController = (app: Elysia) => {
   app.group("/chat", (app) =>
     app
       .use(isAuthenticated)
+      // Проверка лимита сообщений для freemium-модели
+      .onBeforeHandle(async ({ user, set }) => {
+        const freeMessageLimit = 4; // Лимит бесплатных сообщений
+        const userData = await db.user.findUnique({
+          where: { id: user.id },
+        });
+
+        if (!userData) {
+          set.status = 404;
+          return { error: "User not found" };
+        }
+
+        // Проверяем, если у пользователя нет активной подписки и превышен лимит
+        // if (
+        //   !userData.hasActiveSubscription &&
+        //   userData.requestsCount >= freeMessageLimit
+        // ) {
+        //   set.status = 403;
+        //   return { error: "Free message limit exceeded. Please subscribe." };
+        // }
+      })
       .post(
         "/sendMessage",
         async ({ body, user }) => {
-          await db.message.create({
-            data: {
-              text: body.text,
-              type: MessageType.USER,
-              user: {
-                connect: {
-                  id: user.id,
-                },
-              },
+          const { chatId, text } = body;
+
+          const chat = await db.chat.findFirst({
+            where: {
+              id: chatId,
+              userId: user.id,
             },
           });
-          const aiResponse = await generateDarkAIStrategy(body.text);
-
-          console.log("AI response:", aiResponse);
-
-          const [responseMessage] = await Promise.all([
-            db.message.create({
+          if (!chat) {
+            await db.chat.create({
               data: {
-                text: aiResponse.data,
-                type: MessageType.BOT,
+                id: chatId,
+                userId: user.id,
+                title: text,
+                messages: {
+                  create: {
+                    text: body.text,
+                    type: MessageType.USER,
+                    user: {
+                      connect: {
+                        id: user.id,
+                      },
+                    },
+                  },
+                },
+              },
+            });
+          } else {
+            await db.message.create({
+              data: {
+                text: body.text,
+                type: MessageType.USER,
+                chat: {
+                  connect: {
+                    id: chatId,
+                  },
+                },
                 user: {
                   connect: {
                     id: user.id,
                   },
                 },
+              },
+            });
+          }
+
+          const latestChat = await db.chat.findFirst({
+            where: {
+              id: chatId,
+              userId: user.id,
+            },
+          });
+
+          const prevThreadId = latestChat?.threadId;
+
+          console.log("prevThreadId", prevThreadId);
+
+          const { data: responseMessageText, threadId } =
+            await generateDarkAIStrategy(body.text, prevThreadId || undefined);
+
+          const [responseMessage] = await Promise.all([
+            db.message.create({
+              data: {
+                text: responseMessageText,
+                type: MessageType.BOT,
+                chat: {
+                  connect: {
+                    id: chatId,
+                  },
+                },
+                user: {
+                  connect: {
+                    id: user.id,
+                  },
+                },
+              },
+            }),
+            db.chat.update({
+              where: {
+                id: chatId,
+              },
+              data: {
+                threadId,
               },
             }),
             db.user.update({
@@ -58,35 +138,57 @@ export const ChatController = (app: Elysia) => {
 
           return {
             message: responseMessage,
+            threadId,
           };
         },
         {
           body: t.Object({
-            chatId: t.Optional(t.String()),
+            chatId: t.String(),
             text: t.String(),
             type: t.String(),
             locale: t.String(),
           }),
           response: t.Object({
             message: MessagePlain,
-            chatId: t.Optional(t.String()),
+            threadId: t.String(),
           }),
           detail: {
             // tags: ["Chat"],
           },
         }
       )
+      // Обновлённый метод /getMessages
       .get(
         "/getMessages",
         async ({ user, query }) => {
           console.time("Get messages");
-          const page = query.page || 1; // Default to page 1
-          const limit = query.limit || 10; // Default to 10 messages per page
+          const { chatId, page = 1, limit = 10 } = query;
           const skip = (page - 1) * limit;
 
-          const totalMessages = 100;
+          // Проверяем, что чат принадлежит пользователю
+          const chat = await db.chat.findFirst({
+            where: {
+              id: chatId,
+              userId: user.id,
+            },
+          });
+
+          if (!chat) {
+            throw new Error("Chat not found");
+          }
+
+          // Получаем общее количество сообщений в чате
+          const totalMessages = await db.message.count({
+            where: {
+              chatId,
+              userId: user.id,
+            },
+          });
+
+          // Получаем сообщения для конкретного чата
           const messages = await db.message.findMany({
             where: {
+              chatId,
               userId: user.id,
             },
             orderBy: {
@@ -107,12 +209,10 @@ export const ChatController = (app: Elysia) => {
               messagesWithSystem.push({
                 id: `system-${lastDateStr}`,
                 text: lastDate.toISOString(),
-                imageUrl: null,
                 type: MessageType.SYSTEM,
                 createdAt: lastDate,
-                imageHash: null,
-                summaryId: null,
                 userId: user.id,
+                chatId,
               });
             }
             lastDate = message.createdAt;
@@ -133,6 +233,7 @@ export const ChatController = (app: Elysia) => {
         },
         {
           query: t.Object({
+            chatId: t.String(),
             page: t.Optional(t.Number()),
             limit: t.Optional(t.Number()),
           }),
@@ -144,6 +245,114 @@ export const ChatController = (app: Elysia) => {
               totalMessages: t.Number(),
               totalPages: t.Number(),
             }),
+          }),
+          detail: {
+            // tags: ["Chat"],
+          },
+        }
+      )
+
+      .get(
+        "/getChats",
+        async ({ user }) => {
+          const chats = await db.chat.findMany({
+            where: {
+              userId: user.id,
+            },
+            orderBy: {
+              updatedAt: "desc",
+            },
+          });
+
+          return chats;
+        },
+        {
+          response: t.Array(ChatPlain),
+          detail: {
+            // tags: ["Chat"],
+          },
+        }
+      )
+      // Новый метод /getChat
+      .get(
+        "/getChat",
+        async ({ user, query }) => {
+          const { chatId } = query;
+
+          const chat = await db.chat.findFirst({
+            where: {
+              id: chatId,
+              userId: user.id,
+            },
+            include: {
+              messages: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1, // Последнее сообщение для предпросмотра
+              },
+            },
+          });
+
+          if (!chat) {
+            throw new Error("Chat not found");
+          }
+
+          return {
+            id: chat.id,
+            title: chat.title,
+            threadId: chat.threadId,
+            updatedAt: chat.updatedAt,
+            lastMessage: chat.messages[0] || null,
+          };
+        },
+        {
+          query: t.Object({
+            chatId: t.String(),
+          }),
+          response: t.Object({
+            id: t.String(),
+            title: t.String(),
+            threadId: t.Optional(t.String()),
+            updatedAt: t.String(),
+            lastMessage: t.Optional(MessagePlain),
+          }),
+          detail: {
+            // tags: ["Chat"],
+          },
+        }
+      )
+      // Новый метод /deleteChat
+      .delete(
+        "/deleteChat",
+        async ({ user, query }) => {
+          const { chatId } = query;
+
+          const chat = await db.chat.findFirst({
+            where: {
+              id: chatId,
+              userId: user.id,
+            },
+          });
+
+          if (!chat) {
+            throw new Error("Chat not found");
+          }
+
+          await db.chat.delete({
+            where: {
+              id: chatId,
+            },
+          });
+
+          return { success: true };
+        },
+        {
+          query: t.Object({
+            chatId: t.String(),
+          }),
+          response: t.Object({
+            success: t.Boolean(),
           }),
           detail: {
             // tags: ["Chat"],

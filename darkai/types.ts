@@ -75,7 +75,8 @@ export type ChatMessage = Omit<
 
 export interface Chat {
   id: string;
-  threadId: string;
+  title: string;
+  threadId?: string;
   updatedAt: string;
   messages: ChatMessage[];
 }

@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 export type ChatsParamList = {
   Chat: {
     chatId: string;
+    title: string;
   };
 };
 
@@ -17,7 +18,7 @@ export default function Layout() {
         }}
       >
         <Stack.Screen name="index" />
-        <Stack.Screen name="chat" />
+        <Stack.Screen name="[chatId]" />
       </Stack>
     </>
   );

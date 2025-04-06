@@ -14,8 +14,11 @@ import { useChats } from '@/rdx/chat/hooks/useChats';
 import { sharedStyles } from '@/sharedStyles';
 import { Chat } from '@/types';
 import { uuid } from '@/utils';
+import { getMessagesByChatIdThunk } from '@/rdx/chat/thunks';
+import { useAppDispatch } from '@/rdx/store';
 
 export default function ChatsScreen() {
+  const dispatch = useAppDispatch();
   const chats = useChats();
   const bottomTabBarHeight = useBottomTabBarHeight();
 
@@ -30,10 +33,15 @@ export default function ChatsScreen() {
           marginHorizontal: 16,
         }}
         onPress={() => {
-          router.push(`/(tabs)/(chats)/${item.id}`);
+          dispatch(
+            getMessagesByChatIdThunk({
+              chatId: item.id,
+            }),
+          );
+          router.push(`/(tabs)/(chats)/${item.id}?title=${item.title}`);
         }}
       >
-        <Text style={{ color: 'white' }}>{item.id}</Text>
+        <Text style={{ color: 'white' }}>{item.title}</Text>
       </TouchableOpacity>
     );
   }, []);

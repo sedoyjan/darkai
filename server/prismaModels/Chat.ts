@@ -11,6 +11,7 @@ export const ChatPlain = t.Object(
     title: t.String(),
     createdAt: t.Date(),
     updatedAt: t.Date(),
+    threadId: __nullable__(t.String()),
   },
   { additionalProperties: false },
 );
@@ -153,6 +154,7 @@ export const ChatWhere = t.Partial(
           title: t.String(),
           createdAt: t.Date(),
           updatedAt: t.Date(),
+          threadId: t.String(),
         },
         { additionalProperties: false },
       ),
@@ -193,6 +195,7 @@ export const ChatWhereUnique = t.Recursive(
               title: t.String(),
               createdAt: t.Date(),
               updatedAt: t.Date(),
+              threadId: t.String(),
             },
             { additionalProperties: false },
           ),
@@ -213,6 +216,7 @@ export const ChatSelect = t.Partial(
       updatedAt: t.Boolean(),
       user: t.Boolean(),
       messages: t.Boolean(),
+      threadId: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -242,6 +246,9 @@ export const ChatOrderBy = t.Partial(
         additionalProperties: false,
       }),
       updatedAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      threadId: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },

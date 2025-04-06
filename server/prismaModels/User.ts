@@ -47,6 +47,7 @@ export const UserRelations = t.Object(
           title: t.String(),
           createdAt: t.Date(),
           updatedAt: t.Date(),
+          threadId: __nullable__(t.String()),
         },
         { additionalProperties: false },
       ),

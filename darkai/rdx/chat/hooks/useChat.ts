@@ -7,6 +7,7 @@ import { RootState } from '../..';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { makeSelectChatMessages } from '../selectors';
 import { pushMessage } from '../slice';
+import { sendMessageThunk } from '../thunks';
 
 export const useChat = (chatId: string) => {
   const selectChatMessages = makeSelectChatMessages();
@@ -20,16 +21,9 @@ export const useChat = (chatId: string) => {
     ({ text }: { text: string }) => {
       console.log('sendMessage', { text, chatId });
       dispatch(
-        pushMessage({
+        sendMessageThunk({
           chatId,
-          message: {
-            chatId,
-            id: uuid(),
-            createdAt: new Date().toISOString(),
-            text,
-            type: ChatMessageType.USER,
-            userId: 'user',
-          },
+          text,
         }),
       );
     },

@@ -35,7 +35,7 @@ export const MessageRelations = t.Object(
       },
       { additionalProperties: false },
     ),
-    Chat: __nullable__(
+    chat: __nullable__(
       t.Object(
         {
           id: t.String(),
@@ -43,6 +43,7 @@ export const MessageRelations = t.Object(
           title: t.String(),
           createdAt: t.Date(),
           updatedAt: t.Date(),
+          threadId: __nullable__(t.String()),
         },
         { additionalProperties: false },
       ),
@@ -86,7 +87,7 @@ export const MessageRelationsInputCreate = t.Object(
       },
       { additionalProperties: false },
     ),
-    Chat: t.Optional(
+    chat: t.Optional(
       t.Object(
         {
           connect: t.Object(
@@ -117,7 +118,7 @@ export const MessageRelationsInputUpdate = t.Partial(
         },
         { additionalProperties: false },
       ),
-      Chat: t.Partial(
+      chat: t.Partial(
         t.Object(
           {
             connect: t.Object(
@@ -216,7 +217,7 @@ export const MessageSelect = t.Partial(
       createdAt: t.Boolean(),
       user: t.Boolean(),
       type: t.Boolean(),
-      Chat: t.Boolean(),
+      chat: t.Boolean(),
       chatId: t.Boolean(),
       _count: t.Boolean(),
     },
@@ -229,7 +230,7 @@ export const MessageInclude = t.Partial(
     {
       user: t.Boolean(),
       type: t.Boolean(),
-      Chat: t.Boolean(),
+      chat: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
