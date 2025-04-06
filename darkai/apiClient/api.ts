@@ -81,18 +81,6 @@ export interface GetChatGetMessages200ResponseMessagesInner {
     'text': string;
     /**
      * 
-     * @type {string}
-     * @memberof GetChatGetMessages200ResponseMessagesInner
-     */
-    'imageUrl': string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetChatGetMessages200ResponseMessagesInner
-     */
-    'imageHash': string | null;
-    /**
-     * 
      * @type {GetChatGetMessages200ResponseMessagesInnerCreatedAt}
      * @memberof GetChatGetMessages200ResponseMessagesInner
      */
@@ -103,6 +91,12 @@ export interface GetChatGetMessages200ResponseMessagesInner {
      * @memberof GetChatGetMessages200ResponseMessagesInner
      */
     'type': GetChatGetMessages200ResponseMessagesInnerType;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChatGetMessages200ResponseMessagesInner
+     */
+    'chatId': string | null;
 }
 /**
  * 
@@ -174,6 +168,12 @@ export interface PostChatSendMessage200Response {
      * @memberof PostChatSendMessage200Response
      */
     'message': GetChatGetMessages200ResponseMessagesInner;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostChatSendMessage200Response
+     */
+    'chatId'?: string;
 }
 /**
  * 
@@ -186,19 +186,13 @@ export interface PostChatSendMessageRequest {
      * @type {string}
      * @memberof PostChatSendMessageRequest
      */
+    'chatId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostChatSendMessageRequest
+     */
     'text': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PostChatSendMessageRequest
-     */
-    'imageUrl'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PostChatSendMessageRequest
-     */
-    'imageHash'?: string;
     /**
      * 
      * @type {string}

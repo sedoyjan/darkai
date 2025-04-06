@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { DefaultApi } from './api/api';
-import { Configuration } from './api/configuration';
+import { DefaultApi } from './apiClient/api';
+import { Configuration } from './apiClient/configuration';
 import { IS_DEV } from './const';
 import { fbAuth } from './services/firebase';
 

@@ -29,7 +29,7 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen
-          name="chat"
+          name="(chats)"
           options={{
             title: t('layout.tabs.chat'),
             tabBarIcon: ({ focused }) => (

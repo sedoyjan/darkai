@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { ChatMessageType } from '@/types';
+import { ChatMessage, ChatMessageType } from '@/types';
 
 import { RootState } from '..';
 import {
@@ -9,8 +9,13 @@ import {
   selectIsAuthenticated,
 } from '../app/selectors';
 
-export const selectMessages = (state: RootState) => state.chat.messages;
+const NO_MESSAGES: ChatMessage[] = [];
+export const selectMessagesByChatId = (state: RootState, chatId: string) => {
+  return state.chat.chatsMap[chatId]?.messages || NO_MESSAGES;
+};
+
 export const selectIsBotTyping = (state: RootState) => state.chat.isBotTyping;
+
 export const selectIsLoading = (state: RootState) => state.chat.isLoading;
 
 export const selectIsChatDisabled = createSelector(
@@ -20,47 +25,64 @@ export const selectIsChatDisabled = createSelector(
   },
 );
 
-export const selectChatMessages = createSelector(
-  [selectMessages, selectIsBotTyping, selectIsChatDisabled, selectIsLoading],
-  (messages, isBotTyping, isChatDisabled, isLoading) => {
-    const mergedMessages = [...messages];
+export const makeSelectChatMessages = () =>
+  createSelector(
+    [
+      (state: RootState, chatId: string) =>
+        selectMessagesByChatId(state, chatId),
+      selectIsBotTyping,
+      selectIsChatDisabled,
+      selectIsLoading,
+      (_state: RootState, chatId: string) => chatId,
+    ],
+    (messages, isBotTyping, isChatDisabled, isLoading, chatId) => {
+      const mergedMessages = [...messages];
 
-    if (isChatDisabled && !isLoading) {
-      mergedMessages.unshift({
-        id: 'out-of-free-messages',
-        text: 'out-of-free-messages',
-        type: ChatMessageType.BOT,
-        createdAt: new Date().toISOString(),
-        imageUrl: '',
-        userId: 'bot',
-      });
-    }
+      if (isChatDisabled && !isLoading) {
+        mergedMessages.unshift({
+          id: `out-of-free-messages-${chatId}`,
+          text: 'out-of-free-messages',
+          type: ChatMessageType.BOT,
+          createdAt: new Date().toISOString(),
+          imageUrl: '',
+          userId: 'bot',
+        });
+      }
 
-    if (isBotTyping) {
-      mergedMessages.unshift({
-        id: 'bot-typing',
-        text: 'bot-typing',
-        type: ChatMessageType.BOT,
-        createdAt: new Date().toISOString(),
-        imageUrl: '',
-        userId: 'bot',
-      });
-    }
+      if (isBotTyping) {
+        mergedMessages.unshift({
+          id: `bot-typing-${chatId}`,
+          text: 'bot-typing',
+          type: ChatMessageType.BOT,
+          createdAt: new Date().toISOString(),
+          imageUrl: '',
+          userId: 'bot',
+        });
+      }
 
-    if (!mergedMessages.length) {
-      mergedMessages.unshift({
-        id: 'no-messages',
-        text: 'no-messages',
-        type: ChatMessageType.BOT,
-        createdAt: new Date().toISOString(),
-        imageUrl: '',
-        userId: 'bot',
-      });
-    }
+      if (!mergedMessages.length) {
+        mergedMessages.unshift({
+          id: `no-messages-${chatId}`,
+          text: 'no-messages',
+          type: ChatMessageType.BOT,
+          createdAt: new Date().toISOString(),
+          imageUrl: '',
+          userId: 'bot',
+        });
+      }
 
-    return mergedMessages;
-  },
-);
+      return mergedMessages;
+    },
+  );
+
+export const selectChats = (state: RootState) => {
+  console.log('selectChats', state.chat.chatsMap);
+  return Object.values(state.chat.chatsMap).sort((chatA, chatB) => {
+    return (
+      new Date(chatB.updatedAt).getTime() - new Date(chatA.updatedAt).getTime()
+    );
+  });
+};
 
 export const selectCurrentPage = (state: RootState) => state.chat.currentPage;
 export const selectTotalPages = (state: RootState) => state.chat.currentPage;

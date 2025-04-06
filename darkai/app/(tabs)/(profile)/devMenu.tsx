@@ -20,7 +20,7 @@ import {
   setIsRecordingMode,
   setLaunchCount,
 } from '@/rdx/app/slice';
-import { useAppDispatch, useAppSelector } from '@/rdx/store';
+import { persistor, useAppDispatch, useAppSelector } from '@/rdx/store';
 import { sharedStyles } from '@/sharedStyles';
 import { reloadApp } from '@/utils/reloadApp';
 
@@ -91,6 +91,15 @@ export default function DeveloperSettingsScreen() {
             onPress={() => {
               dispatch(setIsOnboardingPassed({ value: false }));
               dispatch(setIsOnboardingSkipped({ value: false }));
+            }}
+            withSeparator
+          />
+          <SettingsButton
+            label={'Reset persistent state'}
+            onPress={() => {
+              persistor.purge().then(() => {
+                reloadApp();
+              });
             }}
             withSeparator
           />

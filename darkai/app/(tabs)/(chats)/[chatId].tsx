@@ -1,5 +1,5 @@
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { useIsFocused } from '@react-navigation/native';
+import { RouteProp, useIsFocused, useRoute } from '@react-navigation/native';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { format } from 'date-fns';
 import { useRouter } from 'expo-router';
@@ -23,14 +23,13 @@ import { eventEmitter } from '@/EventEmitter';
 import { useKeyboardListener } from '@/hooks/useKeyboardListener';
 import { usePreviousWithInitialValue } from '@/hooks/usePrevious';
 import { setupMessagingThunk } from '@/rdx/app/thunks';
-import {
-  selectChatMessages,
-  selectCurrentPage,
-  selectIsChatDisabled,
-} from '@/rdx/chat/selectors';
-import { getMessagesThunk, sendMessageThunk } from '@/rdx/chat/thunks';
+import { useChat } from '@/rdx/chat/hooks/useChat';
+import { selectCurrentPage, selectIsChatDisabled } from '@/rdx/chat/selectors';
+import { getMessagesThunk } from '@/rdx/chat/thunks';
 import { useAppDispatch, useAppSelector } from '@/rdx/store';
 import { ChatMessage, ChatMessageType } from '@/types';
+
+import { ChatsParamList } from './_layout';
 
 const styles = StyleSheet.create({
   container: {
@@ -48,9 +47,11 @@ const styles = StyleSheet.create({
 });
 
 export default function ChatScreen() {
+  const route = useRoute<RouteProp<ChatsParamList, 'Chat'>>();
+  const chatId = route.params.chatId;
   const { t } = useTranslation();
   const bottomTabBarHeight = useBottomTabBarHeight();
-  const messages = useAppSelector(selectChatMessages);
+  const { messages, sendMessage } = useChat(chatId);
   const dispatch = useAppDispatch();
   const listRef = useRef<FlashList<ChatMessage>>(null);
   const isFocused = useIsFocused();
@@ -185,13 +186,14 @@ export default function ChatScreen() {
 
   const onSendTextMessage = useCallback(
     async (text: string) => {
+      if (!text.trim() || isChatDisabled) return;
       await dispatch(setupMessagingThunk());
-      dispatch(sendMessageThunk({ text }));
+      sendMessage({ text });
       requestAnimationFrame(() => {
         scrollToEnd();
       });
     },
-    [dispatch, scrollToEnd],
+    [dispatch, isChatDisabled, scrollToEnd, sendMessage],
   );
 
   const onScroll = useCallback(
@@ -216,7 +218,7 @@ export default function ChatScreen() {
         edges={['top']}
         tabBarHeight={bottomTabBarHeight}
       >
-        <Header title="Chat" withBackButton={false} />
+        <Header title={chatId} withBackButton />
         <View style={styles.container}>
           <FlashList
             onScroll={onScroll}

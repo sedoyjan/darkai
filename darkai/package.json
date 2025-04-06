@@ -22,7 +22,7 @@
     "build:android": "npx expo prebuild --clean --platform android",
     "run:ios": "npx expo run:ios",
     "run:android": "npx expo run:android",
-    "copy-ts": "yarn cpx \"apigen/**/*.ts\" api && rm -rf apigen",
+    "copy-ts": "yarn cpx \"apigen/**/*.ts\" apiClient && rm -rf apigen",
     "gen": "openapi-generator-cli generate -i http://localhost:3000/swagger/json -g typescript-axios -o apigen --skip-validate-spec && yarn copy-ts",
     "install-deps": "yarn install && cd ios && pod repo remove trunk && pod install --repo-update && cd ..",
     "extract": "yarn i18next './app/**/*.{ts,tsx}' './components/**/*.{ts,tsx}' --config i18next-parser.config.js",

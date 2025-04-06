@@ -136,10 +136,17 @@ exports.Prisma.MessageScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   text: 'text',
-  imageUrl: 'imageUrl',
-  imageHash: 'imageHash',
   createdAt: 'createdAt',
-  type: 'type'
+  type: 'type',
+  chatId: 'chatId'
+};
+
+exports.Prisma.ChatScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -164,7 +171,8 @@ exports.MessageType = exports.$Enums.MessageType = {
 
 exports.Prisma.ModelName = {
   User: 'User',
-  Message: 'Message'
+  Message: 'Message',
+  Chat: 'Chat'
 };
 
 /**

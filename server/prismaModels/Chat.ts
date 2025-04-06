@@ -4,21 +4,18 @@ import { __transformDate__ } from "./__transformDate__";
 
 import { __nullable__ } from "./__nullable__";
 
-export const MessagePlain = t.Object(
+export const ChatPlain = t.Object(
   {
     id: t.String(),
     userId: t.String(),
-    text: t.String(),
+    title: t.String(),
     createdAt: t.Date(),
-    type: t.Union([t.Literal("SYSTEM"), t.Literal("USER"), t.Literal("BOT")], {
-      additionalProperties: false,
-    }),
-    chatId: __nullable__(t.String()),
+    updatedAt: t.Date(),
   },
   { additionalProperties: false },
 );
 
-export const MessageRelations = t.Object(
+export const ChatRelations = t.Object(
   {
     user: t.Object(
       {
@@ -35,45 +32,38 @@ export const MessageRelations = t.Object(
       },
       { additionalProperties: false },
     ),
-    Chat: __nullable__(
+    messages: t.Array(
       t.Object(
         {
           id: t.String(),
           userId: t.String(),
-          title: t.String(),
+          text: t.String(),
           createdAt: t.Date(),
-          updatedAt: t.Date(),
+          type: t.Union(
+            [t.Literal("SYSTEM"), t.Literal("USER"), t.Literal("BOT")],
+            { additionalProperties: false },
+          ),
+          chatId: __nullable__(t.String()),
         },
         { additionalProperties: false },
       ),
+      { additionalProperties: false },
     ),
   },
   { additionalProperties: false },
 );
 
-export const MessagePlainInputCreate = t.Object(
-  {
-    text: t.String(),
-    type: t.Union([t.Literal("SYSTEM"), t.Literal("USER"), t.Literal("BOT")], {
-      additionalProperties: false,
-    }),
-  },
+export const ChatPlainInputCreate = t.Object(
+  { title: t.String() },
   { additionalProperties: false },
 );
 
-export const MessagePlainInputUpdate = t.Object(
-  {
-    text: t.Optional(t.String()),
-    type: t.Optional(
-      t.Union([t.Literal("SYSTEM"), t.Literal("USER"), t.Literal("BOT")], {
-        additionalProperties: false,
-      }),
-    ),
-  },
+export const ChatPlainInputUpdate = t.Object(
+  { title: t.Optional(t.String()) },
   { additionalProperties: false },
 );
 
-export const MessageRelationsInputCreate = t.Object(
+export const ChatRelationsInputCreate = t.Object(
   {
     user: t.Object(
       {
@@ -86,13 +76,16 @@ export const MessageRelationsInputCreate = t.Object(
       },
       { additionalProperties: false },
     ),
-    Chat: t.Optional(
+    messages: t.Optional(
       t.Object(
         {
-          connect: t.Object(
-            {
-              id: t.String({ additionalProperties: false }),
-            },
+          connect: t.Array(
+            t.Object(
+              {
+                id: t.String({ additionalProperties: false }),
+              },
+              { additionalProperties: false },
+            ),
             { additionalProperties: false },
           ),
         },
@@ -103,7 +96,7 @@ export const MessageRelationsInputCreate = t.Object(
   { additionalProperties: false },
 );
 
-export const MessageRelationsInputUpdate = t.Partial(
+export const ChatRelationsInputUpdate = t.Partial(
   t.Object(
     {
       user: t.Object(
@@ -117,16 +110,27 @@ export const MessageRelationsInputUpdate = t.Partial(
         },
         { additionalProperties: false },
       ),
-      Chat: t.Partial(
+      messages: t.Partial(
         t.Object(
           {
-            connect: t.Object(
-              {
-                id: t.String({ additionalProperties: false }),
-              },
+            connect: t.Array(
+              t.Object(
+                {
+                  id: t.String({ additionalProperties: false }),
+                },
+                { additionalProperties: false },
+              ),
               { additionalProperties: false },
             ),
-            disconnect: t.Boolean(),
+            disconnect: t.Array(
+              t.Object(
+                {
+                  id: t.String({ additionalProperties: false }),
+                },
+                { additionalProperties: false },
+              ),
+              { additionalProperties: false },
+            ),
           },
           { additionalProperties: false },
         ),
@@ -136,7 +140,7 @@ export const MessageRelationsInputUpdate = t.Partial(
   ),
 );
 
-export const MessageWhere = t.Partial(
+export const ChatWhere = t.Partial(
   t.Recursive(
     (Self) =>
       t.Object(
@@ -146,21 +150,17 @@ export const MessageWhere = t.Partial(
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
           userId: t.String(),
-          text: t.String(),
+          title: t.String(),
           createdAt: t.Date(),
-          type: t.Union(
-            [t.Literal("SYSTEM"), t.Literal("USER"), t.Literal("BOT")],
-            { additionalProperties: false },
-          ),
-          chatId: t.String(),
+          updatedAt: t.Date(),
         },
         { additionalProperties: false },
       ),
-    { $id: "Message" },
+    { $id: "Chat" },
   ),
 );
 
-export const MessageWhereUnique = t.Recursive(
+export const ChatWhereUnique = t.Recursive(
   (Self) =>
     t.Intersect(
       [
@@ -190,13 +190,9 @@ export const MessageWhereUnique = t.Recursive(
             {
               id: t.String(),
               userId: t.String(),
-              text: t.String(),
+              title: t.String(),
               createdAt: t.Date(),
-              type: t.Union(
-                [t.Literal("SYSTEM"), t.Literal("USER"), t.Literal("BOT")],
-                { additionalProperties: false },
-              ),
-              chatId: t.String(),
+              updatedAt: t.Date(),
             },
             { additionalProperties: false },
           ),
@@ -204,39 +200,33 @@ export const MessageWhereUnique = t.Recursive(
       ],
       { additionalProperties: false },
     ),
-  { $id: "Message" },
+  { $id: "Chat" },
 );
 
-export const MessageSelect = t.Partial(
+export const ChatSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
       userId: t.Boolean(),
-      text: t.Boolean(),
+      title: t.Boolean(),
       createdAt: t.Boolean(),
+      updatedAt: t.Boolean(),
       user: t.Boolean(),
-      type: t.Boolean(),
-      Chat: t.Boolean(),
-      chatId: t.Boolean(),
+      messages: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
   ),
 );
 
-export const MessageInclude = t.Partial(
+export const ChatInclude = t.Partial(
   t.Object(
-    {
-      user: t.Boolean(),
-      type: t.Boolean(),
-      Chat: t.Boolean(),
-      _count: t.Boolean(),
-    },
+    { user: t.Boolean(), messages: t.Boolean(), _count: t.Boolean() },
     { additionalProperties: false },
   ),
 );
 
-export const MessageOrderBy = t.Partial(
+export const ChatOrderBy = t.Partial(
   t.Object(
     {
       id: t.Union([t.Literal("asc"), t.Literal("desc")], {
@@ -245,13 +235,13 @@ export const MessageOrderBy = t.Partial(
       userId: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      text: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      title: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      chatId: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      updatedAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },
@@ -259,16 +249,16 @@ export const MessageOrderBy = t.Partial(
   ),
 );
 
-export const Message = t.Composite([MessagePlain, MessageRelations], {
+export const Chat = t.Composite([ChatPlain, ChatRelations], {
   additionalProperties: false,
 });
 
-export const MessageInputCreate = t.Composite(
-  [MessagePlainInputCreate, MessageRelationsInputCreate],
+export const ChatInputCreate = t.Composite(
+  [ChatPlainInputCreate, ChatRelationsInputCreate],
   { additionalProperties: false },
 );
 
-export const MessageInputUpdate = t.Composite(
-  [MessagePlainInputUpdate, MessageRelationsInputUpdate],
+export const ChatInputUpdate = t.Composite(
+  [ChatPlainInputUpdate, ChatRelationsInputUpdate],
   { additionalProperties: false },
 );

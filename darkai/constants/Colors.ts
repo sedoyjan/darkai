@@ -3,7 +3,8 @@ export const Colors = {
   /**
    * Darker start color of the gradient
    */
-  gradientStart: '#140033',
+  // gradientStart: '#140033',
+  gradientStart: '#002504',
   /**
    * Darker end color of the gradient
    */

@@ -17,12 +17,9 @@ export const ChatController = (app: Elysia) => {
       .post(
         "/sendMessage",
         async ({ body, user }) => {
-          console.log("User ID:", user.id);
           await db.message.create({
             data: {
               text: body.text,
-              imageUrl: body.imageUrl,
-              imageHash: body.imageHash,
               type: MessageType.USER,
               user: {
                 connect: {
@@ -31,16 +28,14 @@ export const ChatController = (app: Elysia) => {
               },
             },
           });
-          console.log("User message:", body.text);
           const aiResponse = await generateDarkAIStrategy(body.text);
 
-          console.log("AI response:", aiResponse.data);
+          console.log("AI response:", aiResponse);
 
           const [responseMessage] = await Promise.all([
             db.message.create({
               data: {
                 text: aiResponse.data,
-                imageUrl: undefined,
                 type: MessageType.BOT,
                 user: {
                   connect: {
@@ -67,14 +62,14 @@ export const ChatController = (app: Elysia) => {
         },
         {
           body: t.Object({
+            chatId: t.Optional(t.String()),
             text: t.String(),
-            imageUrl: t.Optional(t.String()),
-            imageHash: t.Optional(t.String()),
             type: t.String(),
             locale: t.String(),
           }),
           response: t.Object({
             message: MessagePlain,
+            chatId: t.Optional(t.String()),
           }),
           detail: {
             // tags: ["Chat"],

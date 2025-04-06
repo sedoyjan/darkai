@@ -28,13 +28,25 @@ export const UserRelations = t.Object(
           id: t.String(),
           userId: t.String(),
           text: t.String(),
-          imageUrl: __nullable__(t.String()),
-          imageHash: __nullable__(t.String()),
           createdAt: t.Date(),
           type: t.Union(
             [t.Literal("SYSTEM"), t.Literal("USER"), t.Literal("BOT")],
             { additionalProperties: false },
           ),
+          chatId: __nullable__(t.String()),
+        },
+        { additionalProperties: false },
+      ),
+      { additionalProperties: false },
+    ),
+    Chat: t.Array(
+      t.Object(
+        {
+          id: t.String(),
+          userId: t.String(),
+          title: t.String(),
+          createdAt: t.Date(),
+          updatedAt: t.Date(),
         },
         { additionalProperties: false },
       ),
@@ -88,6 +100,22 @@ export const UserRelationsInputCreate = t.Object(
         { additionalProperties: false },
       ),
     ),
+    Chat: t.Optional(
+      t.Object(
+        {
+          connect: t.Array(
+            t.Object(
+              {
+                id: t.String({ additionalProperties: false }),
+              },
+              { additionalProperties: false },
+            ),
+            { additionalProperties: false },
+          ),
+        },
+        { additionalProperties: false },
+      ),
+    ),
   },
   { additionalProperties: false },
 );
@@ -96,6 +124,31 @@ export const UserRelationsInputUpdate = t.Partial(
   t.Object(
     {
       Message: t.Partial(
+        t.Object(
+          {
+            connect: t.Array(
+              t.Object(
+                {
+                  id: t.String({ additionalProperties: false }),
+                },
+                { additionalProperties: false },
+              ),
+              { additionalProperties: false },
+            ),
+            disconnect: t.Array(
+              t.Object(
+                {
+                  id: t.String({ additionalProperties: false }),
+                },
+                { additionalProperties: false },
+              ),
+              { additionalProperties: false },
+            ),
+          },
+          { additionalProperties: false },
+        ),
+      ),
+      Chat: t.Partial(
         t.Object(
           {
             connect: t.Array(
@@ -216,6 +269,7 @@ export const UserSelect = t.Partial(
       createdAt: t.Boolean(),
       requestsCount: t.Boolean(),
       Message: t.Boolean(),
+      Chat: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -224,7 +278,7 @@ export const UserSelect = t.Partial(
 
 export const UserInclude = t.Partial(
   t.Object(
-    { Message: t.Boolean(), _count: t.Boolean() },
+    { Message: t.Boolean(), Chat: t.Boolean(), _count: t.Boolean() },
     { additionalProperties: false },
   ),
 );

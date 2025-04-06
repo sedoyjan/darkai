@@ -2,8 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ChatMessage } from '@/types';
 
-export interface ChatState {
+interface Chat {
+  id: string;
+  title: string;
+  threadId?: string;
+  updatedAt: string;
   messages: ChatMessage[];
+}
+export interface ChatState {
+  chatsMap: Record<string, Chat>;
   isBotTyping: boolean;
   currentPage: number;
   totalPages: number;
@@ -12,7 +19,26 @@ export interface ChatState {
 }
 
 const initialState: ChatState = {
-  messages: [],
+  chatsMap: {
+    '111': {
+      id: '111',
+      title: 'Chat 1',
+      messages: [],
+      updatedAt: new Date().toISOString(),
+    },
+    '222': {
+      id: '222',
+      title: 'Chat 2',
+      messages: [],
+      updatedAt: new Date().toISOString(),
+    },
+    '333': {
+      id: '333',
+      title: 'Chat 3',
+      messages: [],
+      updatedAt: new Date().toISOString(),
+    },
+  },
   isBotTyping: false,
   currentPage: 0,
   totalPages: 0,
@@ -25,31 +51,42 @@ export const chatSlice = createSlice({
   initialState,
   reducers: {
     resetChatState: () => initialState,
-    setMessages: (
+
+    updateThreadId: (
       state,
-      action: PayloadAction<{
-        page: number;
-        messages: ChatMessage[];
-        hasMoreMessages: boolean;
-        shouldKeepExisting: boolean;
-      }>,
+      action: PayloadAction<{ chatId: string; threadId: string }>,
     ) => {
-      if (action.payload.shouldKeepExisting) {
-        const existingMessages = state.messages;
-        state.messages = [...existingMessages, ...action.payload.messages];
-      } else {
-        state.messages = action.payload.messages;
+      const { chatId, threadId } = action.payload;
+      const chat = state.chatsMap[chatId];
+      if (chat) {
+        chat.threadId = threadId;
       }
-      state.isLoading = false;
-      state.currentPage = action.payload.page;
-      state.hasMoreMessages = action.payload.hasMoreMessages;
     },
-    pushMessage: (state, action: PayloadAction<{ message: ChatMessage }>) => {
-      state.messages.unshift(action.payload.message);
+
+    pushMessage: (
+      state,
+      action: PayloadAction<{ message: ChatMessage; chatId: string }>,
+    ) => {
+      const chatId = action.payload.chatId;
+      const chat = state.chatsMap[chatId];
+      if (chat) {
+        chat.messages.unshift(action.payload.message);
+        chat.updatedAt = new Date().toISOString();
+      } else {
+        state.chatsMap[chatId] = {
+          id: chatId,
+          title: action.payload.message.text,
+          messages: [],
+          updatedAt: new Date().toISOString(),
+        };
+        state.chatsMap[chatId].messages.unshift(action.payload.message);
+      }
     },
+
     setIsBotTyping: (state, action: PayloadAction<{ isTyping: boolean }>) => {
       state.isBotTyping = action.payload.isTyping;
     },
+
     setIsLoading: (state, action: PayloadAction<{ isLoading: boolean }>) => {
       state.isLoading = action.payload.isLoading;
     },
@@ -59,9 +96,9 @@ export const chatSlice = createSlice({
 export const chatReducer = chatSlice.reducer;
 
 export const {
-  setMessages,
   pushMessage,
   setIsBotTyping,
   resetChatState,
   setIsLoading,
+  updateThreadId,
 } = chatSlice.actions;

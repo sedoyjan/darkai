@@ -87,7 +87,7 @@ export default function RootLayout() {
     });
     sharedRouter.setRouter(router);
     await store.dispatch(initThunk());
-    router.replace('/(tabs)/chat');
+    router.replace('/(tabs)/(chats)');
     SplashScreen.hideAsync();
   }, [router]);
 
@@ -117,7 +117,12 @@ export default function RootLayout() {
                             headerShown: false,
                           }}
                         >
-                          <Stack.Screen name="(tabs)" />
+                          <Stack.Screen
+                            name="(tabs)"
+                            options={{
+                              animation: 'fade',
+                            }}
+                          />
                           <Stack.Screen name="index" />
                           <Stack.Screen
                             name="signin"

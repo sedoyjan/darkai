@@ -62,101 +62,72 @@ export const getMessagesThunk = createAsyncThunk<
 
 export const sendMessageThunk = createAsyncThunk<
   void,
-  { text: string; imageUri?: string },
+  { text: string },
   { state: RootState }
->(
-  'app/sendMessageThunk',
-  async ({ text, imageUri }, { dispatch, getState }) => {
-    const state = getState();
-    const locale = selectLocale(state);
-    const user = selectUser(state);
+>('app/sendMessageThunk', async ({ text }, { dispatch, getState }) => {
+  const state = getState();
+  const locale = selectLocale(state);
+  const user = selectUser(state);
 
-    if (!user) {
-      let url = '/signin';
-      if (text) {
-        url += `?text=${text}`;
-      }
-      if (imageUri) {
-        if (!text) {
-          url += '?';
-        } else {
-          url += '&';
-        }
-        url += `imageUri=${imageUri}`;
-      }
-
-      sharedRouter.getRouter().push(url as Href);
-
-      return;
+  if (!user) {
+    let url = '/signin';
+    if (text) {
+      url += `?text=${text}`;
     }
 
-    dispatch(
-      pushMessage({
-        message: {
-          createdAt: new Date().toISOString(),
-          id: Math.random().toString(),
-          text,
-          type: ChatMessageType.USER,
-          imageUrl: imageUri,
-          userId: '1',
-          imageHash: undefined,
-        },
-      }),
-    );
+    sharedRouter.getRouter().push(url as Href);
+
+    return;
+  }
+
+  dispatch(
+    pushMessage({
+      message: {
+        createdAt: new Date().toISOString(),
+        id: Math.random().toString(),
+        text,
+        type: ChatMessageType.USER,
+        userId: '1',
+      },
+    }),
+  );
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+  await delay(200);
+
+  dispatch(setIsBotTyping({ isTyping: true }));
+  // const { data } = await apiClient.getUserMe();
+  // dispatch(setHasFreeRequests({ hasFreeRequests: data.hasFreeRequests }));
+
+  // if (data.hasFreeRequests) {
+  if (true) {
+    eventEmitter.emit('newMessage');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
-    await delay(200);
-    dispatch(setIsBotTyping({ isTyping: true }));
-    const { data } = await apiClient.getUserMe();
-    dispatch(setHasFreeRequests({ hasFreeRequests: data.hasFreeRequests }));
+    try {
+      const { data } = await apiClient.postChatSendMessage({
+        type: 'user',
+        text,
+        locale: locale?.languageCode || 'en',
+      });
 
-    // if (data.hasFreeRequests) {
-    if (true) {
-      let uploadedImageUrl: string | undefined;
-      let uploadedImageHash: string | undefined;
-
-      if (imageUri) {
-        // const data = await uploadImage(imageUri);
-        // if (data) {
-        //   uploadedImageUrl = data.url;
-        //   uploadedImageHash = data.blurhash;
-        // }
-      }
+      dispatch(
+        pushMessage({
+          message: {
+            ...data.message,
+            createdAt: data.message.createdAt as string,
+            type: data.message.type as ChatMessageType,
+          },
+        }),
+      );
 
       eventEmitter.emit('newMessage');
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-
-      try {
-        const { data } = await apiClient.postChatSendMessage({
-          type: 'user',
-          text,
-          locale: locale?.languageCode || 'en',
-          imageUrl: uploadedImageUrl,
-          imageHash: uploadedImageHash,
-        });
-
-        dispatch(
-          pushMessage({
-            message: {
-              ...data.message,
-              imageUrl: data.message.imageUrl || undefined,
-              imageHash: data.message.imageHash || undefined,
-              createdAt: data.message.createdAt as string,
-              type: data.message.type as ChatMessageType,
-            },
-          }),
-        );
-
-        eventEmitter.emit('newMessage');
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      } catch (error) {
-        console.log('sendMessageThunk', { error });
-      }
+    } catch (error) {
+      console.log('sendMessageThunk', { error });
     }
-    dispatch(setIsBotTyping({ isTyping: false }));
-    const { data: latestData } = await apiClient.getUserMe();
-    dispatch(
-      setHasFreeRequests({ hasFreeRequests: latestData.hasFreeRequests }),
-    );
-  },
-);
+  }
+  dispatch(setIsBotTyping({ isTyping: false }));
+  const { data: latestData } = await apiClient.getUserMe();
+  dispatch(setHasFreeRequests({ hasFreeRequests: latestData.hasFreeRequests }));
+});
