@@ -2,13 +2,13 @@ import OpenAI from "openai";
 import { get } from "lodash";
 
 const API_KEY = process.env.OPENAI_API_KEY as string;
-const ASSISTANT_ID = process.env.OPENAI_API_ASSISTANT_ID as string;
 
 const openai = new OpenAI({
   apiKey: API_KEY,
 });
 
-export const generateDarkAIStrategy = (
+export const getAiResponse = (
+  assistantId: string,
   prompt: string,
   threadId?: string
 ): Promise<{
@@ -18,7 +18,7 @@ export const generateDarkAIStrategy = (
   return new Promise(async (resolve, reject) => {
     console.log("Generating strategy for:", prompt, "using DarkAI Sway");
 
-    const darkAIAssistant = await openai.beta.assistants.retrieve(ASSISTANT_ID);
+    const darkAIAssistant = await openai.beta.assistants.retrieve(assistantId);
 
     const myThread = threadId
       ? await openai.beta.threads.retrieve(threadId)

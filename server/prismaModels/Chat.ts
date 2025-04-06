@@ -12,6 +12,8 @@ export const ChatPlain = t.Object(
     createdAt: t.Date(),
     updatedAt: t.Date(),
     threadId: __nullable__(t.String()),
+    lastFollowUpSentAt: __nullable__(t.Date()),
+    followUpCount: t.Integer(),
   },
   { additionalProperties: false },
 );
@@ -55,12 +57,20 @@ export const ChatRelations = t.Object(
 );
 
 export const ChatPlainInputCreate = t.Object(
-  { title: t.String() },
+  {
+    title: t.String(),
+    lastFollowUpSentAt: t.Optional(__nullable__(t.Date())),
+    followUpCount: t.Optional(t.Integer()),
+  },
   { additionalProperties: false },
 );
 
 export const ChatPlainInputUpdate = t.Object(
-  { title: t.Optional(t.String()) },
+  {
+    title: t.Optional(t.String()),
+    lastFollowUpSentAt: t.Optional(__nullable__(t.Date())),
+    followUpCount: t.Optional(t.Integer()),
+  },
   { additionalProperties: false },
 );
 
@@ -155,6 +165,8 @@ export const ChatWhere = t.Partial(
           createdAt: t.Date(),
           updatedAt: t.Date(),
           threadId: t.String(),
+          lastFollowUpSentAt: t.Date(),
+          followUpCount: t.Integer(),
         },
         { additionalProperties: false },
       ),
@@ -196,6 +208,8 @@ export const ChatWhereUnique = t.Recursive(
               createdAt: t.Date(),
               updatedAt: t.Date(),
               threadId: t.String(),
+              lastFollowUpSentAt: t.Date(),
+              followUpCount: t.Integer(),
             },
             { additionalProperties: false },
           ),
@@ -217,6 +231,8 @@ export const ChatSelect = t.Partial(
       user: t.Boolean(),
       messages: t.Boolean(),
       threadId: t.Boolean(),
+      lastFollowUpSentAt: t.Boolean(),
+      followUpCount: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -249,6 +265,12 @@ export const ChatOrderBy = t.Partial(
         additionalProperties: false,
       }),
       threadId: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      lastFollowUpSentAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      followUpCount: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },

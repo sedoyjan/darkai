@@ -62,12 +62,14 @@ model Message {
 }
 
 model Chat {
-  id        String    @id
-  userId    String
-  title     String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages  Message[]
-  threadId  String?
+  id                 String    @id
+  userId             String
+  title              String
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages           Message[]
+  threadId           String?
+  lastFollowUpSentAt DateTime?
+  followUpCount      Int       @default(0)
 }

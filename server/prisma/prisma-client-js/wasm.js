@@ -147,7 +147,9 @@ exports.Prisma.ChatScalarFieldEnum = {
   title: 'title',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  threadId: 'threadId'
+  threadId: 'threadId',
+  lastFollowUpSentAt: 'lastFollowUpSentAt',
+  followUpCount: 'followUpCount'
 };
 
 exports.Prisma.SortOrder = {

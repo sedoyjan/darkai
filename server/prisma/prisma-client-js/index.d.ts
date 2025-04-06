@@ -3211,8 +3211,18 @@ export namespace Prisma {
 
   export type AggregateChat = {
     _count: ChatCountAggregateOutputType | null
+    _avg: ChatAvgAggregateOutputType | null
+    _sum: ChatSumAggregateOutputType | null
     _min: ChatMinAggregateOutputType | null
     _max: ChatMaxAggregateOutputType | null
+  }
+
+  export type ChatAvgAggregateOutputType = {
+    followUpCount: number | null
+  }
+
+  export type ChatSumAggregateOutputType = {
+    followUpCount: number | null
   }
 
   export type ChatMinAggregateOutputType = {
@@ -3222,6 +3232,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     threadId: string | null
+    lastFollowUpSentAt: Date | null
+    followUpCount: number | null
   }
 
   export type ChatMaxAggregateOutputType = {
@@ -3231,6 +3243,8 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     threadId: string | null
+    lastFollowUpSentAt: Date | null
+    followUpCount: number | null
   }
 
   export type ChatCountAggregateOutputType = {
@@ -3240,9 +3254,19 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     threadId: number
+    lastFollowUpSentAt: number
+    followUpCount: number
     _all: number
   }
 
+
+  export type ChatAvgAggregateInputType = {
+    followUpCount?: true
+  }
+
+  export type ChatSumAggregateInputType = {
+    followUpCount?: true
+  }
 
   export type ChatMinAggregateInputType = {
     id?: true
@@ -3251,6 +3275,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     threadId?: true
+    lastFollowUpSentAt?: true
+    followUpCount?: true
   }
 
   export type ChatMaxAggregateInputType = {
@@ -3260,6 +3286,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     threadId?: true
+    lastFollowUpSentAt?: true
+    followUpCount?: true
   }
 
   export type ChatCountAggregateInputType = {
@@ -3269,6 +3297,8 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     threadId?: true
+    lastFollowUpSentAt?: true
+    followUpCount?: true
     _all?: true
   }
 
@@ -3310,6 +3340,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ChatAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ChatSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ChatMinAggregateInputType
@@ -3340,6 +3382,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ChatCountAggregateInputType | true
+    _avg?: ChatAvgAggregateInputType
+    _sum?: ChatSumAggregateInputType
     _min?: ChatMinAggregateInputType
     _max?: ChatMaxAggregateInputType
   }
@@ -3351,7 +3395,11 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     threadId: string | null
+    lastFollowUpSentAt: Date | null
+    followUpCount: number
     _count: ChatCountAggregateOutputType | null
+    _avg: ChatAvgAggregateOutputType | null
+    _sum: ChatSumAggregateOutputType | null
     _min: ChatMinAggregateOutputType | null
     _max: ChatMaxAggregateOutputType | null
   }
@@ -3377,6 +3425,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     threadId?: boolean
+    lastFollowUpSentAt?: boolean
+    followUpCount?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     messages?: boolean | Chat$messagesArgs<ExtArgs>
     _count?: boolean | ChatCountOutputTypeDefaultArgs<ExtArgs>
@@ -3389,6 +3439,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     threadId?: boolean
+    lastFollowUpSentAt?: boolean
+    followUpCount?: boolean
   }
 
 
@@ -3412,6 +3464,8 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       threadId: string | null
+      lastFollowUpSentAt: Date | null
+      followUpCount: number
     }, ExtArgs["result"]["chat"]>
     composites: {}
   }
@@ -3841,6 +3895,8 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Chat", 'DateTime'>
     readonly updatedAt: FieldRef<"Chat", 'DateTime'>
     readonly threadId: FieldRef<"Chat", 'String'>
+    readonly lastFollowUpSentAt: FieldRef<"Chat", 'DateTime'>
+    readonly followUpCount: FieldRef<"Chat", 'Int'>
   }
     
 
@@ -4241,7 +4297,9 @@ export namespace Prisma {
     title: 'title',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    threadId: 'threadId'
+    threadId: 'threadId',
+    lastFollowUpSentAt: 'lastFollowUpSentAt',
+    followUpCount: 'followUpCount'
   };
 
   export type ChatScalarFieldEnum = (typeof ChatScalarFieldEnum)[keyof typeof ChatScalarFieldEnum]
@@ -4507,6 +4565,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Chat"> | Date | string
     updatedAt?: DateTimeFilter<"Chat"> | Date | string
     threadId?: StringNullableFilter<"Chat"> | string | null
+    lastFollowUpSentAt?: DateTimeNullableFilter<"Chat"> | Date | string | null
+    followUpCount?: IntFilter<"Chat"> | number
     user?: XOR<UserRelationFilter, UserWhereInput>
     messages?: MessageListRelationFilter
   }
@@ -4518,6 +4578,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     threadId?: SortOrderInput | SortOrder
+    lastFollowUpSentAt?: SortOrderInput | SortOrder
+    followUpCount?: SortOrder
     user?: UserOrderByWithRelationInput
     messages?: MessageOrderByRelationAggregateInput
   }
@@ -4532,6 +4594,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Chat"> | Date | string
     updatedAt?: DateTimeFilter<"Chat"> | Date | string
     threadId?: StringNullableFilter<"Chat"> | string | null
+    lastFollowUpSentAt?: DateTimeNullableFilter<"Chat"> | Date | string | null
+    followUpCount?: IntFilter<"Chat"> | number
     user?: XOR<UserRelationFilter, UserWhereInput>
     messages?: MessageListRelationFilter
   }, "id">
@@ -4543,9 +4607,13 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     threadId?: SortOrderInput | SortOrder
+    lastFollowUpSentAt?: SortOrderInput | SortOrder
+    followUpCount?: SortOrder
     _count?: ChatCountOrderByAggregateInput
+    _avg?: ChatAvgOrderByAggregateInput
     _max?: ChatMaxOrderByAggregateInput
     _min?: ChatMinOrderByAggregateInput
+    _sum?: ChatSumOrderByAggregateInput
   }
 
   export type ChatScalarWhereWithAggregatesInput = {
@@ -4558,6 +4626,8 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Chat"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Chat"> | Date | string
     threadId?: StringNullableWithAggregatesFilter<"Chat"> | string | null
+    lastFollowUpSentAt?: DateTimeNullableWithAggregatesFilter<"Chat"> | Date | string | null
+    followUpCount?: IntWithAggregatesFilter<"Chat"> | number
   }
 
   export type UserCreateInput = {
@@ -4726,6 +4796,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     threadId?: string | null
+    lastFollowUpSentAt?: Date | string | null
+    followUpCount?: number
     user: UserCreateNestedOneWithoutChatInput
     messages?: MessageCreateNestedManyWithoutChatInput
   }
@@ -4737,6 +4809,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     threadId?: string | null
+    lastFollowUpSentAt?: Date | string | null
+    followUpCount?: number
     messages?: MessageUncheckedCreateNestedManyWithoutChatInput
   }
 
@@ -4746,6 +4820,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     threadId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFollowUpSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutChatNestedInput
     messages?: MessageUpdateManyWithoutChatNestedInput
   }
@@ -4757,6 +4833,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     threadId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFollowUpSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
     messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
   }
 
@@ -4767,6 +4845,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     threadId?: string | null
+    lastFollowUpSentAt?: Date | string | null
+    followUpCount?: number
   }
 
   export type ChatUpdateManyMutationInput = {
@@ -4775,6 +4855,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     threadId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFollowUpSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type ChatUncheckedUpdateManyInput = {
@@ -4784,6 +4866,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     threadId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFollowUpSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -5038,6 +5122,17 @@ export namespace Prisma {
     _max?: NestedEnumMessageTypeFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type ChatCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -5045,6 +5140,12 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     threadId?: SortOrder
+    lastFollowUpSentAt?: SortOrder
+    followUpCount?: SortOrder
+  }
+
+  export type ChatAvgOrderByAggregateInput = {
+    followUpCount?: SortOrder
   }
 
   export type ChatMaxOrderByAggregateInput = {
@@ -5054,6 +5155,8 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     threadId?: SortOrder
+    lastFollowUpSentAt?: SortOrder
+    followUpCount?: SortOrder
   }
 
   export type ChatMinOrderByAggregateInput = {
@@ -5063,6 +5166,26 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     threadId?: SortOrder
+    lastFollowUpSentAt?: SortOrder
+    followUpCount?: SortOrder
+  }
+
+  export type ChatSumOrderByAggregateInput = {
+    followUpCount?: SortOrder
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type UserCreatefcmTokenInput = {
@@ -5230,6 +5353,10 @@ export namespace Prisma {
     connectOrCreate?: MessageCreateOrConnectWithoutChatInput | MessageCreateOrConnectWithoutChatInput[]
     createMany?: MessageCreateManyChatInputEnvelope
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type UserUpdateOneRequiredWithoutChatNestedInput = {
@@ -5421,6 +5548,31 @@ export namespace Prisma {
     _max?: NestedEnumMessageTypeFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type MessageCreateWithoutUserInput = {
     id?: string
     text: string
@@ -5453,6 +5605,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     threadId?: string | null
+    lastFollowUpSentAt?: Date | string | null
+    followUpCount?: number
     messages?: MessageCreateNestedManyWithoutChatInput
   }
 
@@ -5462,6 +5616,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     threadId?: string | null
+    lastFollowUpSentAt?: Date | string | null
+    followUpCount?: number
     messages?: MessageUncheckedCreateNestedManyWithoutChatInput
   }
 
@@ -5529,6 +5685,8 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Chat"> | Date | string
     updatedAt?: DateTimeFilter<"Chat"> | Date | string
     threadId?: StringNullableFilter<"Chat"> | string | null
+    lastFollowUpSentAt?: DateTimeNullableFilter<"Chat"> | Date | string | null
+    followUpCount?: IntFilter<"Chat"> | number
   }
 
   export type UserCreateWithoutMessageInput = {
@@ -5570,6 +5728,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     threadId?: string | null
+    lastFollowUpSentAt?: Date | string | null
+    followUpCount?: number
     user: UserCreateNestedOneWithoutChatInput
   }
 
@@ -5580,6 +5740,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     threadId?: string | null
+    lastFollowUpSentAt?: Date | string | null
+    followUpCount?: number
   }
 
   export type ChatCreateOrConnectWithoutMessagesInput = {
@@ -5643,6 +5805,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     threadId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFollowUpSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutChatNestedInput
   }
 
@@ -5653,6 +5817,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     threadId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFollowUpSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserCreateWithoutChatInput = {
@@ -5783,6 +5949,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     threadId?: string | null
+    lastFollowUpSentAt?: Date | string | null
+    followUpCount?: number
   }
 
   export type MessageUpdateWithoutUserInput = {
@@ -5815,6 +5983,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     threadId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFollowUpSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
     messages?: MessageUpdateManyWithoutChatNestedInput
   }
 
@@ -5824,6 +5994,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     threadId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFollowUpSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
     messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
   }
 
@@ -5833,6 +6005,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     threadId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFollowUpSentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    followUpCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type MessageCreateManyChatInput = {

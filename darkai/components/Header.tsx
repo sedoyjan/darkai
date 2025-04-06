@@ -3,8 +3,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
 
-import { BackButton } from './BackButton';
 import { Icon, IconName } from '../blocks/Icon';
+import { BackButton } from './BackButton';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: Colors.primaryText,
+    flexShrink: 1,
   },
 });
 
@@ -59,7 +60,11 @@ export const Header = ({
       {onRightButtonPress && rightButtonIcon ? placeholder : null}
       {secondOnRightButtonPress && secondRightButtonIcon ? placeholder : null}
       <View style={styles.titleWrapper}>
-        {title ? <Text style={styles.title}>{title}</Text> : null}
+        {title ? (
+          <Text ellipsizeMode="tail" style={styles.title}>
+            {title}
+          </Text>
+        ) : null}
       </View>
       {withBackButton ? placeholder : null}
       <View style={styles.buttons}>

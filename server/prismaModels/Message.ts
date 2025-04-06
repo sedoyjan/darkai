@@ -44,6 +44,8 @@ export const MessageRelations = t.Object(
           createdAt: t.Date(),
           updatedAt: t.Date(),
           threadId: __nullable__(t.String()),
+          lastFollowUpSentAt: __nullable__(t.Date()),
+          followUpCount: t.Integer(),
         },
         { additionalProperties: false },
       ),
