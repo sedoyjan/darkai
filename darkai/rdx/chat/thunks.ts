@@ -186,7 +186,7 @@ export const getMessagesByChatIdThunk = createAsyncThunk<
     return;
   }
 
-  const { data } = await apiClient.getChatGetMessages(chatId, 1, 20);
+  const { data } = await apiClient.getChatGetMessages(chatId, 1, 500);
   dispatch(
     setMessagesByChatId({
       chatId,
