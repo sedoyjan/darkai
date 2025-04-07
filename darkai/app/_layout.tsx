@@ -30,7 +30,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { apiClient } from '@/api';
 import { KeyboardHeightContextProvider } from '@/components/KeyboardHeightContextProvider';
 import { RecordModeStatusBar } from '@/components/RecordModeStatusBar';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -149,6 +148,12 @@ export default function RootLayout() {
                           />
                           <Stack.Screen
                             name="privacyModal"
+                            options={{
+                              presentation: 'modal',
+                            }}
+                          />
+                          <Stack.Screen
+                            name="editChatModal"
                             options={{
                               presentation: 'modal',
                             }}

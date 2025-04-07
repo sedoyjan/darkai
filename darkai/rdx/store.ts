@@ -6,7 +6,6 @@ import { PersistConfig, persistReducer, persistStore } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 
 import { RootState } from './index';
-import { syncMiddleware } from './middlewares/syncMiddleware';
 import { rootReducer } from './rootReducer';
 
 const logger = createLogger({
@@ -24,7 +23,7 @@ if (__DEV__) {
   middlewares.push(logger);
 }
 
-middlewares.push(syncMiddleware);
+// middlewares.push(syncMiddleware);
 
 const persistConfig: PersistConfig<RootState> = {
   key: 'darkai',

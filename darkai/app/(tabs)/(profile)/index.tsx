@@ -161,7 +161,7 @@ export default function ProfileScreen() {
   }, [dispatch, t]);
 
   const onSignIn = useCallback(async () => {
-    router.push('signin');
+    router.push('/signin');
   }, [router]);
 
   const initials = user?.email?.charAt(0).toUpperCase();
@@ -206,7 +206,7 @@ export default function ProfileScreen() {
               withCloseButton={false}
             >
               <Button
-                title={t('screns.profile.signInButton.label')}
+                title={t('screens.profile.signInButton.label')}
                 onPress={onSignIn}
                 isSuccess
               />

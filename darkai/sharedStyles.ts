@@ -254,4 +254,9 @@ export const sharedStyles = StyleSheet.create({
     fontSize: 14,
     color: Colors.secondaryText,
   },
+  bottomButton: {
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    paddingTop: 16,
+  },
 });

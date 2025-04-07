@@ -24,9 +24,8 @@ import { useKeyboardListener } from '@/hooks/useKeyboardListener';
 import { usePreviousWithInitialValue } from '@/hooks/usePrevious';
 import { setupMessagingThunk } from '@/rdx/app/thunks';
 import { useChat } from '@/rdx/chat/hooks/useChat';
-import { selectCurrentPage, selectIsChatDisabled } from '@/rdx/chat/selectors';
 import { getMessagesThunk } from '@/rdx/chat/thunks';
-import { useAppDispatch, useAppSelector } from '@/rdx/store';
+import { useAppDispatch } from '@/rdx/store';
 import { ChatMessage, ChatMessageType } from '@/types';
 
 import { ChatsParamList } from './_layout';
@@ -51,15 +50,22 @@ export default function ChatScreen() {
   const { chatId, title } = route.params;
   const { t } = useTranslation();
   const bottomTabBarHeight = useBottomTabBarHeight();
-  const { messages, sendMessage } = useChat(chatId);
+  const {
+    messages,
+    sendMessage,
+    currentPage,
+    hasMoreMessages,
+
+    isDisabled,
+  } = useChat(chatId);
+  console.log('🚀 ~ hasMoreMessages', hasMoreMessages);
   const dispatch = useAppDispatch();
   const listRef = useRef<FlashList<ChatMessage>>(null);
   const isFocused = useIsFocused();
   const isFocusedPrev = usePreviousWithInitialValue(isFocused);
   const router = useRouter();
-  const currentPage = useAppSelector(selectCurrentPage);
+
   const isLoadingPrevMessagesRef = useRef(false);
-  const isChatDisabled = useAppSelector(selectIsChatDisabled);
 
   const [pageTitle, setPageTitle] = useState(title);
 
@@ -125,12 +131,11 @@ export default function ChatScreen() {
           <Message
             createdAt={item.createdAt}
             id={item.id}
-            imageHash={item.imageHash}
-            imageUrl={item.imageUrl}
             key={item.id}
             text={t('screens.chat.botMessages.outOfMessages')}
             type={item.type}
             userId={item.userId}
+            chatId={chatId}
           >
             <Button
               title={t('common.upgradeToPlus')}
@@ -146,12 +151,11 @@ export default function ChatScreen() {
           <Message
             createdAt={item.createdAt}
             id={item.id}
-            imageHash={item.imageHash}
-            imageUrl={item.imageUrl}
             key={item.id}
             text={t('screens.chat.botMessages.no-messages')}
             type={item.type}
             userId={item.userId}
+            chatId={chatId}
           />
         );
       }
@@ -160,13 +164,12 @@ export default function ChatScreen() {
           <Message
             createdAt={item.createdAt}
             id={item.id}
-            imageHash={item.imageHash}
-            imageUrl={item.imageUrl}
             isTyping
             key={item.id}
             text={undefined}
             type={item.type}
             userId={item.userId}
+            chatId={chatId}
           />
         );
       }
@@ -174,16 +177,15 @@ export default function ChatScreen() {
         <Message
           createdAt={item.createdAt}
           id={item.id}
-          imageHash={item.imageHash}
-          imageUrl={item.imageUrl}
           key={item.id}
           text={item.text}
           type={item.type}
           userId={item.userId}
+          chatId={chatId}
         />
       );
     },
-    [onSubscribePress, t],
+    [chatId, onSubscribePress, t],
   );
 
   const onSendTextMessage = useCallback(
@@ -207,13 +209,17 @@ export default function ChatScreen() {
       const height = Math.round(e.nativeEvent.contentSize.height);
       const isEnd = scroll >= height;
 
-      if (isEnd && !isLoadingPrevMessagesRef.current && messages.length > 10) {
+      if (isEnd && !isLoadingPrevMessagesRef.current && messages.length > 19) {
         isLoadingPrevMessagesRef.current = true;
-        dispatch(getMessagesThunk({ page: currentPage + 1 }));
+        dispatch(getMessagesThunk({ page: currentPage + 1, chatId }));
       }
     },
-    [currentPage, dispatch, messages.length],
+    [chatId, currentPage, dispatch, messages.length],
   );
+
+  const onEdit = useCallback(() => {
+    router.push('/editChatModal');
+  }, [router]);
 
   return (
     <Background>
@@ -221,7 +227,12 @@ export default function ChatScreen() {
         edges={['top']}
         tabBarHeight={bottomTabBarHeight}
       >
-        <Header title={pageTitle} withBackButton />
+        <Header
+          title={pageTitle}
+          withBackButton
+          rightButtonIcon="pencil-outline"
+          onRightButtonPress={onEdit}
+        />
         <View style={styles.container}>
           <FlashList
             onScroll={onScroll}
@@ -233,7 +244,7 @@ export default function ChatScreen() {
             showsVerticalScrollIndicator={false}
           />
           <ChatInput
-            isDisabled={isChatDisabled}
+            isDisabled={isDisabled}
             onSendTextMessage={onSendTextMessage}
           />
         </View>

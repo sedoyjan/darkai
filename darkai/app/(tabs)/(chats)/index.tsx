@@ -10,6 +10,7 @@ import { ChatListItem } from '@/components/ChatListItem';
 import { Header } from '@/components/Header';
 import { SafeAreaKeyboardAvoidingView } from '@/components/SafeAreaKeyboardAvoidingView';
 import { Spacer } from '@/components/Spacer';
+import { useOnboardingRedirect } from '@/rdx/app/hooks/useOnboardingRedirect';
 import { useChats } from '@/rdx/chat/hooks/useChats';
 import { sharedStyles } from '@/sharedStyles';
 import { Chat } from '@/types';
@@ -18,6 +19,7 @@ import { uuid } from '@/utils';
 export default function ChatsScreen() {
   const chats = useChats();
   const bottomTabBarHeight = useBottomTabBarHeight();
+  useOnboardingRedirect();
 
   const renderItem = useCallback<ListRenderItem<Chat>>(({ item }) => {
     return <ChatListItem key={item.id} chat={item} />;
@@ -30,17 +32,19 @@ export default function ChatsScreen() {
         tabBarHeight={bottomTabBarHeight}
       >
         <Header title="Chat List" withBackButton={false} />
-        <View style={sharedStyles.wrapper}>
-          {chats.length > 0 ? (
-            <FlashList
-              data={chats}
-              renderItem={renderItem}
-              estimatedItemSize={200}
-              showsVerticalScrollIndicator={false}
-            />
-          ) : (
-            <Spacer />
-          )}
+
+        {chats.length > 0 ? (
+          <FlashList
+            data={chats}
+            renderItem={renderItem}
+            estimatedItemSize={200}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <Spacer />
+        )}
+
+        <View style={sharedStyles.bottomButton}>
           <Button
             title="Start a new chat"
             onPress={() => {

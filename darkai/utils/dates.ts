@@ -2,10 +2,33 @@ import { format, formatDistance as formatDistanceLib } from 'date-fns';
 
 import { DATE_LOCALES, getLanguage } from '@/i18n';
 
-export const formatDistance = (timestamp: number | string) => {
+export const formatDistance = (
+  timestamp: number | string,
+  thresholdHours = 2,
+) => {
   const language = getLanguage();
+  const date = new Date(timestamp);
+  const now = new Date();
+  const diffInMs = now.getTime() - date.getTime();
+  const diffInHours = diffInMs / (1000 * 60 * 60);
 
-  return formatDistanceLib(new Date(timestamp), new Date(), {
+  if (diffInHours > thresholdHours) {
+    const isSameDay =
+      date.getDate() === now.getDate() &&
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear();
+    const isSameYear = date.getFullYear() === now.getFullYear();
+    const showSeconds = date.getSeconds() !== 0;
+
+    let pattern = 'HH:mm'; // Base pattern: hours and minutes
+    if (showSeconds) pattern += ':ss'; // Add seconds if not zero
+    if (!isSameDay) pattern += ' dd.MM'; // Add day and month if not same day
+    if (!isSameYear) pattern += '.yy'; // Add year if not same year
+
+    return format(date, pattern, { locale: DATE_LOCALES[language] });
+  }
+
+  return formatDistanceLib(date, now, {
     addSuffix: true,
     locale: DATE_LOCALES[language],
   });

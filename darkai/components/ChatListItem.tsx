@@ -1,11 +1,12 @@
 import { useRouter } from 'expo-router';
-import { memo, useCallback } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { memo, useCallback, useMemo } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
-import { getMessagesByChatIdThunk } from '@/rdx/chat/thunks';
+import { getMessagesThunk } from '@/rdx/chat/thunks';
 import { useAppDispatch } from '@/rdx/store';
 import { Chat } from '@/types';
+import { formatDistance } from '@/utils/dates';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -17,6 +18,17 @@ const styles = StyleSheet.create({
   },
   title: {
     color: Colors.white,
+    fontSize: 16,
+    lineHeight: 20,
+  },
+  meta: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 8,
+  },
+  timestamp: {
+    color: Colors.white,
+    fontSize: 12,
   },
 });
 
@@ -30,16 +42,26 @@ export const ChatListItem = memo(({ chat }: ChatListItemProps) => {
 
   const onPress = useCallback(() => {
     dispatch(
-      getMessagesByChatIdThunk({
+      getMessagesThunk({
         chatId: chat.id,
+        page: 1,
       }),
     );
     router.push(`/(tabs)/(chats)/${chat.id}?title=${chat.title}`);
   }, [chat.id, chat.title, dispatch, router]);
 
+  const cleanedTitle = useMemo(() => {
+    return chat.title.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+  }, [chat.title]);
+
   return (
     <TouchableOpacity style={styles.wrapper} onPress={onPress}>
-      <Text style={styles.title}>{chat.title}</Text>
+      <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+        {cleanedTitle}
+      </Text>
+      <View style={styles.meta}>
+        <Text style={styles.timestamp}>{formatDistance(chat.updatedAt)}</Text>
+      </View>
     </TouchableOpacity>
   );
 });

@@ -24,6 +24,8 @@ export const LANGUAGE_CODES = LANGUAGES.map(lang => lang.key);
 
 // export const LANGUAGES = ['en', 'es', 'fr', 'ja', 'ko', 'zh-CN', 'zh-TW'];
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },

@@ -58,11 +58,6 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     borderColor: Colors.borderColor,
   },
-  image: {
-    width: 200,
-    height: 200,
-    borderRadius: 8,
-  },
   textWrapper: {
     paddingVertical: 0,
   },
@@ -105,7 +100,6 @@ const styles = StyleSheet.create({
 
 export const Message = ({
   text,
-  imageUrl,
   type,
   children,
   isTyping,
@@ -137,7 +131,6 @@ export const Message = ({
         ) : null}
         <View style={styles.outWrapper}>
           <View style={styles.wrapper}>
-            {imageUrl ? <Image style={styles.image} source={imageUrl} /> : null}
             {text ? (
               <>
                 {isBot ? (

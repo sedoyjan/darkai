@@ -18,8 +18,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetBackground } from '@/components/BottomSheetBackground';
 import { Colors } from '@/constants/Colors';
 
-import { CustomBackdrop } from './CustomBackdrop';
 import { Icon } from '../blocks/Icon';
+import { CustomBackdrop } from './CustomBackdrop';
 import { useKeyboardHeightContext } from './KeyboardHeightContextProvider';
 
 const ANIMATION_CONFIG: WithSpringConfig = {

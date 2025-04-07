@@ -1,13 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Background } from '@/components/Background';
 import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
 import { SettingsButton } from '@/components/SettingsButton';
+import { Colors } from '@/constants/Colors';
 import {
   selectHasActiveSubscription,
+  selectHasFreeRequests,
+  selectIsAuthenticated,
   selectIsOnboardingPassed,
   selectIsOnboardingSkipped,
   selectIsRecordingMode,
@@ -33,6 +36,16 @@ const styles = StyleSheet.create({
   action: {
     paddingHorizontal: 16,
   },
+  text: {
+    fontSize: 16,
+    color: Colors.white,
+    marginBottom: 8,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: Colors.borderColor,
+    marginRight: -16,
+  },
 });
 
 export default function DeveloperSettingsScreen() {
@@ -45,11 +58,28 @@ export default function DeveloperSettingsScreen() {
   const isOnboardingSkipped = useAppSelector(selectIsOnboardingSkipped);
   const launchCount = useAppSelector(selectLaunchCount);
 
+  const hasFreeRequests = useAppSelector(selectHasFreeRequests);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
   return (
     <Background>
       <SafeAreaView style={sharedStyles.wrapper}>
         <Header title={t('screens.titles.developerSettings')} withBackButton />
         <ScrollView style={styles.content}>
+          <Text style={styles.text}>Debug Data</Text>
+          <Text style={styles.text}>
+            {JSON.stringify(
+              {
+                hasActiveSubscription,
+                hasFreeRequests,
+                isAuthenticated,
+              },
+              null,
+              1,
+            )}
+          </Text>
+          <View style={styles.separator} />
+
           <SettingsButton
             label={t('screens.developerSettings.toggleSubscription')}
             onPress={() => {

@@ -1,6 +1,6 @@
 import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
-import { GetChatGetMessages200ResponseMessagesInner } from './apiClient';
+import { PostChatSendMessage200ResponseMessage } from './apiClient';
 
 export type Priority = 0 | 1 | 2 | 3;
 
@@ -63,12 +63,9 @@ export enum ChatMessageType {
 }
 
 export type ChatMessage = Omit<
-  GetChatGetMessages200ResponseMessagesInner,
-  'imageUrl' | 'imageHash' | 'summaryId' | 'createdAt'
+  PostChatSendMessage200ResponseMessage,
+  'createdAt'
 > & {
-  imageUrl?: string;
-  imageHash?: string;
-  summaryId?: string;
   createdAt: string;
   type: ChatMessageType;
 };

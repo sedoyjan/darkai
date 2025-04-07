@@ -5,26 +5,28 @@ import { Chat, ChatMessage } from '@/types';
 interface ChatsParams {
   isTyping: boolean;
   isLoading: boolean;
+  currentPage: number;
+  totalPages: number;
+  hasMoreMessages: boolean;
+  error?: string;
 }
 
 const initialChatsParams: ChatsParams = {
   isTyping: false,
   isLoading: false,
+  currentPage: 0,
+  totalPages: 0,
+  hasMoreMessages: false,
 };
+
 export interface ChatState {
   chatsParamsMap: Record<string, ChatsParams>;
   chatsMap: Record<string, Chat>;
-  currentPage: number;
-  totalPages: number;
-  hasMoreMessages: boolean;
 }
 
 const initialState: ChatState = {
   chatsParamsMap: {},
   chatsMap: {},
-  currentPage: 0,
-  totalPages: 0,
-  hasMoreMessages: true,
 };
 
 export const chatSlice = createSlice({
@@ -48,19 +50,18 @@ export const chatSlice = createSlice({
       state,
       action: PayloadAction<{ message: ChatMessage; chatId: string }>,
     ) => {
-      const chatId = action.payload.chatId;
+      const { chatId, message } = action.payload;
       const chat = state.chatsMap[chatId];
       if (chat) {
-        chat.messages.unshift(action.payload.message);
+        chat.messages.push(message); // New messages go to the bottom
         chat.updatedAt = new Date().toISOString();
       } else {
         state.chatsMap[chatId] = {
           id: chatId,
-          title: action.payload.message.text,
-          messages: [],
+          title: message.text.slice(0, 30) || 'New Chat',
+          messages: [message],
           updatedAt: new Date().toISOString(),
         };
-        state.chatsMap[chatId].messages.unshift(action.payload.message);
       }
     },
 
@@ -68,38 +69,33 @@ export const chatSlice = createSlice({
       state,
       action: PayloadAction<{ chatId: string; isTyping: boolean }>,
     ) => {
-      const chatId = action.payload.chatId;
-      const chat = state.chatsMap[chatId];
-      if (chat) {
-        state.chatsParamsMap[chatId] = {
-          ...state.chatsParamsMap[chatId],
-          isTyping: action.payload.isTyping,
-        };
-      } else {
-        state.chatsParamsMap[chatId] = {
-          ...initialChatsParams,
-          isTyping: action.payload.isTyping,
-        };
-      }
+      const { chatId, isTyping } = action.payload;
+      state.chatsParamsMap[chatId] = {
+        ...(state.chatsParamsMap[chatId] || initialChatsParams),
+        isTyping,
+      };
     },
 
     setIsLoading: (
       state,
       action: PayloadAction<{ chatId: string; isLoading: boolean }>,
     ) => {
-      const chatId = action.payload.chatId;
-      const chat = state.chatsMap[chatId];
-      if (chat) {
-        state.chatsParamsMap[chatId] = {
-          ...state.chatsParamsMap[chatId],
-          isLoading: action.payload.isLoading,
-        };
-      } else {
-        state.chatsParamsMap[chatId] = {
-          isTyping: false,
-          isLoading: action.payload.isLoading,
-        };
-      }
+      const { chatId, isLoading } = action.payload;
+      state.chatsParamsMap[chatId] = {
+        ...(state.chatsParamsMap[chatId] || initialChatsParams),
+        isLoading,
+      };
+    },
+
+    setError: (
+      state,
+      action: PayloadAction<{ chatId: string; error?: string }>,
+    ) => {
+      const { chatId, error } = action.payload;
+      state.chatsParamsMap[chatId] = {
+        ...(state.chatsParamsMap[chatId] || initialChatsParams),
+        error,
+      };
     },
 
     setChatsArrayToMap: (
@@ -108,26 +104,84 @@ export const chatSlice = createSlice({
     ) => {
       const chatsArray = action.payload.chatsArray;
       chatsArray.forEach(chat => {
-        state.chatsMap[chat.id] = chat;
+        state.chatsMap[chat.id] = {
+          ...chat,
+          messages: chat.messages || [], // Ensure messages array exists
+        };
       });
     },
 
     setMessagesByChatId: (
       state,
-      action: PayloadAction<{ chatId: string; messages: ChatMessage[] }>,
+      action: PayloadAction<{
+        chatId: string;
+        messages: ChatMessage[];
+        page: number;
+        totalPages: number;
+        shouldKeepExisting?: boolean;
+      }>,
     ) => {
-      const chatId = action.payload.chatId;
+      const {
+        chatId,
+        messages,
+        page,
+        totalPages,
+        shouldKeepExisting = false,
+      } = action.payload;
       const chat = state.chatsMap[chatId];
+
+      state.chatsParamsMap[chatId] = {
+        ...(state.chatsParamsMap[chatId] || initialChatsParams),
+        currentPage: page,
+        totalPages,
+        hasMoreMessages: page < totalPages,
+        isLoading: false,
+        error: undefined,
+      };
+
       if (chat) {
-        chat.messages = action.payload.messages;
+        if (shouldKeepExisting && page > 1) {
+          chat.messages = Array.from(
+            new Map(
+              [...chat.messages, ...messages].map(m => [m.id, m]),
+            ).values(),
+          );
+        } else {
+          chat.messages = messages;
+        }
+        chat.updatedAt = new Date().toISOString();
       } else {
         state.chatsMap[chatId] = {
           id: chatId,
-          title: '',
-          messages: action.payload.messages,
+          title:
+            messages.length > 0 ? messages[0].text.slice(0, 30) : 'New Chat',
+          messages,
           updatedAt: new Date().toISOString(),
         };
       }
+    },
+
+    renameChat: (
+      state,
+      action: PayloadAction<{ chatId: string; newTitle: string }>,
+    ) => {
+      const { chatId, newTitle } = action.payload;
+      const chat = state.chatsMap[chatId];
+      if (chat) {
+        chat.title = newTitle;
+        chat.updatedAt = new Date().toISOString();
+      }
+    },
+
+    deleteChat: (state, action: PayloadAction<string>) => {
+      const chatId = action.payload;
+      delete state.chatsMap[chatId];
+      delete state.chatsParamsMap[chatId];
+    },
+
+    deleteAllChats: state => {
+      state.chatsMap = {};
+      state.chatsParamsMap = {};
     },
   },
 });
@@ -142,4 +196,8 @@ export const {
   setIsLoading,
   updateThreadId,
   setMessagesByChatId,
+  setError,
+  renameChat,
+  deleteChat,
+  deleteAllChats,
 } = chatSlice.actions;

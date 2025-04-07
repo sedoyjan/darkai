@@ -24,42 +24,42 @@ import {
 
 export const getMessagesThunk = createAsyncThunk<
   void,
-  { page: number },
+  { page: number; chatId: string },
   { state: RootState }
->('app/getMessagesThunk', async ({ page }, { dispatch, getState }) => {
+>('app/getMessagesThunk', async ({ page, chatId }, { dispatch, getState }) => {
   const state = getState();
   const user = selectUser(state);
-  const isBotTyping = selectIsBotTyping(state);
+  const isBotTyping = selectIsBotTyping(state, chatId);
 
   if (!user || (isBotTyping && page === 1)) {
     return;
   }
 
   try {
-    dispatch(setIsLoading({ isLoading: true }));
+    dispatch(setIsLoading({ isLoading: true, chatId }));
 
-    const { data } = await apiClient.getChatGetMessages(page, 20);
+    const { data } = await apiClient.getChatGetMessages(chatId, page, 20);
 
-    // dispatch(
-    //   setMessages({
-    //     page: data.pagination.page,
-    //     shouldKeepExisting: page > 1,
-    //     hasMoreMessages: !!data.messages.length,
-    //     messages: data.messages.map(m => {
-    //       return {
-    //         ...m,
-    //         imageUrl: m.imageUrl || undefined,
-    //         imageHash: m.imageHash || undefined,
-    //         createdAt: m.createdAt as string,
-    //         type: m.type as ChatMessageType,
-    //       };
-    //     }),
-    //   }),
-    // );
+    dispatch(
+      setMessagesByChatId({
+        chatId,
+        messages: data.messages.map(m => ({
+          ...m,
+          createdAt: m.createdAt as string,
+          type: m.type as ChatMessageType,
+        })),
+        page: data.pagination.page,
+        totalPages: data.pagination.totalPages,
+        shouldKeepExisting: page > 1,
+      }),
+    );
+
     eventEmitter.emit('receivedMessages');
   } catch (error) {
-    console.log('getMessagesThunk', { error });
-    dispatch(setIsLoading({ isLoading: false }));
+    console.error('getMessagesThunk error:', error);
+    dispatch(setIsLoading({ isLoading: false, chatId }));
+  } finally {
+    dispatch(setIsLoading({ isLoading: false, chatId }));
   }
 });
 
@@ -101,12 +101,11 @@ export const sendMessageThunk = createAsyncThunk<
 
   await delay(200);
 
-  dispatch(setIsBotTyping({ isTyping: true }));
-  // const { data } = await apiClient.getUserMe();
-  // dispatch(setHasFreeRequests({ hasFreeRequests: data.hasFreeRequests }));
+  dispatch(setIsBotTyping({ chatId, isTyping: true }));
+  const { data } = await apiClient.getUserMe();
+  dispatch(setHasFreeRequests({ hasFreeRequests: data.hasFreeRequests }));
 
-  // if (data.hasFreeRequests) {
-  if (true) {
+  if (data.hasFreeRequests) {
     eventEmitter.emit('newMessage');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
@@ -144,7 +143,7 @@ export const sendMessageThunk = createAsyncThunk<
       console.log('sendMessageThunk', { error });
     }
   }
-  dispatch(setIsBotTyping({ isTyping: false }));
+  dispatch(setIsBotTyping({ chatId, isTyping: false }));
   const { data: latestData } = await apiClient.getUserMe();
   dispatch(setHasFreeRequests({ hasFreeRequests: latestData.hasFreeRequests }));
 });
@@ -168,34 +167,8 @@ export const getChatsThunk = createAsyncThunk<
         return {
           ...chat,
           messages: [],
-        };
-      }),
-    }),
-  );
-});
-
-export const getMessagesByChatIdThunk = createAsyncThunk<
-  void,
-  { chatId: string },
-  { state: RootState }
->('app/getChatsThunk', async ({ chatId }, { dispatch, getState }) => {
-  const state = getState();
-  const user = selectUser(state);
-
-  if (!user) {
-    return;
-  }
-
-  const { data } = await apiClient.getChatGetMessages(chatId, 1, 500);
-
-  dispatch(
-    setMessagesByChatId({
-      chatId,
-      messages: data.messages.map(m => {
-        return {
-          ...m,
-          createdAt: m.createdAt as string,
-          type: m.type as ChatMessageType,
+          threadId: chat.threadId || undefined,
+          updatedAt: chat.updatedAt as string,
         };
       }),
     }),

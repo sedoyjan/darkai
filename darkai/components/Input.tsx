@@ -1,10 +1,12 @@
 import { omit } from 'lodash';
 import { ForwardedRef, forwardRef, useMemo } from 'react';
 import {
+  StyleProp,
   StyleSheet,
   Text,
   TextInput,
   TextInputProps as RNTextInputProps,
+  TextStyle,
   View,
   ViewStyle,
 } from 'react-native';
@@ -24,6 +26,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     color: Colors.primaryText,
     fontSize: 16,
+    lineHeight: 24,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  inputMultiline: {
+    maxHeight: 96,
+    textAlignVertical: 'top',
   },
   counterWrapper: {
     flexDirection: 'row',
@@ -47,11 +56,14 @@ export const Input = forwardRef(
   (props: TextInputProps, ref: ForwardedRef<TextInput>) => {
     const inputStyle = useMemo(() => {
       const passedStyle = (props.style || {}) as ViewStyle;
-      if (props.maxLength) {
-        return { ...passedStyle, paddingBottom: 0, ...styles.input };
-      }
-      return { ...passedStyle, ...styles.input };
-    }, [props.maxLength, props.style]);
+      const isMultiline = props.multiline ?? false;
+      return {
+        ...passedStyle,
+        ...styles.input,
+        ...(isMultiline ? styles.inputMultiline : {}),
+        ...(props.maxLength && !isMultiline ? { paddingBottom: 0 } : {}),
+      } as StyleProp<TextStyle>;
+    }, [props.multiline, props.maxLength, props.style]);
 
     const restProps = useMemo(() => omit(props, 'style'), [props]);
 
@@ -60,26 +72,25 @@ export const Input = forwardRef(
     }, [props.wrapperStyle]);
 
     return (
-      <>
-        <Panel style={mergedWrapperStyle}>
-          <TextInput
-            ref={ref}
-            style={inputStyle}
-            placeholderTextColor={Colors.placeholder}
-            {...restProps}
-            autoComplete="off"
-            autoCorrect={false}
-            spellCheck={false}
-          />
-          {props.maxLength ? (
-            <View style={styles.counterWrapper}>
-              <Text style={styles.counter}>
-                {props.maxLength - (props.value?.length || 0)}
-              </Text>
-            </View>
-          ) : null}
-        </Panel>
-      </>
+      <Panel style={mergedWrapperStyle}>
+        <TextInput
+          ref={ref}
+          style={inputStyle}
+          placeholderTextColor={Colors.placeholder}
+          {...restProps}
+          autoComplete="off"
+          autoCorrect={false}
+          spellCheck={false}
+          multiline={props.multiline ?? false}
+        />
+        {props.maxLength ? (
+          <View style={styles.counterWrapper}>
+            <Text style={styles.counter}>
+              {props.maxLength - (props.value?.length || 0)}
+            </Text>
+          </View>
+        ) : null}
+      </Panel>
     );
   },
 );

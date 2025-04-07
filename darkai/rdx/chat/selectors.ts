@@ -48,8 +48,8 @@ export const makeSelectChatMessages = () =>
           text: 'out-of-free-messages',
           type: ChatMessageType.BOT,
           createdAt: new Date().toISOString(),
-          imageUrl: '',
           userId: 'bot',
+          chatId,
         });
       }
 
@@ -59,8 +59,8 @@ export const makeSelectChatMessages = () =>
           text: 'bot-typing',
           type: ChatMessageType.BOT,
           createdAt: new Date().toISOString(),
-          imageUrl: '',
           userId: 'bot',
+          chatId,
         });
       }
 
@@ -70,8 +70,8 @@ export const makeSelectChatMessages = () =>
           text: 'no-messages',
           type: ChatMessageType.BOT,
           createdAt: new Date().toISOString(),
-          imageUrl: '',
           userId: 'bot',
+          chatId,
         });
       }
 
@@ -88,9 +88,3 @@ export const selectChats = (state: RootState) => {
   });
   return chats.length ? chats : NO_CHATS;
 };
-
-export const selectCurrentPage = (state: RootState) => state.chat.currentPage;
-export const selectTotalPages = (state: RootState) => state.chat.currentPage;
-export const selectTotalMessages = (state: RootState) => state.chat.currentPage;
-export const selectHasMoreMessages = (state: RootState) =>
-  state.chat.hasMoreMessages;

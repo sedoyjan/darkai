@@ -4,8 +4,8 @@ import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
 
-import { Background } from './Background';
 import { Icon } from '../blocks/Icon';
+import { Background } from './Background';
 
 const styles = StyleSheet.create({
   wrapper: {

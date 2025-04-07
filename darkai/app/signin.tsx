@@ -1,4 +1,3 @@
-import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,8 +19,6 @@ import {
 import { setIsPrivacyAccepted, setIsTermsAccepted } from '@/rdx/settings/slice';
 import { useAppDispatch, useAppSelector } from '@/rdx/store';
 import { sharedStyles } from '@/sharedStyles';
-
-import { RootParamList } from './_layout';
 
 const styles = StyleSheet.create({
   container: {
@@ -56,8 +53,8 @@ export default function SignInScreen() {
   const dispatch = useAppDispatch();
   const isTermsAccepted = useAppSelector(selectIsTermsAccepted);
   const isPrivacyAccepted = useAppSelector(selectIsPrivacyAccepted);
-  const route = useRoute<RouteProp<RootParamList, 'SignIn'>>();
-  const { text: messageText, imageUri: messageImageUrl } = route.params;
+  // const route = useRoute<RouteProp<RootParamList, 'SignIn'>>();
+  // const { text: messageText, imageUri: messageImageUrl } = route.params;
   const isSignInFlowInProgress = useAppSelector(selectIsSignInFlowInProgress);
 
   const onTermsPress = useCallback(() => {

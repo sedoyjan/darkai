@@ -2,7 +2,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, StyleSheet } from 'react-native';
+import { Dimensions, Image, StyleSheet } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
 import { Background } from '@/components/Background';
@@ -11,11 +11,14 @@ import { usePreviousWithInitialValue } from '@/hooks/usePrevious';
 import { setIsOnboardingPassed, setIsOnboardingSkipped } from '@/rdx/app/slice';
 import { useAppDispatch } from '@/rdx/store';
 
+const windowWidth = Dimensions.get('window').width;
+const imageSize = windowWidth - 32;
+
 const styles = StyleSheet.create({
   image: {
-    width: 300,
-    height: 300,
-    marginTop: -150,
+    width: imageSize,
+    height: imageSize,
+    marginTop: -imageSize / 2,
     borderRadius: 16,
     borderWidth: 1,
     borderColor: Colors.borderColor,
@@ -37,57 +40,46 @@ export default function OnboardingScreen() {
         image: (
           <Image
             style={styles.image}
-            source={require('../assets/images/onboarding/welcome.png')}
+            source={require('../assets/images/onboarding/Onboarding-1.png')}
           />
         ),
 
-        title: t('screns.onboarding.welcome.title'),
-        subtitle: t('screns.onboarding.welcome.subtitle'),
+        title: t('screens.onboarding.step1.title'),
+        subtitle: t('screens.onboarding.step1.description'),
       },
       {
         backgroundColor: 'transparent',
         image: (
           <Image
             style={styles.image}
-            source={require('../assets/images/onboarding/organize.png')}
+            source={require('../assets/images/onboarding/Onboarding-2.png')}
           />
         ),
-        title: t('screns.onboarding.organize.title'),
-        subtitle: t('screns.onboarding.organize.subtitle'),
+        title: t('screens.onboarding.step2.title'),
+        subtitle: t('screens.onboarding.step2.description'),
       },
       {
         backgroundColor: 'transparent',
         image: (
           <Image
             style={styles.image}
-            source={require('../assets/images/onboarding/progress.png')}
+            source={require('../assets/images/onboarding/Onboarding-3.png')}
           />
         ),
-        title: t('screns.onboarding.progress.title'),
-        subtitle: t('screns.onboarding.progress.subtitle'),
+        title: t('screens.onboarding.step3.title'),
+        subtitle: t('screens.onboarding.step3.description'),
       },
       {
         backgroundColor: 'transparent',
         image: (
           <Image
             style={styles.image}
-            source={require('../assets/images/onboarding/reminders.png')}
+            source={require('../assets/images/onboarding/Onboarding-4.png')}
           />
         ),
-        title: t('screns.onboarding.reminders.title'),
-        subtitle: t('screns.onboarding.reminders.subtitle'),
+        title: t('screens.onboarding.step4.title'),
+        subtitle: t('screens.onboarding.step4.description'),
       },
-      // {
-      //   backgroundColor: 'transparent',
-      //   image: (
-      //     <Image
-      //       style={styles.image}
-      //       source={require('../assets/images/onboarding/premium.png')}
-      //     />
-      //   ),
-      //   title: t('screns.onboarding.premium.title'),
-      //   subtitle: t('screns.onboarding.premium.subtitle'),
-      // },
     ];
   }, [t]);
 

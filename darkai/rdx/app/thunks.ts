@@ -5,6 +5,7 @@ import {
   signInAsync,
 } from 'expo-apple-authentication';
 import { getLocales } from 'expo-localization';
+import { Href } from 'expo-router';
 import Purchases from 'react-native-purchases';
 
 import { apiClient } from '@/api';
@@ -104,7 +105,6 @@ export const initThunk = createAsyncThunk<
   undefined,
   { state: RootState }
 >('app/initThunk', async (_, { dispatch, getState }) => {
-  console.log('🚀 ~ > ~ initThunk:');
   const initialState = getState();
   const isDeveloper = selectIsDeveloper(initialState);
 
@@ -149,7 +149,7 @@ export const initThunk = createAsyncThunk<
   }
 
   const user = selectUser(getState());
-  console.log('🚀 ~ > ~ user:', user);
+
   if (!user) {
     return;
   }
@@ -165,7 +165,7 @@ export const initThunk = createAsyncThunk<
     console.error('getUserMe error', error);
   }
 
-  dispatch(setHasFreeRequests({ value: hasFreeRequests }));
+  dispatch(setHasFreeRequests({ hasFreeRequests }));
   dispatch(getChatsThunk());
 
   const state = getState();
@@ -181,7 +181,7 @@ export const initThunk = createAsyncThunk<
       (isOnboardingPassed || isOnboardingSkipped) &&
       !hasFreeRequests
     ) {
-      sharedRouter.getRouter().push('subscriptionModal');
+      sharedRouter.getRouter().push('/subscriptionModal');
     }
   }, 500);
 });
@@ -223,7 +223,7 @@ export const signInThunk = createAsyncThunk<
   { state: RootState }
 >('app/signIn', async ({ redirectScreen }, { dispatch }) => {
   dispatch(setIsSignInFlowInProgress({ isSignInFlowInProgress: true }));
-  console.log('signInThunk 1');
+
   try {
     const credential = await signInAsync({
       requestedScopes: [
@@ -231,7 +231,6 @@ export const signInThunk = createAsyncThunk<
         AppleAuthenticationScope.EMAIL,
       ],
     });
-    console.log('signInThunk 2');
 
     const appleCredential = auth.AppleAuthProvider.credential(
       credential.identityToken,
@@ -255,7 +254,7 @@ export const signInThunk = createAsyncThunk<
       await dispatch(postUserLoginThunk());
 
       if (redirectScreen) {
-        sharedRouter.getRouter().replace(redirectScreen);
+        sharedRouter.getRouter().replace(redirectScreen as Href);
       }
     }
   } catch (error) {
@@ -272,7 +271,7 @@ export const setupMessagingThunk = createAsyncThunk<
   void,
   undefined,
   { state: RootState }
->('app/setupMessagingThunk', async (_, { dispatch, getState }) => {
+>('app/setupMessagingThunk', async (_, { dispatch }) => {
   try {
     await messaging.requestPermission();
     const token = await messaging.getToken();

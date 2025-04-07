@@ -165,7 +165,7 @@ export const ChatController = (app: Elysia) => {
       .get(
         "/getMessages",
         async ({ user, query }) => {
-          console.time("Get messages");
+          // console.time("Get messages");
           const { chatId, page = 1, limit = 10 } = query;
           const skip = (page - 1) * limit;
 
@@ -222,8 +222,6 @@ export const ChatController = (app: Elysia) => {
             lastDate = message.createdAt;
             messagesWithSystem.push(message);
           });
-
-          console.timeEnd("Get messages");
 
           return {
             messages: messagesWithSystem,
@@ -357,6 +355,60 @@ export const ChatController = (app: Elysia) => {
           }),
           response: t.Object({
             success: t.Boolean(),
+          }),
+          detail: {
+            // tags: ["Chat"],
+          },
+        }
+      )
+      .put(
+        "/rename-chat",
+        async ({ user, body }) => {
+          const { chatId, newTitle } = body;
+
+          const chat = await db.chat.findFirst({
+            where: {
+              id: chatId,
+              userId: user.id,
+            },
+          });
+
+          if (!chat) {
+            throw new Error("Chat not found");
+          }
+
+          const updatedChat = await db.chat.update({
+            where: {
+              id: chatId,
+            },
+            data: {
+              title: newTitle,
+            },
+          });
+
+          return {
+            success: true,
+            chat: {
+              id: updatedChat.id,
+              title: updatedChat.title,
+              threadId: updatedChat.threadId,
+              updatedAt: updatedChat.updatedAt,
+            },
+          };
+        },
+        {
+          body: t.Object({
+            chatId: t.String(),
+            newTitle: t.String(),
+          }),
+          response: t.Object({
+            success: t.Boolean(),
+            chat: t.Object({
+              id: t.String(),
+              title: t.String(),
+              threadId: t.Optional(t.String()),
+              updatedAt: t.String(),
+            }),
           }),
           detail: {
             // tags: ["Chat"],

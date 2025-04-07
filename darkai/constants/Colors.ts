@@ -134,7 +134,7 @@ export const GradientColors = [
 export const CtaGradientColors = [
   Colors.ctaGradientStart,
   Colors.ctaGradientEnd,
-];
+] as const;
 export const TaskColors = [
   Colors.color1,
   Colors.color2,

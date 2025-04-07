@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.overlay,
     borderRadius: 8,
   },
+  buttonWrapper: {
+    justifyContent: 'flex-end',
+  },
 });
 
 interface ChatInputProps {
@@ -106,13 +109,15 @@ export const ChatInput = ({
         onSubmitEditing={isSendButtonDisabled ? undefined : onSubmitEditing}
         blurOnSubmit={false}
         placeholder="Enter your goal"
+        multiline
       />
-
-      <IconButton
-        disabled={isSendButtonDisabled}
-        onPress={onSubmitEditing}
-        name="send"
-      />
+      <View style={styles.buttonWrapper}>
+        <IconButton
+          disabled={isSendButtonDisabled}
+          onPress={onSubmitEditing}
+          name="send"
+        />
+      </View>
     </View>
   );
 };

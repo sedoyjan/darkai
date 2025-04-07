@@ -14,7 +14,7 @@ import { RootParamList } from './_layout';
 export default function SubscriptionModalScreen() {
   const dispatch = useAppDispatch();
 
-  const route = useRoute<RouteProp<RootParamList, 'SubscriptionModal'>>();
+  const _route = useRoute<RouteProp<RootParamList, 'SubscriptionModal'>>();
 
   const router = useRouter();
 
@@ -29,7 +29,7 @@ export default function SubscriptionModalScreen() {
     if (router.canGoBack()) {
       router.back();
     }
-  }, [dispatch, route.params.taskId, router]);
+  }, [dispatch, router]);
 
   const onFail = useCallback(async () => {
     dispatch(setHasActiveSubscription({ hasActiveSubscription: false }));

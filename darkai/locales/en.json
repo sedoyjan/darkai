@@ -23,6 +23,24 @@
     }
   },
   "screens": {
+    "onboarding": {
+      "step1": {
+        "title": "Welcome to Dark AI",
+        "description": "Meet your cunning AI assistant, here to help you scheme and succeed with a mischievous twist!"
+      },
+      "step2": {
+        "title": "Start Scheming",
+        "description": "Chat with your Dark Advisor to get strategic advice on any goal—big or small. What’s your next move?"
+      },
+      "step3": {
+        "title": "Never Lose Momentum",
+        "description": "Your advisor will check in with playful nudges to keep your plans on track, even when you’re away."
+      },
+      "step4": {
+        "title": "Go Limitless",
+        "description": "Start with free messages, then unlock unlimited cunning advice with a subscription. Ready to rule?"
+      }
+    },
     "chat": {
       "botMessages": {
         "no-messages": "Hey! We still don't have any messages here. Tell me about your goals and I'll help you to achieve them.",
@@ -61,7 +79,10 @@
         "text": "Please sign in to be able to share tasks across your devices.",
         "title": "Welcome!"
       },
-      "title": "Profile"
+      "title": "Profile",
+      "signInButton": {
+        "label": "Sign in"
+      }
     },
     "signin": {
       "imAgreeWith": "I'm agree with ",
@@ -82,31 +103,6 @@
     },
     "titles": {
       "developerSettings": "Developer settings"
-    }
-  },
-  "screns": {
-    "onboarding": {
-      "organize": {
-        "subtitle": "Break down tasks into manageable subtasks and prioritize with ease.",
-        "title": "Organize Efficiently"
-      },
-      "progress": {
-        "subtitle": "Monitor your progress with visual indicators and stay motivated.",
-        "title": "Track Your Progress"
-      },
-      "reminders": {
-        "subtitle": "Set due dates and reminders to ensure you stay on track.",
-        "title": "Never Miss a Deadline"
-      },
-      "welcome": {
-        "subtitle": "Your ultimate AI-powered task manager to boost productivity.",
-        "title": "Welcome to SubTask"
-      }
-    },
-    "profile": {
-      "signInButton": {
-        "label": "Sign in"
-      }
     }
   }
 }

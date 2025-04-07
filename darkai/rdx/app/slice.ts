@@ -142,8 +142,11 @@ export const appSlice = createSlice({
     ) => {
       state.isOnboardingSkipped = action.payload.value;
     },
-    setHasFreeRequests: (state, action: PayloadAction<{ value: boolean }>) => {
-      state.hasFreeRequests = action.payload.value;
+    setHasFreeRequests: (
+      state,
+      action: PayloadAction<{ hasFreeRequests: boolean }>,
+    ) => {
+      state.hasFreeRequests = action.payload.hasFreeRequests;
     },
   },
 });
