@@ -3,8 +3,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
 
+import { BackButton } from '../blocks/BackButton';
 import { Icon, IconName } from '../blocks/Icon';
-import { BackButton } from './BackButton';
 
 const styles = StyleSheet.create({
   wrapper: {

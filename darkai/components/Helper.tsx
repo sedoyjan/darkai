@@ -2,10 +2,10 @@ import { AnimatePresence, MotiView } from 'moti';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { IconButton } from '@/blocks/IconButton';
 import { Colors } from '@/constants/Colors';
 
 import { Emoji, EmojiName } from './Emoji';
-import { IconButton } from './IconButton';
 import { Panel } from './Panel';
 
 interface HelperProps {

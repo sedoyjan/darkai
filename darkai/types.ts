@@ -77,3 +77,10 @@ export interface Chat {
   updatedAt: string;
   messages: ChatMessage[];
 }
+
+export enum RequestState {
+  unset = 'unset', // no calls made yet
+  waiting = 'waiting', // call is in progress
+  success = 'success', // call succeeded
+  failure = 'failure', // call failed
+}

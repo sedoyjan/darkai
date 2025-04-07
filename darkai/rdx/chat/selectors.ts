@@ -1,6 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-import { Chat, ChatMessage, ChatMessageType } from '@/types';
+import { Chat, ChatMessage, ChatMessageType, RequestState } from '@/types';
 
 import { RootState } from '..';
 import {
@@ -8,6 +8,14 @@ import {
   selectHasFreeRequests,
   selectIsAuthenticated,
 } from '../app/selectors';
+
+export const selectChatById = (state: RootState, chatId: string) => {
+  return state.chat.chatsMap[chatId];
+};
+
+export const selectChatTitleById = (state: RootState, chatId: string) => {
+  return state.chat.chatsMap[chatId]?.title || '';
+};
 
 const NO_MESSAGES: ChatMessage[] = [];
 export const selectMessagesByChatId = (state: RootState, chatId: string) => {
@@ -87,4 +95,15 @@ export const selectChats = (state: RootState) => {
     );
   });
   return chats.length ? chats : NO_CHATS;
+};
+
+export const selectAreChatsLoading = (state: RootState) =>
+  [RequestState.waiting, RequestState.unset].includes(
+    state.chat.getChatsRequestState,
+  );
+
+export const selectChatListHash = (state: RootState) => {
+  return Object.values(state.chat.chatsMap)
+    .map(chat => chat.updatedAt)
+    .join(',');
 };

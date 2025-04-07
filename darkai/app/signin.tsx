@@ -9,7 +9,7 @@ import { AppleSignInButton } from '@/components/AppleSignInButton';
 import { Background } from '@/components/Background';
 import { CheckBox } from '@/components/CheckBox';
 import { Header } from '@/components/Header';
-import { Spacer } from '@/components/Spacer';
+import { Spacer } from '@/blocks/Spacer';
 import { Colors } from '@/constants/Colors';
 import { selectIsSignInFlowInProgress } from '@/rdx/app/selectors';
 import {

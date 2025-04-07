@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '@/blocks/Button';
+import { Separator } from '@/blocks/Separator';
 import { Background } from '@/components/Background';
 import { Header } from '@/components/Header';
 import { SettingsButton } from '@/components/SettingsButton';
@@ -41,11 +42,6 @@ const styles = StyleSheet.create({
     color: Colors.white,
     marginBottom: 8,
   },
-  separator: {
-    height: 1,
-    backgroundColor: Colors.borderColor,
-    marginRight: -16,
-  },
 });
 
 export default function DeveloperSettingsScreen() {
@@ -78,7 +74,7 @@ export default function DeveloperSettingsScreen() {
               1,
             )}
           </Text>
-          <View style={styles.separator} />
+          <Separator />
 
           <SettingsButton
             label={t('screens.developerSettings.toggleSubscription')}

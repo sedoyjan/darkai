@@ -40,6 +40,10 @@ export const ChatListItem = memo(({ chat }: ChatListItemProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const onEdit = useCallback(() => {
+    router.push(`/editChatModal?chatId=${chat.id}`);
+  }, [chat.id, router]);
+
   const onPress = useCallback(() => {
     dispatch(
       getMessagesThunk({
@@ -55,7 +59,11 @@ export const ChatListItem = memo(({ chat }: ChatListItemProps) => {
   }, [chat.title]);
 
   return (
-    <TouchableOpacity style={styles.wrapper} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.wrapper}
+      onPress={onPress}
+      onLongPress={onEdit}
+    >
       <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
         {cleanedTitle}
       </Text>

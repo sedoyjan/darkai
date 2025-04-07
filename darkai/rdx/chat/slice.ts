@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Chat, ChatMessage } from '@/types';
+import { Chat, ChatMessage, RequestState } from '@/types';
 
 interface ChatsParams {
   isTyping: boolean;
@@ -22,11 +22,13 @@ const initialChatsParams: ChatsParams = {
 export interface ChatState {
   chatsParamsMap: Record<string, ChatsParams>;
   chatsMap: Record<string, Chat>;
+  getChatsRequestState: RequestState;
 }
 
 const initialState: ChatState = {
   chatsParamsMap: {},
   chatsMap: {},
+  getChatsRequestState: RequestState.unset,
 };
 
 export const chatSlice = createSlice({
@@ -109,6 +111,14 @@ export const chatSlice = createSlice({
           messages: chat.messages || [], // Ensure messages array exists
         };
       });
+      state.getChatsRequestState = RequestState.success;
+    },
+
+    setGetChatsRequestState: (
+      state,
+      action: PayloadAction<{ requestState: RequestState }>,
+    ) => {
+      state.getChatsRequestState = action.payload.requestState;
     },
 
     setMessagesByChatId: (
@@ -200,4 +210,5 @@ export const {
   renameChat,
   deleteChat,
   deleteAllChats,
+  setGetChatsRequestState,
 } = chatSlice.actions;

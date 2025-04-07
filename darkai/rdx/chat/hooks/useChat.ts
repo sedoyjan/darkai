@@ -4,6 +4,7 @@ import { RootState } from '../..';
 import { useAppDispatch, useAppSelector } from '../../store';
 import {
   makeSelectChatMessages,
+  selectChatTitleById,
   selectIsBotTyping,
   selectIsChatDisabled,
   selectIsLoading,
@@ -27,6 +28,10 @@ export const useChat = (chatId: string) => {
 
   const isBotTyping = useAppSelector((state: RootState) =>
     selectIsBotTyping(state, chatId),
+  );
+
+  const chatTitle = useAppSelector((state: RootState) =>
+    selectChatTitleById(state, chatId),
   );
 
   const currentPage = useAppSelector(
@@ -69,5 +74,6 @@ export const useChat = (chatId: string) => {
     totalMessages,
     hasMoreMessages,
     isDisabled,
+    title: chatTitle,
   };
 };

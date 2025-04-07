@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
@@ -9,6 +9,9 @@ import { Background } from '@/components/Background';
 import { Header } from '@/components/Header';
 import { Input } from '@/components/Input';
 import { SafeAreaKeyboardAvoidingView } from '@/components/SafeAreaKeyboardAvoidingView';
+import { useChat } from '@/rdx/chat/hooks/useChat';
+import { renameChatThunk } from '@/rdx/chat/thunks';
+import { useAppDispatch } from '@/rdx/store';
 import { sharedStyles } from '@/sharedStyles';
 
 import { ChatsParamList } from './(tabs)/(chats)/_layout';
@@ -31,10 +34,17 @@ const styles = StyleSheet.create({
 });
 
 export default function EditChatModalScreen() {
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const router = useRouter();
   const route = useRoute<RouteProp<ChatsParamList, 'EditChatModalScreen'>>();
   const { chatId } = route.params;
+  const { title } = useChat(chatId);
+  const [chatTitle, setChatTitle] = useState(title);
+
+  const hasChamgedTitle = chatTitle !== title;
+  const isValidTitle = chatTitle.length > 0;
+  const isValid = hasChamgedTitle && isValidTitle;
 
   const onClose = useCallback(() => {
     if (router.canGoBack()) {
@@ -43,8 +53,14 @@ export default function EditChatModalScreen() {
   }, [router]);
 
   const onSave = useCallback(() => {
-    // Handle save action
-  }, []);
+    dispatch(
+      renameChatThunk({
+        chatId,
+        title: chatTitle,
+      }),
+    );
+  }, [chatId, chatTitle, dispatch]);
+
   const onDelete = useCallback(() => {
     Alert.alert(
       t('screens.editChatModal.deleteConfirmation.title'),
@@ -79,12 +95,12 @@ export default function EditChatModalScreen() {
             <Text style={sharedStyles.text}>
               {t('screens.editChatModal.sections.name.label')}
             </Text>
-            <Input />
-            <Text>{chatId}</Text>
+            <Input value={chatTitle} onChangeText={setChatTitle} />
           </View>
         </View>
         <View style={styles.buttons}>
           <Button
+            isDisabled={!isValid}
             isCTA
             title={t('screens.editChatModal.buttons.save')}
             onPress={onSave}

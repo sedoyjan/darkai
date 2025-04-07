@@ -5,7 +5,7 @@ import { Href } from 'expo-router';
 import { apiClient } from '@/api';
 import { eventEmitter } from '@/EventEmitter';
 import { sharedRouter } from '@/services/sharedRouter';
-import { ChatMessageType } from '@/types';
+import { ChatMessageType, RequestState } from '@/types';
 import { uuid } from '@/utils';
 import { delay } from '@/utils/utils';
 
@@ -16,6 +16,7 @@ import { selectIsBotTyping } from './selectors';
 import {
   pushMessage,
   setChatsArrayToMap,
+  setGetChatsRequestState,
   setIsBotTyping,
   setIsLoading,
   setMessagesByChatId,
@@ -160,6 +161,8 @@ export const getChatsThunk = createAsyncThunk<
     return;
   }
 
+  dispatch(setGetChatsRequestState({ requestState: RequestState.waiting }));
+
   const { data } = await apiClient.getChatGetChats();
   dispatch(
     setChatsArrayToMap({
@@ -173,4 +176,28 @@ export const getChatsThunk = createAsyncThunk<
       }),
     }),
   );
+  dispatch(setGetChatsRequestState({ requestState: RequestState.success }));
+});
+
+export const renameChatThunk = createAsyncThunk<
+  void,
+  {
+    chatId: string;
+    title: string;
+  },
+  { state: RootState }
+>('app/renameChatThunk', async ({ chatId, title }, { dispatch, getState }) => {
+  const state = getState();
+  const user = selectUser(state);
+
+  if (!user) {
+    return;
+  }
+
+  await apiClient.putChatRenameChat({
+    chatId,
+    newTitle: title,
+  });
+
+  dispatch(getChatsThunk());
 });
