@@ -4,7 +4,7 @@ import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 import { IS_DEV } from '@/const';
 
 const APIKeys = {
-  apple: 'appl_xlqIrSzyNscNtcGXSwFGXcxXaRn',
+  apple: 'appl_lkftktjGVRKPuNXucexWIbGrBxv',
   google: 'your_revenuecat_google_api_key',
 };
 
@@ -18,8 +18,13 @@ export const configurePurchases = async () => {
   }
   if (Platform.OS === 'ios') {
     await Purchases.configure({ apiKey: APIKeys.apple });
+
+    // const offerings = await Purchases.getOfferings();
+    // console.log('🚀 ~ configurePurchases ~ offerings:', offerings);
+
     return { isConfigured: true };
   }
+
   return { isConfigured: false };
 };
 
@@ -29,7 +34,7 @@ export const checkSubscription = async () => {
   try {
     const customerInfo = await Purchases.getCustomerInfo();
     hasActiveSubscription = customerInfo.activeSubscriptions.includes(
-      'com.sedoyjan.subtaskai.premium',
+      'com.sedoyjan.darkai.premium.monthly',
     );
   } catch (error) {
     console.error('Error checking subscription:', error);

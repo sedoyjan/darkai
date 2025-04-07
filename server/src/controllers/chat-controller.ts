@@ -26,7 +26,7 @@ export const ChatController = (app: Elysia) => {
           set.status = 404;
           return { error: "User not found" };
         }
-
+        console.log("User data:", userData);
         // Проверяем, если у пользователя нет активной подписки и превышен лимит
         // if (
         //   !userData.hasActiveSubscription &&

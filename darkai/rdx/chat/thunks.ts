@@ -98,7 +98,7 @@ export const sendMessageThunk = createAsyncThunk<
     }),
   );
 
-  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+  // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
   await delay(200);
 
@@ -198,6 +198,25 @@ export const renameChatThunk = createAsyncThunk<
     chatId,
     newTitle: title,
   });
+
+  dispatch(getChatsThunk());
+});
+
+export const deleteChatThunk = createAsyncThunk<
+  void,
+  {
+    chatId: string;
+  },
+  { state: RootState }
+>('app/deleteChatThunk', async ({ chatId }, { dispatch, getState }) => {
+  const state = getState();
+  const user = selectUser(state);
+
+  if (!user) {
+    return;
+  }
+
+  await apiClient.deleteChatDeleteChat(chatId);
 
   dispatch(getChatsThunk());
 });

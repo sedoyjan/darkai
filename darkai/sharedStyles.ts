@@ -39,7 +39,7 @@ export const markdownStyles = StyleSheet.create({
 
   // Horizontal Rule
   hr: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Colors.borderColor,
     height: 1,
   },
 
@@ -56,8 +56,8 @@ export const markdownStyles = StyleSheet.create({
 
   // Blockquotes
   blockquote: {
-    backgroundColor: '#F5F5F5',
-    borderColor: '#CCC',
+    backgroundColor: Colors.semiTransparentBg,
+    borderColor: Colors.borderColor,
     borderLeftWidth: 4,
     marginLeft: 5,
     paddingHorizontal: 5,
@@ -92,8 +92,8 @@ export const markdownStyles = StyleSheet.create({
   // Code
   code_inline: {
     borderWidth: 1,
-    borderColor: '#CCCCCC',
-    backgroundColor: '#f5f5f5',
+    borderColor: Colors.borderColor,
+    backgroundColor: Colors.semiTransparentBg,
     padding: 10,
     borderRadius: 4,
     ...Platform.select({
@@ -107,8 +107,8 @@ export const markdownStyles = StyleSheet.create({
   },
   code_block: {
     borderWidth: 1,
-    borderColor: '#CCCCCC',
-    backgroundColor: '#f5f5f5',
+    borderColor: Colors.borderColor,
+    backgroundColor: Colors.semiTransparentBg,
     padding: 10,
     borderRadius: 4,
     ...Platform.select({
@@ -122,8 +122,8 @@ export const markdownStyles = StyleSheet.create({
   },
   fence: {
     borderWidth: 1,
-    borderColor: '#CCCCCC',
-    backgroundColor: '#f5f5f5',
+    borderColor: Colors.borderColor,
+    backgroundColor: Colors.semiTransparentBg,
     padding: 10,
     borderRadius: 4,
     ...Platform.select({

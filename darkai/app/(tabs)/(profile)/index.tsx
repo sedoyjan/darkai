@@ -284,7 +284,7 @@ export default function ProfileScreen() {
             <Button
               title={t('screens.profile.buttons.subscribe')}
               onPress={onSubscribe}
-              isSuccess
+              isCTA
             />
           </View>
         )}

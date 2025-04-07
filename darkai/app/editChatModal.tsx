@@ -10,7 +10,7 @@ import { Header } from '@/components/Header';
 import { Input } from '@/components/Input';
 import { SafeAreaKeyboardAvoidingView } from '@/components/SafeAreaKeyboardAvoidingView';
 import { useChat } from '@/rdx/chat/hooks/useChat';
-import { renameChatThunk } from '@/rdx/chat/thunks';
+import { deleteChatThunk, renameChatThunk } from '@/rdx/chat/thunks';
 import { useAppDispatch } from '@/rdx/store';
 import { sharedStyles } from '@/sharedStyles';
 
@@ -41,6 +41,8 @@ export default function EditChatModalScreen() {
   const { chatId } = route.params;
   const { title } = useChat(chatId);
   const [chatTitle, setChatTitle] = useState(title);
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const hasChamgedTitle = chatTitle !== title;
   const isValidTitle = chatTitle.length > 0;
@@ -61,6 +63,12 @@ export default function EditChatModalScreen() {
     );
   }, [chatId, chatTitle, dispatch]);
 
+  const onConfirmedDelete = useCallback(async () => {
+    router.back();
+    router.back();
+    dispatch(deleteChatThunk({ chatId }));
+  }, [dispatch, chatId, router]);
+
   const onDelete = useCallback(() => {
     Alert.alert(
       t('screens.editChatModal.deleteConfirmation.title'),
@@ -73,7 +81,7 @@ export default function EditChatModalScreen() {
         {
           text: t('screens.editChatModal.deleteConfirmation.confirm'),
           onPress: () => {
-            // Handle delete action
+            onConfirmedDelete();
           },
         },
       ],

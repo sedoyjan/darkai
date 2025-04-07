@@ -122,14 +122,14 @@ export const initThunk = createAsyncThunk<
     console.error('configurePurchases error', error);
   }
 
-  if (!isDeveloper) {
-    try {
-      const hasActiveSubscription = await checkSubscription();
-      dispatch(setHasActiveSubscription({ hasActiveSubscription }));
-    } catch (error) {
-      console.warn('checkSubscription error', error);
-    }
+  // if (!isDeveloper) {
+  try {
+    const hasActiveSubscription = await checkSubscription();
+    dispatch(setHasActiveSubscription({ hasActiveSubscription }));
+  } catch (error) {
+    console.warn('checkSubscription error', error);
   }
+  // }
 
   try {
     await messaging.requestPermission();

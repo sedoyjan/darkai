@@ -43,7 +43,8 @@ export default function SubscriptionModalScreen() {
             displayCloseButton: true,
           }}
           onDismiss={onClose}
-          onPurchaseError={() => {
+          onPurchaseError={error => {
+            console.log('🚀 ~ SubscriptionModalScreen ~ error:', error);
             onFail();
           }}
           onPurchaseCancelled={() => {

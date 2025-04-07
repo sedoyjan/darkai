@@ -73,6 +73,7 @@ export default function ChatsScreen() {
         <View style={sharedStyles.bottomButton}>
           <Button
             title="Start a new chat"
+            isCTA
             onPress={() => {
               router.push(`/(tabs)/(chats)/${uuid()}?title=New Chat`);
             }}

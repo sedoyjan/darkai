@@ -17,8 +17,13 @@ export const UserController = (app: Elysia) => {
             });
 
             const hasFreeRequests = userRecord
-              ? userRecord.requestsCount < 3
+              ? userRecord.requestsCount < 999
               : false;
+
+            console.log(
+              "🚀 ~ userRecord.requestsCount",
+              userRecord?.requestsCount || 0
+            );
 
             return {
               hasFreeRequests,

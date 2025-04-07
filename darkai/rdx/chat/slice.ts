@@ -55,7 +55,7 @@ export const chatSlice = createSlice({
       const { chatId, message } = action.payload;
       const chat = state.chatsMap[chatId];
       if (chat) {
-        chat.messages.push(message); // New messages go to the bottom
+        chat.messages.unshift(message);
         chat.updatedAt = new Date().toISOString();
       } else {
         state.chatsMap[chatId] = {
@@ -105,6 +105,7 @@ export const chatSlice = createSlice({
       action: PayloadAction<{ chatsArray: Chat[] }>,
     ) => {
       const chatsArray = action.payload.chatsArray;
+      state.chatsMap = {};
       chatsArray.forEach(chat => {
         state.chatsMap[chat.id] = {
           ...chat,

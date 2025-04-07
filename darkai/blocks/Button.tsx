@@ -1,4 +1,5 @@
 import * as Haptics from 'expo-haptics';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
@@ -11,7 +12,7 @@ import {
 
 import { Icon, IconName } from '@/blocks/Icon';
 import { ProBadge } from '@/components/ProBadge';
-import { Colors } from '@/constants/Colors';
+import { Colors, CtaGradientColors } from '@/constants/Colors';
 
 interface ButtonProps {
   style?: ViewStyle;
@@ -38,6 +39,9 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.borderColor,
     position: 'relative',
     overflow: 'hidden',
+  },
+  gradient: {
+    ...StyleSheet.absoluteFill,
   },
   textWrapper: {
     flexDirection: 'row',
@@ -81,7 +85,7 @@ export const Button = ({
 
       ...(isGhost ? { backgroundColor: Colors.transparent } : {}),
       ...(isSuccess ? { backgroundColor: Colors.doneColor } : {}),
-      ...(isCTA ? { backgroundColor: Colors.doneColor } : {}),
+      // ...(isCTA ? { backgroundColor: Colors.doneColor } : {}),
       ...(isSmall
         ? {
             paddingVertical: 4,
@@ -91,7 +95,7 @@ export const Button = ({
         : {}),
       style,
     };
-  }, [isBlocked, isCTA, isGhost, isSmall, isSuccess, style]);
+  }, [isBlocked, isGhost, isSmall, isSuccess, style]);
 
   const textStyle = useMemo(() => {
     return {
@@ -148,6 +152,9 @@ export const Button = ({
       onPressIn={onPressIn}
       style={wrapperStyle}
     >
+      {isCTA ? (
+        <LinearGradient colors={CtaGradientColors} style={styles.gradient} />
+      ) : null}
       {isLoading ? (
         <ActivityIndicator size="small" color="white" />
       ) : (
