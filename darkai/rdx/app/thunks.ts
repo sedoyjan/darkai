@@ -26,10 +26,7 @@ import { RootState } from '..';
 import { getChatsThunk } from '../chat/thunks';
 import {
   selectFcmToken,
-  selectHasActiveSubscription,
   selectIsDeveloper,
-  selectIsOnboardingPassed,
-  selectIsOnboardingSkipped,
   selectLanguageCode,
   selectLaunchCount,
   selectUser,
@@ -168,22 +165,22 @@ export const initThunk = createAsyncThunk<
   dispatch(setHasFreeRequests({ hasFreeRequests }));
   dispatch(getChatsThunk());
 
-  const state = getState();
-  const isOnboardingPassed = selectIsOnboardingPassed(state);
-  const isOnboardingSkipped = selectIsOnboardingSkipped(state);
-  const launchCount = selectLaunchCount(state);
-  const hasActiveSubscription = selectHasActiveSubscription(state);
+  // const state = getState();
+  // const isOnboardingPassed = selectIsOnboardingPassed(state);
+  // const isOnboardingSkipped = selectIsOnboardingSkipped(state);
+  // const launchCount = selectLaunchCount(state);
+  // const hasActiveSubscription = selectHasActiveSubscription(state);
 
-  setTimeout(() => {
-    if (
-      !hasActiveSubscription &&
-      launchCount > 1 &&
-      (isOnboardingPassed || isOnboardingSkipped) &&
-      !hasFreeRequests
-    ) {
-      sharedRouter.getRouter().push('/subscriptionModal');
-    }
-  }, 500);
+  // setTimeout(() => {
+  //   if (
+  //     !hasActiveSubscription &&
+  //     launchCount > 1 &&
+  //     (isOnboardingPassed || isOnboardingSkipped) &&
+  //     !hasFreeRequests
+  //   ) {
+  //     sharedRouter.getRouter().push('/subscriptionModal');
+  //   }
+  // }, 500);
 });
 
 export const signOutThunk = createAsyncThunk<

@@ -2,8 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Button } from '@/blocks/Button';
 import { Background } from '@/components/Background';
-import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
 import { SettingsButton } from '@/components/SettingsButton';
 import { Colors } from '@/constants/Colors';

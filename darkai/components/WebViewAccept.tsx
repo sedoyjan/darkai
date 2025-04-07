@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-import { Button } from '@/components/Button';
+import { Button } from '@/blocks/Button';
 import { Colors } from '@/constants/Colors';
 
 interface WebViewAcceptProps {

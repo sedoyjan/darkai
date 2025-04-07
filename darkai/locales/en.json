@@ -9,7 +9,6 @@
     "priority": {
       "high": "High",
       "low": "Low",
-      "lowest": "Lowest",
       "medium": "Medium"
     },
     "proBadge": {
@@ -23,24 +22,6 @@
     }
   },
   "screens": {
-    "onboarding": {
-      "step1": {
-        "title": "Welcome to Dark AI",
-        "description": "Meet your cunning AI assistant, here to help you scheme and succeed with a mischievous twist!"
-      },
-      "step2": {
-        "title": "Start Scheming",
-        "description": "Chat with your Dark Advisor to get strategic advice on any goal—big or small. What’s your next move?"
-      },
-      "step3": {
-        "title": "Never Lose Momentum",
-        "description": "Your advisor will check in with playful nudges to keep your plans on track, even when you’re away."
-      },
-      "step4": {
-        "title": "Go Limitless",
-        "description": "Start with free messages, then unlock unlimited cunning advice with a subscription. Ready to rule?"
-      }
-    },
     "chat": {
       "botMessages": {
         "no-messages": "Hey! We still don't have any messages here. Tell me about your goals and I'll help you to achieve them.",
@@ -53,8 +34,44 @@
       "recordingMode": "Recording mode",
       "toggleSubscription": "Toggle subscription"
     },
+    "editChatModal": {
+      "buttons": {
+        "delete": "Delete chat",
+        "save": "Save"
+      },
+      "deleteConfirmation": {
+        "cancel": "Cancel",
+        "confirm": "Delete Chat",
+        "message": "Are you sure you want to delete this chat? You can’t undo this.",
+        "title": "Confirm Delete"
+      },
+      "sections": {
+        "name": {
+          "label": "Name"
+        }
+      },
+      "title": "Edit chat"
+    },
     "languages": {
       "title": "Languages"
+    },
+    "onboarding": {
+      "step1": {
+        "description": "Meet your cunning AI assistant, here to help you scheme and succeed with a mischievous twist!",
+        "title": "Welcome to Dark AI"
+      },
+      "step2": {
+        "description": "Chat with your Dark Advisor to get strategic advice on any goal—big or small. What’s your next move?",
+        "title": "Start Scheming"
+      },
+      "step3": {
+        "description": "Your advisor will check in with playful nudges to keep your plans on track, even when you’re away.",
+        "title": "Never Lose Momentum"
+      },
+      "step4": {
+        "description": "Start with free messages, then unlock unlimited cunning advice with a subscription. Ready to rule?",
+        "title": "Go Limitless"
+      }
     },
     "privacyPolicy": {
       "title": "Privacy Policy"
@@ -79,10 +96,10 @@
         "text": "Please sign in to be able to share tasks across your devices.",
         "title": "Welcome!"
       },
-      "title": "Profile",
       "signInButton": {
         "label": "Sign in"
-      }
+      },
+      "title": "Profile"
     },
     "signin": {
       "imAgreeWith": "I'm agree with ",
@@ -91,12 +108,6 @@
       "termsAndConditions": "Terms and Conditions",
       "title": "Sign In",
       "welcome": "Welcome to SubTask AI 🚀"
-    },
-    "taskEditor": {
-      "description": "Description",
-      "dueDate": "Due date",
-      "reminders": "Notifications",
-      "title": "Task title"
     },
     "termsAndConditions": {
       "title": "Terms and Conditions"

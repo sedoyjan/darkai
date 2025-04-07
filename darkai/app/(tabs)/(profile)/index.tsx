@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Button } from '@/blocks/Button';
 import { Background } from '@/components/Background';
-import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
 import { Helper } from '@/components/Helper';
 import { SettingsButton } from '@/components/SettingsButton';

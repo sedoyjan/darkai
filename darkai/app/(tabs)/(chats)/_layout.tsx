@@ -6,6 +6,9 @@ export type ChatsParamList = {
     chatId: string;
     title: string;
   };
+  EditChatModalScreen: {
+    chatId: string;
+  };
 };
 
 export default function Layout() {

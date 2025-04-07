@@ -58,7 +58,6 @@ export default function ChatScreen() {
 
     isDisabled,
   } = useChat(chatId);
-  console.log('🚀 ~ hasMoreMessages', hasMoreMessages);
   const dispatch = useAppDispatch();
   const listRef = useRef<FlashList<ChatMessage>>(null);
   const isFocused = useIsFocused();
@@ -209,17 +208,22 @@ export default function ChatScreen() {
       const height = Math.round(e.nativeEvent.contentSize.height);
       const isEnd = scroll >= height;
 
-      if (isEnd && !isLoadingPrevMessagesRef.current && messages.length > 19) {
+      if (
+        isEnd &&
+        !isLoadingPrevMessagesRef.current &&
+        messages.length > 19 &&
+        hasMoreMessages
+      ) {
         isLoadingPrevMessagesRef.current = true;
         dispatch(getMessagesThunk({ page: currentPage + 1, chatId }));
       }
     },
-    [chatId, currentPage, dispatch, messages.length],
+    [chatId, currentPage, dispatch, hasMoreMessages, messages.length],
   );
 
   const onEdit = useCallback(() => {
-    router.push('/editChatModal');
-  }, [router]);
+    router.push(`/editChatModal?chatId=${chatId}`);
+  }, [chatId, router]);
 
   return (
     <Background>
