@@ -6,11 +6,6 @@
     "upgradeToPlus": "Upgrade to Premium"
   },
   "components": {
-    "priority": {
-      "high": "High",
-      "low": "Low",
-      "medium": "Medium"
-    },
     "proBadge": {
       "pro": "PRO"
     }
@@ -26,6 +21,12 @@
       "botMessages": {
         "no-messages": "Hey! We still don't have any messages here. Tell me about your goals and I'll help you to achieve them.",
         "outOfMessages": "Looks like you are out of messages. Please subscribe to continue using the app."
+      }
+    },
+    "chats": {
+      "robot": {
+        "text": "Let’s craft your first strategic plan with DarkAI",
+        "title": "No Chats Yet"
       }
     },
     "developerSettings": {
@@ -93,7 +94,7 @@
         "title": "Delete account"
       },
       "robot": {
-        "text": "Please sign in to be able to share tasks across your devices.",
+        "text": "Sign in to access your strategic plans across all your devices with Dark AI",
         "title": "Welcome!"
       },
       "signInButton": {
@@ -107,7 +108,7 @@
       "subtitle": "To start using AI features please sign in with your Apple ID",
       "termsAndConditions": "Terms and Conditions",
       "title": "Sign In",
-      "welcome": "Welcome to SubTask AI 🚀"
+      "welcome": "Welcome to Dark AI"
     },
     "termsAndConditions": {
       "title": "Terms and Conditions"

@@ -11,7 +11,7 @@ import { Background } from '@/components/Background';
 import { Header } from '@/components/Header';
 import { Helper } from '@/components/Helper';
 import { SettingsButton } from '@/components/SettingsButton';
-import { Colors } from '@/constants/Colors';
+import { Colors, PremiumGradientColors } from '@/constants/Colors';
 import { LANGUAGES } from '@/i18n';
 import {
   selectHasActiveSubscription,
@@ -86,8 +86,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
 });
-
-const IS_CLEAR_AWAILABLE = false;
 
 export default function ProfileScreen() {
   const { t } = useTranslation();
@@ -177,7 +175,7 @@ export default function ProfileScreen() {
             <View style={styles.premiumWrapper}>
               {hasActiveSubscription ? (
                 <LinearGradient
-                  colors={['#F3FF09', '#C4F244']}
+                  colors={PremiumGradientColors}
                   style={styles.premiumGradient}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
@@ -243,14 +241,12 @@ export default function ProfileScreen() {
             withSeparator
             withArrow
           />
-          {IS_CLEAR_AWAILABLE ? (
-            <SettingsButton
-              icon="trash"
-              label={t('screens.profile.buttons.clearData')}
-              onPress={onClearData}
-              withSeparator
-            />
-          ) : null}
+          <SettingsButton
+            icon="trash"
+            label={t('screens.profile.buttons.clearData')}
+            onPress={onClearData}
+            withSeparator
+          />
           {user ? (
             <SettingsButton
               // iconBackgroundColor={Colors.errorColor}
@@ -279,15 +275,15 @@ export default function ProfileScreen() {
             />
           ) : null}
         </ScrollView>
-        {hasActiveSubscription ? null : (
+        {!hasActiveSubscription && user ? (
           <View style={styles.actions}>
             <Button
               title={t('screens.profile.buttons.subscribe')}
               onPress={onSubscribe}
-              isCTA
+              isSuccess
             />
           </View>
-        )}
+        ) : null}
       </SafeAreaView>
     </Background>
   );

@@ -18,6 +18,7 @@ import { Background } from '@/components/Background';
 import { ChatInput } from '@/components/Chat/ChatInput';
 import { Message } from '@/components/Chat/Message';
 import { Header } from '@/components/Header';
+import { Loader } from '@/components/Loader';
 import { SafeAreaKeyboardAvoidingView } from '@/components/SafeAreaKeyboardAvoidingView';
 import { eventEmitter } from '@/EventEmitter';
 import { useKeyboardListener } from '@/hooks/useKeyboardListener';
@@ -55,7 +56,7 @@ export default function ChatScreen() {
     sendMessage,
     currentPage,
     hasMoreMessages,
-
+    isLoading,
     isDisabled,
   } = useChat(chatId);
   const dispatch = useAppDispatch();
@@ -139,7 +140,7 @@ export default function ChatScreen() {
             <Button
               title={t('common.upgradeToPlus')}
               isSmall
-              isCTA
+              isSuccess
               onPress={onSubscribePress}
             />
           </Message>
@@ -238,15 +239,21 @@ export default function ChatScreen() {
           onRightButtonPress={onEdit}
         />
         <View style={styles.container}>
-          <FlashList
-            onScroll={onScroll}
-            ref={listRef}
-            data={messages}
-            renderItem={renderMessage}
-            estimatedItemSize={200}
-            inverted
-            showsVerticalScrollIndicator={false}
-          />
+          <View style={styles.container}>
+            {isLoading && !messages.length ? (
+              <Loader isVisible />
+            ) : (
+              <FlashList
+                onScroll={onScroll}
+                ref={listRef}
+                data={messages}
+                renderItem={renderMessage}
+                estimatedItemSize={200}
+                inverted
+                showsVerticalScrollIndicator={false}
+              />
+            )}
+          </View>
           <ChatInput
             isDisabled={isDisabled}
             onSendTextMessage={onSendTextMessage}

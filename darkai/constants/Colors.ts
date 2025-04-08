@@ -11,14 +11,17 @@ export const Colors = {
   gradientStart: '#002504',
   gradientEnd: '#020202',
   errorColor: '#FF4C4C',
-  doneColor: '#2ecc71',
+  // doneColor: '#2ecc71',
+  doneColor: '#1A9C51',
   defaultTaskColor: 'rgba(0, 0, 0, 0.2)',
   borderColor: 'rgba(255, 255, 255, 0.2)',
   black: '#000000',
   accentColor1: '#FFAA00',
   accentColor2: '#00BFFF',
-  ctaGradientStart: '#0A3B0E',
-  ctaGradientEnd: '#082C18',
+  ctaGradientStart: '#105915',
+  ctaGradientEnd: '#104E2B',
+  premiumGradientStart: '#F3FF09',
+  premiumGradientEnd: '#C4F244',
 };
 
 export const GradientColors = [
@@ -29,4 +32,9 @@ export const GradientColors = [
 export const CtaGradientColors = [
   Colors.ctaGradientStart,
   Colors.ctaGradientEnd,
+] as const;
+
+export const PremiumGradientColors = [
+  Colors.premiumGradientStart,
+  Colors.premiumGradientEnd,
 ] as const;

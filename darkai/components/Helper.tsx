@@ -1,11 +1,12 @@
 import { AnimatePresence, MotiView } from 'moti';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
+import AssistantImage from '@/assets/images/avatar.png';
 import { IconButton } from '@/blocks/IconButton';
 import { Colors } from '@/constants/Colors';
 
-import { Emoji, EmojiName } from './Emoji';
 import { Panel } from './Panel';
 
 interface HelperProps {
@@ -13,7 +14,6 @@ interface HelperProps {
   text?: string;
   isVisible: boolean;
   children?: ReactNode;
-  emoji: EmojiName;
   withCloseButton?: boolean;
 }
 
@@ -52,6 +52,14 @@ const styles = StyleSheet.create({
   children: {
     marginTop: 8,
   },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: Colors.borderColor,
+    overflow: 'hidden',
+  },
 });
 
 export const Helper = ({
@@ -59,7 +67,6 @@ export const Helper = ({
   title,
   children,
   isVisible,
-  emoji,
   withCloseButton = true,
 }: HelperProps) => {
   const [isVisibleLocal, setIsVisibleLocal] = useState(true);
@@ -94,7 +101,7 @@ export const Helper = ({
         >
           <Panel style={styles.panel}>
             <View style={styles.wrapper}>
-              <Emoji name={emoji} size={64} />
+              <FastImage style={styles.image} source={AssistantImage} />
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
                   <Text style={styles.title}>{title}</Text>

@@ -153,7 +153,12 @@ export const Button = ({
       style={wrapperStyle}
     >
       {isCTA ? (
-        <LinearGradient colors={CtaGradientColors} style={styles.gradient} />
+        <LinearGradient
+          start={{ x: 0.3, y: 0 }}
+          end={{ x: 0.7, y: 1 }}
+          colors={CtaGradientColors}
+          style={styles.gradient}
+        />
       ) : null}
       {isLoading ? (
         <ActivityIndicator size="small" color="white" />

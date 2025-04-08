@@ -109,7 +109,7 @@ export default function EditChatModalScreen() {
         <View style={styles.buttons}>
           <Button
             isDisabled={!isValid}
-            isCTA
+            isSuccess
             title={t('screens.editChatModal.buttons.save')}
             onPress={onSave}
           />

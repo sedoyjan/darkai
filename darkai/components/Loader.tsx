@@ -1,10 +1,12 @@
 import { BlurView } from 'expo-blur';
 import LottieView from 'lottie-react-native';
 import { AnimatePresence, MotiView } from 'moti';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 import loaderAnimation from '@/assets/animations/loader.json';
 import { Colors } from '@/constants/Colors';
+
+const windowWidth = Dimensions.get('window').width;
 
 interface LoaderProps {
   isVisible: boolean;
@@ -25,8 +27,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   animation: {
-    width: 180,
-    height: 180,
+    width: windowWidth * 0.7,
+    height: windowWidth * 0.7,
   },
 });
 
