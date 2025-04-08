@@ -17,7 +17,7 @@ export const UserController = (app: Elysia) => {
             });
 
             const hasFreeRequests = userRecord
-              ? userRecord.requestsCount < 999
+              ? userRecord.requestsCount < 15
               : false;
 
             console.log(
@@ -32,6 +32,75 @@ export const UserController = (app: Elysia) => {
           {
             response: t.Object({
               hasFreeRequests: t.Boolean(),
+            }),
+          }
+        )
+        .post(
+          "/user/update-fcm-token",
+          async ({ body, user }) => {
+            const { fcmToken } = body;
+            const uid = user.id;
+
+            console.log("🚀 ~ /user/update-fcm-token", { uid, fcmToken });
+
+            // Find the existing user by uid
+            const existingUser = await db.user.findFirst({
+              where: {
+                id: uid,
+              },
+            });
+
+            // If the user doesn't exist, return an error
+            if (!existingUser) {
+              console.log(`User with uid ${uid} not found`);
+              return {
+                success: false,
+                message: "User not found",
+              };
+            }
+
+            // Check if the fcmToken already exists in the user's fcmToken array
+            if (!existingUser.fcmToken.includes(fcmToken)) {
+              // Add the new fcmToken to the array
+              await db.user
+                .update({
+                  where: {
+                    id: existingUser.id,
+                  },
+                  data: {
+                    fcmToken: {
+                      push: fcmToken,
+                    },
+                  },
+                })
+                .catch((error) => {
+                  console.error(
+                    "🚀 ~ /user/update-fcm-token ~ db.user.update error:",
+                    error
+                  );
+                  throw new Error("Failed to update FCM token");
+                });
+
+              console.log(`FCM token ${fcmToken} added for user ${uid}`);
+              return {
+                success: true,
+                message: "FCM token updated successfully",
+              };
+            }
+
+            console.log(`FCM token ${fcmToken} already exists for user ${uid}`);
+            return {
+              success: true,
+              message: "FCM token already exists",
+            };
+          },
+          {
+            body: t.Object({
+              fcmToken: t.String(),
+            }),
+            response: t.Object({
+              success: t.Boolean(),
+              message: t.String(),
             }),
           }
         )
@@ -96,6 +165,8 @@ export const UserController = (app: Elysia) => {
       async (context) => {
         const { fcmToken, identityToken, email, uid, locale, appUserId } =
           context.body;
+
+        console.log("🚀 ~ /user/login", { fcmToken });
 
         const existingUser = await db.user.findFirst({
           where: {

@@ -1,0 +1,41 @@
+{
+  "actionIdentifier": "expo.modules.notifications.actions.DEFAULT",
+  "notification": {
+    "date": 1744097806.5345604,
+    "request": {
+      "content": {
+        "targetContentIdentifier": null,
+        "attachments": [],
+        "threadIdentifier": "",
+        "interruptionLevel": "active",
+        "data": null,
+        "categoryIdentifier": "",
+        "title": "DarkAI: Follow-up",
+        "subtitle": null,
+        "badge": null,
+        "launchImageName": "",
+        "sound": "default",
+        "body": "Все ли идет по зловещему плану с твоим AI-домом? 😈"
+      },
+      "identifier": "A7CA3803-A810-4EBD-9020-6FC9005BBEAD",
+      "trigger": {
+        "payload": {
+          "aps": {
+            "alert": {
+              "title": "DarkAI: Follow-up",
+              "body": "Все ли идет по зловещему плану с твоим AI-домом? 😈"
+            },
+            "sound": "default"
+          },
+          "google.c.fid": "dHxgMdgNrEgGgap_JXMNUu",
+          "gcm.message_id": "1744097806229642",
+          "google.c.sender.id": "980560709049",
+          "google.c.a.e": "1",
+          "chatId": "677e0157-e997-4edf-a627-9ea1fe5ce9b0"
+        },
+        "type": "push",
+        "class": "UNPushNotificationTrigger"
+      }
+    }
+  }
+}

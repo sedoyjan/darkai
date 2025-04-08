@@ -63,6 +63,22 @@ export const localeConfigThunk = createAsyncThunk<
   }
 });
 
+export const setFcmTokenThunk = createAsyncThunk<
+  void,
+  { fcmToken: string },
+  { state: RootState }
+>('app/setFcmTokenThunk', async ({ fcmToken }, { dispatch }) => {
+  dispatch(
+    setFcmToken({
+      fcmToken,
+    }),
+  );
+  apiClient.postUserUserUpdateFcmToken({ fcmToken }).catch(error => {
+    console.error('postUserUserUpdateFcmToken error', error);
+    recordError(error as Error);
+  });
+});
+
 export const postUserLoginThunk = createAsyncThunk<
   void,
   undefined,
@@ -122,24 +138,24 @@ export const initThunk = createAsyncThunk<
     console.error('configurePurchases error', error);
   }
 
-  // if (!isDeveloper) {
-  try {
-    const hasActiveSubscription = await checkSubscription();
-    dispatch(setHasActiveSubscription({ hasActiveSubscription }));
-  } catch (error) {
-    console.warn('checkSubscription error', error);
+  if (!isDeveloper) {
+    try {
+      const hasActiveSubscription = await checkSubscription();
+      dispatch(setHasActiveSubscription({ hasActiveSubscription }));
+    } catch (error) {
+      console.warn('checkSubscription error', error);
+    }
   }
-  // }
 
   try {
     await messaging.requestPermission();
     const token = await messaging.getToken();
 
     messaging.onTokenRefresh(newToken => {
-      dispatch(setFcmToken({ fcmToken: newToken }));
+      dispatch(setFcmTokenThunk({ fcmToken: newToken }));
     });
 
-    dispatch(setFcmToken({ fcmToken: token }));
+    dispatch(setFcmTokenThunk({ fcmToken: token }));
   } catch (error) {
     console.error('messaging.getToken error', error);
     recordError(error as Error);
@@ -274,10 +290,10 @@ export const setupMessagingThunk = createAsyncThunk<
     const token = await messaging.getToken();
 
     messaging.onTokenRefresh(newToken => {
-      dispatch(setFcmToken({ fcmToken: newToken }));
+      dispatch(setFcmTokenThunk({ fcmToken: newToken }));
     });
 
-    dispatch(setFcmToken({ fcmToken: token }));
+    dispatch(setFcmTokenThunk({ fcmToken: token }));
   } catch (error) {
     console.error('messaging.getToken error', error);
   }

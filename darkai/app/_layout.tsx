@@ -8,6 +8,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from '@react-navigation/native';
+import * as Notifications from 'expo-notifications';
 import {
   Stack,
   useGlobalSearchParams,
@@ -17,6 +18,7 @@ import {
 } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import { get } from 'lodash';
 import { useCallback, useEffect } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { LogBox } from 'react-native';
@@ -37,6 +39,11 @@ import i18n from '@/i18n';
 import { initThunk } from '@/rdx/app/thunks';
 import { persistor, store } from '@/rdx/store';
 import { analytics } from '@/services/firebase';
+import {
+  isNotificationHandled,
+  markNotificationAsHandled,
+  navigateToChat,
+} from '@/services/notifications';
 import { sharedRouter } from '@/services/sharedRouter';
 import { sharedStyles } from '@/sharedStyles';
 
@@ -83,8 +90,32 @@ export default function RootLayout() {
   const init = useCallback(async () => {
     sharedRouter.setRouter(router);
     await store.dispatch(initThunk());
-    router.replace('/(tabs)/(chats)');
-    SplashScreen.hideAsync();
+
+    const initialNotification =
+      await Notifications.getLastNotificationResponseAsync();
+
+    if (initialNotification) {
+      const chatId = get(
+        initialNotification,
+        'notification.request.trigger.payload.chatId',
+        null,
+      );
+
+      const notificationId =
+        initialNotification.notification.request.identifier;
+      const hasBeenHandled = await isNotificationHandled(notificationId);
+      if (!hasBeenHandled && chatId) {
+        await markNotificationAsHandled(notificationId);
+        await navigateToChat(chatId as string);
+        SplashScreen.hideAsync();
+      } else {
+        router.replace('/(tabs)/(chats)');
+        SplashScreen.hideAsync();
+      }
+    } else {
+      router.replace('/(tabs)/(chats)');
+      SplashScreen.hideAsync();
+    }
   }, [router]);
 
   useEffect(() => {

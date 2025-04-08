@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { apiClient } from '@/api';
 import { Button } from '@/blocks/Button';
 import { Separator } from '@/blocks/Separator';
 import { Background } from '@/components/Background';
@@ -126,6 +127,13 @@ export default function DeveloperSettingsScreen() {
               persistor.purge().then(() => {
                 reloadApp();
               });
+            }}
+            withSeparator
+          />
+          <SettingsButton
+            label={'Make follow up'}
+            onPress={() => {
+              apiClient.postAdminTestFollowUp();
             }}
             withSeparator
           />

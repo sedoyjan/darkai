@@ -26,19 +26,6 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
- * @interface GetAdminTest200Response
- */
-export interface GetAdminTest200Response {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetAdminTest200Response
-     */
-    'success': boolean;
-}
-/**
- * 
- * @export
  * @interface GetChatGetChat200Response
  */
 export interface GetChatGetChat200Response {
@@ -233,6 +220,19 @@ export interface GetUserMe200Response {
 /**
  * 
  * @export
+ * @interface PostAdminTestFollowUp200Response
+ */
+export interface PostAdminTestFollowUp200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PostAdminTestFollowUp200Response
+     */
+    'success': boolean;
+}
+/**
+ * 
+ * @export
  * @interface PostChatSendMessage200Response
  */
 export interface PostChatSendMessage200Response {
@@ -409,6 +409,38 @@ export interface PostUserUpdateLocaleRequest {
 /**
  * 
  * @export
+ * @interface PostUserUserUpdateFcmToken200Response
+ */
+export interface PostUserUserUpdateFcmToken200Response {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PostUserUserUpdateFcmToken200Response
+     */
+    'success': boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostUserUserUpdateFcmToken200Response
+     */
+    'message': string;
+}
+/**
+ * 
+ * @export
+ * @interface PostUserUserUpdateFcmTokenRequest
+ */
+export interface PostUserUserUpdateFcmTokenRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PostUserUserUpdateFcmTokenRequest
+     */
+    'fcmToken': string;
+}
+/**
+ * 
+ * @export
  * @interface PutChatRenameChat200Response
  */
 export interface PutChatRenameChat200Response {
@@ -506,35 +538,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             if (chatId !== undefined) {
                 localVarQueryParameter['chatId'] = chatId;
             }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAdminTest: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/admin/test`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
 
 
     
@@ -731,6 +734,35 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             }
 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postAdminTestFollowUp: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/admin/test-follow-up`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -974,6 +1006,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {PostUserUserUpdateFcmTokenRequest} postUserUserUpdateFcmTokenRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postUserUserUpdateFcmToken: async (postUserUserUpdateFcmTokenRequest: PostUserUserUpdateFcmTokenRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'postUserUserUpdateFcmTokenRequest' is not null or undefined
+            assertParamExists('postUserUserUpdateFcmToken', 'postUserUserUpdateFcmTokenRequest', postUserUserUpdateFcmTokenRequest)
+            const localVarPath = `/user/user/update-fcm-token`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(postUserUserUpdateFcmTokenRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {PutChatRenameChatRequest} putChatRenameChatRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1023,7 +1090,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteChatDeleteChat(chatId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAdminTest200Response>> {
+        async deleteChatDeleteChat(chatId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostAdminTestFollowUp200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteChatDeleteChat(chatId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.deleteChatDeleteChat']?.[localVarOperationServerIndex]?.url;
@@ -1034,18 +1101,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAdminTest(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAdminTest200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAdminTest(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAdminTest']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getAnalytics(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAdminTest200Response>> {
+        async getAnalytics(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostAdminTestFollowUp200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAnalytics(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getAnalytics']?.[localVarOperationServerIndex]?.url;
@@ -1112,11 +1168,22 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postAdminTestFollowUp(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostAdminTestFollowUp200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postAdminTestFollowUp(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.postAdminTestFollowUp']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAdminTest200Response>> {
+        async postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostAdminTestFollowUp200Response>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.postAnalyticsLaunch(body, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.postAnalyticsLaunch']?.[localVarOperationServerIndex]?.url;
@@ -1193,6 +1260,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {PostUserUserUpdateFcmTokenRequest} postUserUserUpdateFcmTokenRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postUserUserUpdateFcmToken(postUserUserUpdateFcmTokenRequest: PostUserUserUpdateFcmTokenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostUserUserUpdateFcmToken200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postUserUserUpdateFcmToken(postUserUserUpdateFcmTokenRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.postUserUserUpdateFcmToken']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {PutChatRenameChatRequest} putChatRenameChatRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1219,7 +1298,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteChatDeleteChat(chatId: string, options?: RawAxiosRequestConfig): AxiosPromise<GetAdminTest200Response> {
+        deleteChatDeleteChat(chatId: string, options?: RawAxiosRequestConfig): AxiosPromise<PostAdminTestFollowUp200Response> {
             return localVarFp.deleteChatDeleteChat(chatId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1227,15 +1306,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAdminTest(options?: RawAxiosRequestConfig): AxiosPromise<GetAdminTest200Response> {
-            return localVarFp.getAdminTest(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAnalytics(options?: RawAxiosRequestConfig): AxiosPromise<GetAdminTest200Response> {
+        getAnalytics(options?: RawAxiosRequestConfig): AxiosPromise<PostAdminTestFollowUp200Response> {
             return localVarFp.getAnalytics(options).then((request) => request(axios, basePath));
         },
         /**
@@ -1284,11 +1355,19 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postAdminTestFollowUp(options?: RawAxiosRequestConfig): AxiosPromise<PostAdminTestFollowUp200Response> {
+            return localVarFp.postAdminTestFollowUp(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): AxiosPromise<GetAdminTest200Response> {
+        postAnalyticsLaunch(body: object, options?: RawAxiosRequestConfig): AxiosPromise<PostAdminTestFollowUp200Response> {
             return localVarFp.postAnalyticsLaunch(body, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1344,6 +1423,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @param {PostUserUserUpdateFcmTokenRequest} postUserUserUpdateFcmTokenRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postUserUserUpdateFcmToken(postUserUserUpdateFcmTokenRequest: PostUserUserUpdateFcmTokenRequest, options?: RawAxiosRequestConfig): AxiosPromise<PostUserUserUpdateFcmToken200Response> {
+            return localVarFp.postUserUserUpdateFcmToken(postUserUserUpdateFcmTokenRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {PutChatRenameChatRequest} putChatRenameChatRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1370,16 +1458,6 @@ export class DefaultApi extends BaseAPI {
      */
     public deleteChatDeleteChat(chatId: string, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).deleteChatDeleteChat(chatId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public getAdminTest(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getAdminTest(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1444,6 +1522,16 @@ export class DefaultApi extends BaseAPI {
      */
     public getUserMe(options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getUserMe(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public postAdminTestFollowUp(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).postAdminTestFollowUp(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1518,6 +1606,17 @@ export class DefaultApi extends BaseAPI {
      */
     public postUserUpdateLocale(postUserUpdateLocaleRequest: PostUserUpdateLocaleRequest, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).postUserUpdateLocale(postUserUpdateLocaleRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {PostUserUserUpdateFcmTokenRequest} postUserUserUpdateFcmTokenRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public postUserUserUpdateFcmToken(postUserUserUpdateFcmTokenRequest: PostUserUserUpdateFcmTokenRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).postUserUserUpdateFcmToken(postUserUserUpdateFcmTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -28,16 +28,16 @@ export const sendNotification = async ({
   fcmToken,
   message,
   title,
+  data,
 }: {
   fcmToken: string;
   title: string;
   message: string;
+  data?: any;
 }) => {
   await admin.messaging().send({
     token: fcmToken,
-    data: {
-      category: "cafe",
-    },
+    data: data || {},
     apns: {
       headers: {
         "apns-priority": "10",
