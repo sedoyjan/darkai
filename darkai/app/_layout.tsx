@@ -54,7 +54,7 @@ export type RootParamList = {
   SubscriptionModal: {};
   SignIn: {
     text?: string;
-    imageUri?: string;
+    chatId?: string;
   };
 };
 

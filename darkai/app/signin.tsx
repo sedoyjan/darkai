@@ -1,3 +1,4 @@
+import { RouteProp, useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -5,13 +6,14 @@ import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import logoImage from '@/assets/images/icon.png';
+import { Spacer } from '@/blocks/Spacer';
 import { AppleSignInButton } from '@/components/AppleSignInButton';
 import { Background } from '@/components/Background';
 import { CheckBox } from '@/components/CheckBox';
 import { Header } from '@/components/Header';
-import { Spacer } from '@/blocks/Spacer';
 import { Colors } from '@/constants/Colors';
 import { selectIsSignInFlowInProgress } from '@/rdx/app/selectors';
+import { useChat } from '@/rdx/chat/hooks/useChat';
 import {
   selectIsPrivacyAccepted,
   selectIsTermsAccepted,
@@ -19,6 +21,8 @@ import {
 import { setIsPrivacyAccepted, setIsTermsAccepted } from '@/rdx/settings/slice';
 import { useAppDispatch, useAppSelector } from '@/rdx/store';
 import { sharedStyles } from '@/sharedStyles';
+
+import { RootParamList } from './_layout';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,8 +57,9 @@ export default function SignInScreen() {
   const dispatch = useAppDispatch();
   const isTermsAccepted = useAppSelector(selectIsTermsAccepted);
   const isPrivacyAccepted = useAppSelector(selectIsPrivacyAccepted);
-  // const route = useRoute<RouteProp<RootParamList, 'SignIn'>>();
-  // const { text: messageText, imageUri: messageImageUrl } = route.params;
+  const route = useRoute<RouteProp<RootParamList, 'SignIn'>>();
+  const { text: messageText, chatId } = route.params;
+  const { sendMessage } = useChat(chatId || 'no-chat-id');
   const isSignInFlowInProgress = useAppSelector(selectIsSignInFlowInProgress);
 
   const onTermsPress = useCallback(() => {
@@ -89,7 +94,10 @@ export default function SignInScreen() {
     if (router.canGoBack()) {
       router.back();
     }
-  }, [router]);
+    if (messageText && messageText.length > 0) {
+      sendMessage({ text: messageText });
+    }
+  }, [messageText, router, sendMessage]);
 
   const isButtonEnabled =
     isTermsAccepted && isPrivacyAccepted && !isSignInFlowInProgress;

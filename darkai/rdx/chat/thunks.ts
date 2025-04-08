@@ -77,6 +77,7 @@ export const sendMessageThunk = createAsyncThunk<
     let url = '/signin';
     if (text) {
       url += `?text=${text}`;
+      url += `&chatId=${chatId}`;
     }
 
     sharedRouter.getRouter().push(url as Href);

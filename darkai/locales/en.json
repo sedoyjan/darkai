@@ -3,7 +3,7 @@
     "accept": "Accept",
     "cancel": "Cancel",
     "delete": "Delete",
-    "upgradeToPlus": "Upgrade to Premium"
+    "upgradeToPlus": "Get Premium"
   },
   "components": {
     "proBadge": {
@@ -19,21 +19,21 @@
   "screens": {
     "chat": {
       "botMessages": {
-        "no-messages": "Hey! We still don't have any messages here. Tell me about your goals and I'll help you to achieve them.",
-        "outOfMessages": "Looks like you are out of messages. Please subscribe to continue using the app."
+        "no-messages": "Hi! We don’t have any messages yet. Tell me your goals, and I’ll help you reach them.",
+        "outOfMessages": "You’ve used all your messages. Subscribe to keep using the app."
       }
     },
     "chats": {
       "robot": {
-        "text": "Let’s craft your first strategic plan with DarkAI",
+        "text": "Let’s create your first plan with Dark AI!",
         "title": "No Chats Yet"
       }
     },
     "developerSettings": {
-      "clearLaunchCount": "Clear launch count",
-      "clearOnboardingState": "Clear onboarding state",
+      "clearLaunchCount": "Reset launch count",
+      "clearOnboardingState": "Reset onboarding",
       "recordingMode": "Recording mode",
-      "toggleSubscription": "Toggle subscription"
+      "toggleSubscription": "Turn on/off subscription"
     },
     "editChatModal": {
       "buttons": {
@@ -51,27 +51,27 @@
           "label": "Name"
         }
       },
-      "title": "Edit chat"
+      "title": "Edit Chat"
     },
     "languages": {
       "title": "Languages"
     },
     "onboarding": {
       "step1": {
-        "description": "Meet your cunning AI assistant, here to help you scheme and succeed with a mischievous twist!",
+        "description": "Meet your smart AI helper, here to help you plan and win with a fun twist!",
         "title": "Welcome to Dark AI"
       },
       "step2": {
-        "description": "Chat with your Dark Advisor to get strategic advice on any goal—big or small. What’s your next move?",
-        "title": "Start Scheming"
+        "description": "Talk to your Dark Advisor for smart tips on any goal. What’s your next step?",
+        "title": "Start Planning"
       },
       "step3": {
-        "description": "Your advisor will check in with playful nudges to keep your plans on track, even when you’re away.",
-        "title": "Never Lose Momentum"
+        "description": "Your advisor will send fun reminders to keep your plans on track, even when you’re away.",
+        "title": "Stay on Track"
       },
       "step4": {
-        "description": "Start with free messages, then unlock unlimited cunning advice with a subscription. Ready to rule?",
-        "title": "Go Limitless"
+        "description": "Start with free messages, then get unlimited smart tips with a subscription. Ready?",
+        "title": "Go Unlimited"
       }
     },
     "privacyPolicy": {
@@ -86,15 +86,15 @@
         "privacyPolicy": "Privacy Policy",
         "rateApp": "Rate app",
         "signOut": "Sign out",
-        "subscribe": "Enable premium features ✨",
+        "subscribe": "Get premium features ✨",
         "terms": "Terms and Conditions"
       },
       "deleteAccount": {
-        "description": "Are you sure you want to delete your account? This action is irreversible.",
-        "title": "Delete account"
+        "description": "Are you sure you want to delete your account? You can’t undo this.",
+        "title": "Delete Account"
       },
       "robot": {
-        "text": "Sign in to access your strategic plans across all your devices with Dark AI",
+        "text": "Sign in to use your plans on all your devices with Dark AI.",
         "title": "Welcome!"
       },
       "signInButton": {
@@ -103,9 +103,9 @@
       "title": "Profile"
     },
     "signin": {
-      "imAgreeWith": "I'm agree with ",
+      "imAgreeWith": "I agree with ",
       "privacyPolicy": "Privacy Policy",
-      "subtitle": "To start using AI features please sign in with your Apple ID",
+      "subtitle": "Sign in with your Apple ID to use AI features.",
       "termsAndConditions": "Terms and Conditions",
       "title": "Sign In",
       "welcome": "Welcome to Dark AI"
@@ -114,7 +114,7 @@
       "title": "Terms and Conditions"
     },
     "titles": {
-      "developerSettings": "Developer settings"
+      "developerSettings": "Developer Settings"
     }
   }
 }
