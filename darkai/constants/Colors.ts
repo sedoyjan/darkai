@@ -13,6 +13,7 @@ export const Colors = {
   errorColor: '#FF4C4C',
   // doneColor: '#2ecc71',
   doneColor: '#1A9C51',
+  // doneColor: '#34FDAE',
   defaultTaskColor: 'rgba(0, 0, 0, 0.2)',
   borderColor: 'rgba(255, 255, 255, 0.2)',
   black: '#000000',

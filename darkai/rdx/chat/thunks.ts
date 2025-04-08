@@ -195,10 +195,12 @@ export const renameChatThunk = createAsyncThunk<
     return;
   }
 
-  await apiClient.putChatRenameChat({
+  const r = await apiClient.putChatRenameChat({
     chatId,
     newTitle: title,
   });
+
+  console.log('renameChatThunk', r.data);
 
   dispatch(getChatsThunk());
 });

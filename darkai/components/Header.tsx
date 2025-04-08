@@ -23,14 +23,15 @@ const styles = StyleSheet.create({
   },
   titleWrapper: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'row',
     alignItems: 'center',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     color: Colors.primaryText,
-    flexShrink: 1,
+    flexGrow: 1,
+    textAlign: 'center',
   },
 });
 
@@ -57,16 +58,24 @@ export const Header = ({
   return (
     <View style={styles.wrapper}>
       {withBackButton ? <BackButton /> : null}
-      {onRightButtonPress && rightButtonIcon ? placeholder : null}
+      {onRightButtonPress && rightButtonIcon && !withBackButton
+        ? placeholder
+        : null}
       {secondOnRightButtonPress && secondRightButtonIcon ? placeholder : null}
       <View style={styles.titleWrapper}>
         {title ? (
-          <Text ellipsizeMode="tail" style={styles.title}>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
             {title}
           </Text>
         ) : null}
       </View>
-      {withBackButton ? placeholder : null}
+      {withBackButton &&
+      !secondOnRightButtonPress &&
+      !secondRightButtonIcon &&
+      !onRightButtonPress &&
+      !rightButtonIcon
+        ? placeholder
+        : null}
       <View style={styles.buttons}>
         {secondOnRightButtonPress && secondRightButtonIcon ? (
           <TouchableOpacity

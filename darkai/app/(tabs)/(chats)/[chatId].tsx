@@ -58,6 +58,7 @@ export default function ChatScreen() {
     hasMoreMessages,
     isLoading,
     isDisabled,
+    title: chatTitle,
   } = useChat(chatId);
   const dispatch = useAppDispatch();
   const listRef = useRef<FlashList<ChatMessage>>(null);
@@ -68,6 +69,12 @@ export default function ChatScreen() {
   const isLoadingPrevMessagesRef = useRef(false);
 
   const [pageTitle, setPageTitle] = useState(title);
+
+  useEffect(() => {
+    if (title !== chatTitle) {
+      setPageTitle(chatTitle);
+    }
+  }, [chatTitle, title]);
 
   const scrollToEnd = useCallback(() => {
     if (messages.length > 0) {

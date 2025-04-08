@@ -1,16 +1,16 @@
 import LottieView from 'lottie-react-native';
 import { ReactNode, useMemo } from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
-import Image from 'react-native-fast-image';
 import Markdown from 'react-native-markdown-display';
 
 import typingAnimation from '@/assets/animations/typing.json';
-import avatarImage from '@/assets/images/avatar.png';
 import { Icon } from '@/blocks/Icon';
 import { Colors } from '@/constants/Colors';
 import { markdownStyles } from '@/sharedStyles';
 import { ChatMessage, ChatMessageType } from '@/types';
 import { getMessageTime } from '@/utils/dates';
+
+import { Avatar } from './Avatar';
 
 interface MessageProps extends Omit<ChatMessage, 'text'> {
   isTyping?: boolean;
@@ -29,21 +29,6 @@ const styles = StyleSheet.create({
   innerWrapper: {
     flexDirection: 'row',
     gap: 4,
-  },
-  avatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: Colors.white,
-    borderWidth: 1.5,
-    borderCurve: 'continuous',
-    borderColor: Colors.white,
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  avatarImage: {
-    width: '100%',
-    height: '100%',
   },
   outWrapper: {
     flexDirection: 'column',
@@ -124,11 +109,7 @@ export const Message = ({
   return (
     <View style={rowStyle}>
       <View style={styles.innerWrapper}>
-        {isBot ? (
-          <View style={styles.avatar}>
-            <Image style={styles.avatarImage} source={avatarImage} />
-          </View>
-        ) : null}
+        {isBot ? <Avatar /> : null}
         <View style={styles.outWrapper}>
           <View style={styles.wrapper}>
             {text ? (

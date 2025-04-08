@@ -54,14 +54,15 @@ export default function EditChatModalScreen() {
     }
   }, [router]);
 
-  const onSave = useCallback(() => {
-    dispatch(
+  const onSave = useCallback(async () => {
+    await dispatch(
       renameChatThunk({
         chatId,
         title: chatTitle,
       }),
     );
-  }, [chatId, chatTitle, dispatch]);
+    router.back();
+  }, [chatId, chatTitle, dispatch, router]);
 
   const onConfirmedDelete = useCallback(async () => {
     router.back();
@@ -87,7 +88,7 @@ export default function EditChatModalScreen() {
       ],
       { cancelable: true },
     );
-  }, [t]);
+  }, [onConfirmedDelete, t]);
 
   return (
     <Background>

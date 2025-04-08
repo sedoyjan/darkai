@@ -26,14 +26,14 @@ export const removeLineBreaks = (input: string): string => {
 
 export const toast = (message: string) => {
   Toast.show(message, {
-    duration: Toast.durations.SHORT,
+    duration: Toast.durations.LONG,
     position: Toast.positions.TOP,
     shadow: false,
     hideOnPress: true,
     animation: true,
     containerStyle: {
       opacity: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      backgroundColor: 'rgba(0, 0, 0, 0.9)',
       borderRadius: 4,
       paddingVertical: 8,
       paddingHorizontal: 16,

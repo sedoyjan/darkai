@@ -72,7 +72,7 @@ export const makeSelectChatMessages = () =>
         });
       }
 
-      if (!mergedMessages.length) {
+      if (!mergedMessages.length && !isLoading) {
         mergedMessages.unshift({
           id: `no-messages-${chatId}`,
           text: 'no-messages',

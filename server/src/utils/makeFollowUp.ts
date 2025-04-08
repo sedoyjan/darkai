@@ -4,7 +4,7 @@ import { sendNotification } from "../services/firebase";
 
 export async function makeFollowUp(userId?: string) {
   const followUpDelayHours = 0; // Configurable delay (0 for debug, can be 24 in production)
-  const maxFollowUps = userId ? 999 : 2; // Maximum number of follow-ups per chat
+  const maxFollowUps = userId ? 999 : 3; // Maximum number of follow-ups per chat
 
   // Fetch chats, filtered by userId if provided, ordered by updatedAt to get the latest first
   const chats = await db.chat.findMany({

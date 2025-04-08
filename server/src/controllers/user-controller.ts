@@ -41,8 +41,6 @@ export const UserController = (app: Elysia) => {
             const { fcmToken } = body;
             const uid = user.id;
 
-            console.log("🚀 ~ /user/update-fcm-token", { uid, fcmToken });
-
             // Find the existing user by uid
             const existingUser = await db.user.findFirst({
               where: {

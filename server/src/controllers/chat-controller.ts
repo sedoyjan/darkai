@@ -38,7 +38,7 @@ export const ChatController = (app: Elysia) => {
       .post(
         "/sendMessage",
         async ({ body, user }) => {
-          const { chatId, text } = body;
+          const { chatId, text, locale } = body;
 
           const chat = await db.chat.findFirst({
             where: {
@@ -98,7 +98,7 @@ export const ChatController = (app: Elysia) => {
 
           const { data: responseMessageText, threadId } = await getAiResponse(
             STATEGY_ASSISTANT_ID,
-            body.text,
+            body.text + `-- reply with ${locale} language and use emojis`,
             prevThreadId || undefined
           );
 
@@ -314,7 +314,7 @@ export const ChatController = (app: Elysia) => {
           response: t.Object({
             id: t.String(),
             title: t.String(),
-            threadId: t.Optional(t.String()),
+            threadId: t.Nullable(t.Optional(t.String())),
             updatedAt: t.String(),
             lastMessage: t.Optional(MessagePlain),
           }),
@@ -385,13 +385,19 @@ export const ChatController = (app: Elysia) => {
             },
           });
 
+          console.log(
+            "Updated chat:",
+            updatedChat,
+            new Date(updatedChat.updatedAt).toISOString()
+          );
+
           return {
             success: true,
             chat: {
               id: updatedChat.id,
               title: updatedChat.title,
               threadId: updatedChat.threadId,
-              updatedAt: updatedChat.updatedAt,
+              updatedAt: new Date(updatedChat.updatedAt).toISOString(),
             },
           };
         },

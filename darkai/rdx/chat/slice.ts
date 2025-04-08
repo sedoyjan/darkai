@@ -60,7 +60,7 @@ export const chatSlice = createSlice({
       } else {
         state.chatsMap[chatId] = {
           id: chatId,
-          title: message.text.slice(0, 30) || 'New Chat',
+          title: message.text || 'New Chat',
           messages: [message],
           updatedAt: new Date().toISOString(),
         };
@@ -105,11 +105,13 @@ export const chatSlice = createSlice({
       action: PayloadAction<{ chatsArray: Chat[] }>,
     ) => {
       const chatsArray = action.payload.chatsArray;
+      const storedCopy = { ...state.chatsMap };
       state.chatsMap = {};
       chatsArray.forEach(chat => {
+        const existingMesages = storedCopy[chat.id]?.messages || [];
         state.chatsMap[chat.id] = {
           ...chat,
-          messages: chat.messages || [], // Ensure messages array exists
+          messages: existingMesages,
         };
       });
       state.getChatsRequestState = RequestState.success;
