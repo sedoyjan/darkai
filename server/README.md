@@ -1,5 +1,13 @@
 # Elysia with Bun runtime
 
+https://darkai.duckdns.org:5005/debug/check
+
+duckdns.org - login with sedoyjan3 google
+sudo certbot certonly --standalone -d darkai.duckdns.org
+
+Certificate is saved at: /etc/letsencrypt/live/darkai.duckdns.org/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/darkai.duckdns.org/privkey.pem
+
 ## AUTH example
 https://dev.to/harshmangalam/implement-jwt-refresh-token-authentication-with-elysia-js-and-prisma-a-step-by-step-guide-1dc
 

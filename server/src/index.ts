@@ -15,15 +15,14 @@ import { telegramService } from "./services/telegram";
 import { getApplePublicKeys } from "./utils";
 
 const IS_DEV = process.env.NODE_ENV === "development";
-const CERT_DIR = path.join(__dirname, "..", "certs");
+const CERT_DIR = "/etc/letsencrypt/live/darkai.duckdns.org";
 
 const tlsOptions = !IS_DEV
   ? {
-      key: readFileSync(path.join(CERT_DIR, "key.pem")),
-      cert: readFileSync(path.join(CERT_DIR, "cert.pem")),
+      key: readFileSync(path.join(CERT_DIR, "privkey.pem")),
+      cert: readFileSync(path.join(CERT_DIR, "fullchain.pem")),
     }
   : undefined;
-console.log("🚀 ~ tlsOptions:", tlsOptions);
 
 export const app = new Elysia()
   .state({ appleKeys: [], userIds: { uid: "id" } })
