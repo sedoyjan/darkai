@@ -23,6 +23,7 @@ const tlsOptions = !IS_DEV
       cert: readFileSync(path.join(CERT_DIR, "cert.pem")),
     }
   : undefined;
+console.log("🚀 ~ tlsOptions:", tlsOptions);
 
 export const app = new Elysia()
   .state({ appleKeys: [], userIds: { uid: "id" } })
