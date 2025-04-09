@@ -238,6 +238,14 @@ export const ChatController = (app: Elysia) => {
             where: {
               userId: user.id,
             },
+            include: {
+              messages: {
+                orderBy: {
+                  createdAt: "desc",
+                },
+                take: 1,
+              },
+            },
             orderBy: {
               updatedAt: "desc",
             },
@@ -249,6 +257,7 @@ export const ChatController = (app: Elysia) => {
               title: ch.title,
               threadId: ch.threadId,
               updatedAt: ch.updatedAt.toISOString(),
+              messages: ch.messages,
             };
           });
         },
@@ -259,6 +268,7 @@ export const ChatController = (app: Elysia) => {
               title: t.String(),
               threadId: t.Nullable(t.Optional(t.String())),
               updatedAt: t.String(),
+              messages: t.Array(MessagePlain),
             })
           ),
         }

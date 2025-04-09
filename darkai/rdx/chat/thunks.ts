@@ -12,7 +12,7 @@ import { delay } from '@/utils/utils';
 import { RootState } from '..';
 import { selectLocale, selectUser } from '../app/selectors';
 import { setHasFreeRequests } from '../app/slice';
-import { selectIsBotTyping } from './selectors';
+import { selectIsBotTyping, selectMessagesByChatId } from './selectors';
 import {
   pushMessage,
   setChatsArrayToMap,
@@ -170,13 +170,23 @@ export const getChatsThunk = createAsyncThunk<
       chatsArray: data.map(chat => {
         return {
           ...chat,
-          messages: [],
+          messages: chat.messages.map(message => {
+            return {
+              chatId: chat.id,
+              createdAt: message.createdAt as string,
+              id: message.id,
+              text: message.text,
+              type: message.type as ChatMessageType,
+              userId: message.userId,
+            };
+          }),
           threadId: chat.threadId || undefined,
           updatedAt: chat.updatedAt as string,
         };
       }),
     }),
   );
+
   dispatch(setGetChatsRequestState({ requestState: RequestState.success }));
 });
 
@@ -199,8 +209,6 @@ export const renameChatThunk = createAsyncThunk<
     chatId,
     newTitle: title,
   });
-
-  console.log('renameChatThunk', r.data);
 
   dispatch(getChatsThunk());
 });

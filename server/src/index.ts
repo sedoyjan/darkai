@@ -3,16 +3,26 @@ import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import { Cron } from "./cron";
 
+import { readFileSync } from "fs";
+import path from "path";
+import { AdminController } from "./controllers/admin-controller";
 import { AnalyticsController } from "./controllers/analytics-controller";
-import { UserController } from "./controllers/user-controller";
-import { getApplePublicKeys } from "./utils";
-import { RevenueCatController } from "./controllers/revenue-cat-controller";
-import { telegramService } from "./services/telegram";
 import { ChatController } from "./controllers/chat-controller";
 import { DebugController } from "./controllers/debug-controller";
-import { AdminController } from "./controllers/admin-controller";
+import { RevenueCatController } from "./controllers/revenue-cat-controller";
+import { UserController } from "./controllers/user-controller";
+import { telegramService } from "./services/telegram";
+import { getApplePublicKeys } from "./utils";
 
 const IS_DEV = process.env.NODE_ENV === "development";
+const CERT_DIR = path.join(__dirname, "..", "certs");
+
+const tlsOptions = !IS_DEV
+  ? {
+      key: readFileSync(path.join(CERT_DIR, "key.pem")),
+      cert: readFileSync(path.join(CERT_DIR, "cert.pem")),
+    }
+  : undefined;
 
 export const app = new Elysia()
   .state({ appleKeys: [], userIds: { uid: "id" } })
@@ -38,21 +48,6 @@ if (IS_DEV) {
   );
 }
 
-const formatDates = (obj: any): any => {
-  if (obj instanceof Date) {
-    return obj.toISOString();
-  }
-  if (Array.isArray(obj)) {
-    return obj.map(formatDates);
-  }
-  if (obj && typeof obj === "object") {
-    return Object.fromEntries(
-      Object.entries(obj).map(([key, value]) => [key, formatDates(value)])
-    );
-  }
-  return obj;
-};
-
 app
 
   .use(AnalyticsController)
@@ -71,23 +66,20 @@ app
       telegramService.createBot();
     }
   })
-  // .onAfterHandle(({ response }) => {
-  //   if (response && typeof response === "object") {
-  //     return formatDates(response);
-  //   }
-  //   return response;
-  // })
-  .listen(process.env.PORT || 3000);
+  .listen({
+    port: process.env.PORT || 3000,
+    tls: tlsOptions,
+  });
 
 export type ElysiaApp = typeof app;
 
 console.log(
-  `🤖 DarkAI server started at ${new Date().toLocaleString()} and running at http://${
+  `🤖 DarkAI server started at ${new Date().toLocaleString()} and running at ${tlsOptions ? "https" : "http"}://${
     app.server?.hostname
   }:${app.server?.port}`
 );
 if (IS_DEV) {
   console.log(
-    `🚀 Swagger is running at http://${app.server?.hostname}:${app.server?.port}/swagger`
+    `🚀 Swagger is running at ${tlsOptions ? "https" : "http"}://${app.server?.hostname}:${app.server?.port}/swagger`
   );
 }

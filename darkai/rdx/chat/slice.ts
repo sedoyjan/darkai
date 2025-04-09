@@ -108,7 +108,8 @@ export const chatSlice = createSlice({
       const storedCopy = { ...state.chatsMap };
       state.chatsMap = {};
       chatsArray.forEach(chat => {
-        const existingMesages = storedCopy[chat.id]?.messages || [];
+        const existingMesages =
+          storedCopy[chat.id]?.messages || chat.messages || [];
         state.chatsMap[chat.id] = {
           ...chat,
           messages: existingMesages,

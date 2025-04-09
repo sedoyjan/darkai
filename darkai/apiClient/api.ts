@@ -46,7 +46,7 @@ export interface GetChatGetChat200Response {
      * @type {string}
      * @memberof GetChatGetChat200Response
      */
-    'threadId'?: string;
+    'threadId': string | null;
     /**
      * 
      * @type {string}
@@ -77,25 +77,7 @@ export interface GetChatGetChats200ResponseInner {
      * @type {string}
      * @memberof GetChatGetChats200ResponseInner
      */
-    'userId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetChatGetChats200ResponseInner
-     */
     'title': string;
-    /**
-     * 
-     * @type {GetChatGetChats200ResponseInnerCreatedAt}
-     * @memberof GetChatGetChats200ResponseInner
-     */
-    'createdAt': GetChatGetChats200ResponseInnerCreatedAt;
-    /**
-     * 
-     * @type {GetChatGetChats200ResponseInnerCreatedAt}
-     * @memberof GetChatGetChats200ResponseInner
-     */
-    'updatedAt': GetChatGetChats200ResponseInnerCreatedAt;
     /**
      * 
      * @type {string}
@@ -104,30 +86,16 @@ export interface GetChatGetChats200ResponseInner {
     'threadId': string | null;
     /**
      * 
-     * @type {GetChatGetChats200ResponseInnerLastFollowUpSentAt}
+     * @type {string}
      * @memberof GetChatGetChats200ResponseInner
      */
-    'lastFollowUpSentAt': GetChatGetChats200ResponseInnerLastFollowUpSentAt | null;
+    'updatedAt': string;
     /**
      * 
-     * @type {number}
+     * @type {Array<PostChatSendMessage200ResponseMessage>}
      * @memberof GetChatGetChats200ResponseInner
      */
-    'followUpCount': number;
-}
-/**
- * 
- * @export
- * @interface GetChatGetChats200ResponseInnerCreatedAt
- */
-export interface GetChatGetChats200ResponseInnerCreatedAt {
-}
-/**
- * 
- * @export
- * @interface GetChatGetChats200ResponseInnerLastFollowUpSentAt
- */
-export interface GetChatGetChats200ResponseInnerLastFollowUpSentAt {
+    'messages': Array<PostChatSendMessage200ResponseMessage>;
 }
 /**
  * 
@@ -446,45 +414,26 @@ export interface PostUserUserUpdateFcmTokenRequest {
 export interface PutChatRenameChat200Response {
     /**
      * 
-     * @type {boolean}
-     * @memberof PutChatRenameChat200Response
-     */
-    'success': boolean;
-    /**
-     * 
-     * @type {PutChatRenameChat200ResponseChat}
-     * @memberof PutChatRenameChat200Response
-     */
-    'chat': PutChatRenameChat200ResponseChat;
-}
-/**
- * 
- * @export
- * @interface PutChatRenameChat200ResponseChat
- */
-export interface PutChatRenameChat200ResponseChat {
-    /**
-     * 
      * @type {string}
-     * @memberof PutChatRenameChat200ResponseChat
+     * @memberof PutChatRenameChat200Response
      */
     'id': string;
     /**
      * 
      * @type {string}
-     * @memberof PutChatRenameChat200ResponseChat
+     * @memberof PutChatRenameChat200Response
      */
     'title': string;
     /**
      * 
      * @type {string}
-     * @memberof PutChatRenameChat200ResponseChat
+     * @memberof PutChatRenameChat200Response
      */
-    'threadId'?: string;
+    'threadId': string | null;
     /**
      * 
      * @type {string}
-     * @memberof PutChatRenameChat200ResponseChat
+     * @memberof PutChatRenameChat200Response
      */
     'updatedAt': string;
 }
