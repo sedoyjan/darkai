@@ -83,14 +83,14 @@ export const UserController = (app: Elysia) => {
                   throw new Error("Failed to update FCM token");
                 });
 
-              console.log(`FCM token ${fcmToken} added for user ${uid}`);
+              // console.log(`FCM token ${fcmToken} added for user ${uid}`);
               return {
                 success: true,
                 message: "FCM token updated successfully",
               };
             }
 
-            console.log(`FCM token ${fcmToken} already exists for user ${uid}`);
+            // console.log(`FCM token ${fcmToken} already exists for user ${uid}`);
             return {
               success: true,
               message: "FCM token already exists",
