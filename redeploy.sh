@@ -11,7 +11,7 @@ git fetch && git pull || {
 
 # Restart the PM2 process with ID/name '2'
 echo "Restarting PM2 app..."
-pm2 restart 2 || {
+pm2 restart 3 || {
     echo "Error: PM2 restart failed"
     exit 1
 }
