@@ -16,13 +16,17 @@ export const UserController = (app: Elysia) => {
               },
             });
 
+            const FREE_REQUESTS = 5;
+
             const hasFreeRequests = userRecord
-              ? userRecord.requestsCount < 15
+              ? userRecord.requestsCount < FREE_REQUESTS
               : false;
 
             console.log(
               "🚀 ~ userRecord.requestsCount",
-              userRecord?.requestsCount || 0
+              userRecord?.requestsCount || 0,
+              "/",
+              FREE_REQUESTS
             );
 
             return {
