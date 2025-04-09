@@ -1,10 +1,9 @@
 import Elysia, { t } from "elysia";
 import { Message, MessageType } from "../../prisma/prisma-client-js";
 import { MessagePlain } from "../../prismaModels/Message";
-import { isAuthenticated } from "../middlewares/auth";
-import { db } from "../db";
 import { getAiResponse } from "../ai";
-import { ChatPlain } from "../../prismaModels/Chat";
+import { db } from "../db";
+import { isAuthenticated } from "../middlewares/auth";
 
 const formatDate = (date: Date) => {
   const d = new Date(date);
@@ -15,9 +14,8 @@ export const ChatController = (app: Elysia) => {
   app.group("/chat", (app) =>
     app
       .use(isAuthenticated)
-      // Проверка лимита сообщений для freemium-модели
       .onBeforeHandle(async ({ user, set }) => {
-        const freeMessageLimit = 4; // Лимит бесплатных сообщений
+        const freeMessageLimit = 4;
         const userData = await db.user.findUnique({
           where: { id: user.id },
         });
@@ -26,14 +24,6 @@ export const ChatController = (app: Elysia) => {
           set.status = 404;
           return { error: "User not found" };
         }
-        // Проверяем, если у пользователя нет активной подписки и превышен лимит
-        // if (
-        //   !userData.hasActiveSubscription &&
-        //   userData.requestsCount >= freeMessageLimit
-        // ) {
-        //   set.status = 403;
-        //   return { error: "Free message limit exceeded. Please subscribe." };
-        // }
       })
       .post(
         "/sendMessage",
@@ -155,20 +145,14 @@ export const ChatController = (app: Elysia) => {
             message: MessagePlain,
             threadId: t.String(),
           }),
-          detail: {
-            // tags: ["Chat"],
-          },
         }
       )
-      // Обновлённый метод /getMessages
       .get(
         "/getMessages",
         async ({ user, query }) => {
-          // console.time("Get messages");
           const { chatId, page = 1, limit = 10 } = query;
           const skip = (page - 1) * limit;
 
-          // Проверяем, что чат принадлежит пользователю
           const chat = await db.chat.findFirst({
             where: {
               id: chatId,
@@ -180,7 +164,6 @@ export const ChatController = (app: Elysia) => {
             throw new Error("Chat not found");
           }
 
-          // Получаем общее количество сообщений в чате
           const totalMessages = await db.message.count({
             where: {
               chatId,
@@ -188,7 +171,6 @@ export const ChatController = (app: Elysia) => {
             },
           });
 
-          // Получаем сообщения для конкретного чата
           const messages = await db.message.findMany({
             where: {
               chatId,
@@ -247,12 +229,8 @@ export const ChatController = (app: Elysia) => {
               totalPages: t.Number(),
             }),
           }),
-          detail: {
-            // tags: ["Chat"],
-          },
         }
       )
-
       .get(
         "/getChats",
         async ({ user }) => {
@@ -265,16 +243,27 @@ export const ChatController = (app: Elysia) => {
             },
           });
 
-          return chats;
+          return chats.map((ch) => {
+            return {
+              id: ch.id,
+              title: ch.title,
+              threadId: ch.threadId,
+              updatedAt: ch.updatedAt.toISOString(),
+            };
+          });
         },
         {
-          response: t.Array(ChatPlain),
-          detail: {
-            // tags: ["Chat"],
-          },
+          response: t.Array(
+            t.Object({
+              id: t.String(),
+              title: t.String(),
+              threadId: t.Nullable(t.Optional(t.String())),
+              updatedAt: t.String(),
+            })
+          ),
         }
       )
-      // Новый метод /getChat
+
       .get(
         "/getChat",
         async ({ user, query }) => {
@@ -290,7 +279,7 @@ export const ChatController = (app: Elysia) => {
                 orderBy: {
                   createdAt: "desc",
                 },
-                take: 1, // Последнее сообщение для предпросмотра
+                take: 1,
               },
             },
           });
@@ -303,7 +292,7 @@ export const ChatController = (app: Elysia) => {
             id: chat.id,
             title: chat.title,
             threadId: chat.threadId,
-            updatedAt: chat.updatedAt,
+            updatedAt: chat.updatedAt.toISOString(),
             lastMessage: chat.messages[0] || null,
           };
         },
@@ -318,12 +307,8 @@ export const ChatController = (app: Elysia) => {
             updatedAt: t.String(),
             lastMessage: t.Optional(MessagePlain),
           }),
-          detail: {
-            // tags: ["Chat"],
-          },
         }
       )
-      // Новый метод /deleteChat
       .delete(
         "/deleteChat",
         async ({ user, query }) => {
@@ -355,9 +340,6 @@ export const ChatController = (app: Elysia) => {
           response: t.Object({
             success: t.Boolean(),
           }),
-          detail: {
-            // tags: ["Chat"],
-          },
         }
       )
       .put(
@@ -385,20 +367,11 @@ export const ChatController = (app: Elysia) => {
             },
           });
 
-          console.log(
-            "Updated chat:",
-            updatedChat,
-            new Date(updatedChat.updatedAt).toISOString()
-          );
-
           return {
-            success: true,
-            chat: {
-              id: updatedChat.id,
-              title: updatedChat.title,
-              threadId: updatedChat.threadId,
-              updatedAt: new Date(updatedChat.updatedAt).toISOString(),
-            },
+            id: updatedChat.id,
+            title: updatedChat.title,
+            threadId: updatedChat.threadId,
+            updatedAt: updatedChat.updatedAt.toISOString(),
           };
         },
         {
@@ -407,17 +380,11 @@ export const ChatController = (app: Elysia) => {
             newTitle: t.String(),
           }),
           response: t.Object({
-            success: t.Boolean(),
-            chat: t.Object({
-              id: t.String(),
-              title: t.String(),
-              threadId: t.Optional(t.String()),
-              updatedAt: t.String(),
-            }),
+            id: t.String(),
+            title: t.String(),
+            threadId: t.Nullable(t.Optional(t.String())),
+            updatedAt: t.String(),
           }),
-          detail: {
-            // tags: ["Chat"],
-          },
         }
       )
   );

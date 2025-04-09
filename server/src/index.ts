@@ -38,7 +38,23 @@ if (IS_DEV) {
   );
 }
 
+const formatDates = (obj: any): any => {
+  if (obj instanceof Date) {
+    return obj.toISOString();
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(formatDates);
+  }
+  if (obj && typeof obj === "object") {
+    return Object.fromEntries(
+      Object.entries(obj).map(([key, value]) => [key, formatDates(value)])
+    );
+  }
+  return obj;
+};
+
 app
+
   .use(AnalyticsController)
   .use(UserController)
   .use(RevenueCatController)
@@ -55,6 +71,12 @@ app
       telegramService.createBot();
     }
   })
+  // .onAfterHandle(({ response }) => {
+  //   if (response && typeof response === "object") {
+  //     return formatDates(response);
+  //   }
+  //   return response;
+  // })
   .listen(process.env.PORT || 3000);
 
 export type ElysiaApp = typeof app;

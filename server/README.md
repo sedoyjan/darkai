@@ -34,3 +34,10 @@ https://github.dev/elysiajs/elysia/tree/main/example
 https://elysiajs.com/blog/with-prisma
 
 https://platform.openai.com/docs/assistants/overview
+
+
+
+DEPLOY LANDING GUIDE
+https://developers.cloudflare.com/workers/frameworks/framework-guides/nextjs/
+Cloudflare postgres
+https://developers.cloudflare.com/workers/tutorials/postgres/

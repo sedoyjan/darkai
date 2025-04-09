@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 16,
     backgroundColor: Colors.semiTransparentBg,
-    marginBottom: 8,
+    marginBottom: 16,
     borderRadius: 8,
     marginHorizontal: 16,
   },
