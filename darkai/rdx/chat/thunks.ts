@@ -12,7 +12,7 @@ import { delay } from '@/utils/utils';
 import { RootState } from '..';
 import { selectLocale, selectUser } from '../app/selectors';
 import { setHasFreeRequests } from '../app/slice';
-import { selectIsBotTyping, selectMessagesByChatId } from './selectors';
+import { selectIsBotTyping } from './selectors';
 import {
   pushMessage,
   setChatsArrayToMap,
@@ -205,10 +205,14 @@ export const renameChatThunk = createAsyncThunk<
     return;
   }
 
-  const r = await apiClient.putChatRenameChat({
-    chatId,
-    newTitle: title,
-  });
+  try {
+    await apiClient.putChatRenameChat({
+      chatId,
+      newTitle: title,
+    });
+  } catch (error) {
+    console.error('renameChatThunk error:', error);
+  }
 
   dispatch(getChatsThunk());
 });

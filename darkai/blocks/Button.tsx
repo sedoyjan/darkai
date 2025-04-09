@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   gradient: {
-    ...StyleSheet.absoluteFill,
+    ...StyleSheet.absoluteFillObject,
   },
   textWrapper: {
     flexDirection: 'row',

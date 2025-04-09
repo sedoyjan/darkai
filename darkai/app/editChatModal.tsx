@@ -41,8 +41,6 @@ export default function EditChatModalScreen() {
   const { chatId } = route.params;
   const { title } = useChat(chatId);
   const [chatTitle, setChatTitle] = useState(title);
-  const [isRenaming, setIsRenaming] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const hasChamgedTitle = chatTitle !== title;
   const isValidTitle = chatTitle.length > 0;

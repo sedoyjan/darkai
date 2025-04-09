@@ -106,6 +106,7 @@ export default function RootLayout() {
       const hasBeenHandled = await isNotificationHandled(notificationId);
       if (!hasBeenHandled && chatId) {
         await markNotificationAsHandled(notificationId);
+        router.replace('/(tabs)/(chats)');
         await navigateToChat(chatId as string);
         SplashScreen.hideAsync();
       } else {

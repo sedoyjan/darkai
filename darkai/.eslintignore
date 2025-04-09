@@ -4,6 +4,7 @@ ios
 .expo
 app/(tabs)/(tasks)/promo.tsx
 assets/animations/typing.json
+assets/animations/loader.json
 scripts/reset-project.js
 plugins
 expo-env.d.ts

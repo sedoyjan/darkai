@@ -36,7 +36,7 @@ export const navigateToChat = async (chatId: string) => {
     }),
   );
 
-  sharedRouter.getRouter().replace(`/(tabs)/(chats)/${chatId}?title=${title}`);
+  sharedRouter.getRouter().push(`/(tabs)/(chats)/${chatId}?title=${title}`);
 };
 
 export const markNotificationAsHandled = async (notificationId: string) => {
