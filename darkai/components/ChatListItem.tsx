@@ -82,6 +82,10 @@ export const ChatListItem = memo(({ chat }: ChatListItemProps) => {
       .trim();
   }, [chat.messages]);
 
+  const updatedAtFromLastMessage = useMemo(() => {
+    return chat.messages[0]?.createdAt || chat.updatedAt;
+  }, [chat.messages, chat.updatedAt]);
+
   return (
     <TouchableOpacity
       style={styles.wrapper}
@@ -100,7 +104,9 @@ export const ChatListItem = memo(({ chat }: ChatListItemProps) => {
         </View>
       </View>
       <View style={styles.meta}>
-        <Text style={styles.timestamp}>{formatDistance(chat.updatedAt)}</Text>
+        <Text style={styles.timestamp}>
+          {formatDistance(updatedAtFromLastMessage)}
+        </Text>
       </View>
     </TouchableOpacity>
   );

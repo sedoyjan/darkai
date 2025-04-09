@@ -1,7 +1,8 @@
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useIsFocused } from '@react-navigation/native';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { router } from 'expo-router';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
 
@@ -12,12 +13,15 @@ import { ChatListItem } from '@/components/ChatListItem';
 import { Header } from '@/components/Header';
 import { Helper } from '@/components/Helper';
 import { SafeAreaKeyboardAvoidingView } from '@/components/SafeAreaKeyboardAvoidingView';
+import { usePreviousWithInitialValue } from '@/hooks/usePrevious';
 import { useOnboardingRedirect } from '@/rdx/app/hooks/useOnboardingRedirect';
 import { useChats } from '@/rdx/chat/hooks/useChats';
 import {
   selectAreChatsLoading,
   selectChatListHash,
+  selectIsQuiteLoading,
 } from '@/rdx/chat/selectors';
+import { setIsQuiteLoading } from '@/rdx/chat/slice';
 import { getChatsThunk } from '@/rdx/chat/thunks';
 import { useAppDispatch, useAppSelector } from '@/rdx/store';
 import { sharedStyles } from '@/sharedStyles';
@@ -29,8 +33,27 @@ export default function ChatsScreen() {
   const listHash = useAppSelector(selectChatListHash);
   const dispatch = useAppDispatch();
   const areChatsLoading = useAppSelector(selectAreChatsLoading);
+  const isQuiteLoading = useAppSelector(selectIsQuiteLoading);
   const chats = useChats();
   const bottomTabBarHeight = useBottomTabBarHeight();
+  const isFocused = useIsFocused();
+  const isFocusedPrev = usePreviousWithInitialValue(isFocused);
+
+  const isSpinnerVisible = areChatsLoading && !isQuiteLoading;
+
+  useEffect(() => {
+    if (isFocused && !isFocusedPrev) {
+      dispatch(
+        setIsQuiteLoading({
+          isQuiteLoading: true,
+        }),
+      );
+      requestAnimationFrame(() => {
+        dispatch(getChatsThunk());
+      });
+    }
+  }, [isFocused, isFocusedPrev, dispatch]);
+
   useOnboardingRedirect();
 
   const renderItem = useCallback<ListRenderItem<Chat>>(({ item }) => {
@@ -44,13 +67,13 @@ export default function ChatsScreen() {
   const refreshControl = useMemo(() => {
     return (
       <RefreshControl
-        refreshing={areChatsLoading}
+        refreshing={isSpinnerVisible}
         onRefresh={onRefresh}
         tintColor="#ffffff"
         colors={['#ffffff']}
       />
     );
-  }, [areChatsLoading, onRefresh]);
+  }, [isSpinnerVisible, onRefresh]);
 
   return (
     <Background>

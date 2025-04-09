@@ -23,12 +23,14 @@ export interface ChatState {
   chatsParamsMap: Record<string, ChatsParams>;
   chatsMap: Record<string, Chat>;
   getChatsRequestState: RequestState;
+  isQuiteLoading: boolean;
 }
 
 const initialState: ChatState = {
   chatsParamsMap: {},
   chatsMap: {},
   getChatsRequestState: RequestState.unset,
+  isQuiteLoading: false,
 };
 
 export const chatSlice = createSlice({
@@ -116,6 +118,7 @@ export const chatSlice = createSlice({
         };
       });
       state.getChatsRequestState = RequestState.success;
+      state.isQuiteLoading = false;
     },
 
     setGetChatsRequestState: (
@@ -163,7 +166,6 @@ export const chatSlice = createSlice({
         } else {
           chat.messages = messages;
         }
-        chat.updatedAt = new Date().toISOString();
       } else {
         state.chatsMap[chatId] = {
           id: chatId,
@@ -197,6 +199,14 @@ export const chatSlice = createSlice({
       state.chatsMap = {};
       state.chatsParamsMap = {};
     },
+
+    setIsQuiteLoading: (
+      state,
+      action: PayloadAction<{ isQuiteLoading: boolean }>,
+    ) => {
+      const { isQuiteLoading } = action.payload;
+      state.isQuiteLoading = isQuiteLoading;
+    },
   },
 });
 
@@ -215,4 +225,5 @@ export const {
   deleteChat,
   deleteAllChats,
   setGetChatsRequestState,
+  setIsQuiteLoading,
 } = chatSlice.actions;

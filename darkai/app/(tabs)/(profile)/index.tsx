@@ -19,7 +19,8 @@ import {
   selectUser,
 } from '@/rdx/app/selectors';
 import { deleteAccountThunk, signOutThunk } from '@/rdx/app/thunks';
-import { useAppDispatch, useAppSelector } from '@/rdx/store';
+import { resetChatState } from '@/rdx/chat/slice';
+import { persistor, useAppDispatch, useAppSelector } from '@/rdx/store';
 import { toast } from '@/utils';
 
 const styles = StyleSheet.create({
@@ -135,6 +136,9 @@ export default function ProfileScreen() {
   }, [router]);
 
   const onSignOut = useCallback(async () => {
+    await persistor.purge();
+    await persistor.flush();
+    dispatch(resetChatState());
     dispatch(signOutThunk());
   }, [dispatch]);
 

@@ -30,6 +30,10 @@ export const selectIsLoading = (state: RootState, chatId: string) => {
   return state.chat.chatsParamsMap[chatId]?.isLoading || false;
 };
 
+export const selectIsQuiteLoading = (state: RootState) => {
+  return state.chat.isQuiteLoading;
+};
+
 export const selectIsChatDisabled = createSelector(
   [selectHasActiveSubscription, selectHasFreeRequests, selectIsAuthenticated],
   (hasActiveSubscription, hasFreeRequests, isAuthenticated) => {
