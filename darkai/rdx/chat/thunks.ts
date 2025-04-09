@@ -12,7 +12,7 @@ import { delay } from '@/utils/utils';
 import { RootState } from '..';
 import { selectLocale, selectUser } from '../app/selectors';
 import { setHasFreeRequests } from '../app/slice';
-import { selectIsBotTyping } from './selectors';
+import { selectIsBotTyping, selectIsChatDisabled } from './selectors';
 import {
   pushMessage,
   setChatsArrayToMap,
@@ -107,7 +107,9 @@ export const sendMessageThunk = createAsyncThunk<
   const { data } = await apiClient.getUserMe();
   dispatch(setHasFreeRequests({ hasFreeRequests: data.hasFreeRequests }));
 
-  if (data.hasFreeRequests) {
+  const isChatDisabled = selectIsChatDisabled(getState());
+
+  if (!isChatDisabled) {
     eventEmitter.emit('newMessage');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
