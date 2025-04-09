@@ -4,4 +4,3 @@ export const TERMS_AND_CONDITIONS_URL =
 export const PRIVACY_POLICY_URL =
   'https://darkai.sedoyjan.workers.dev/privacy-webview';
 export const DEVELOPER_EMAILS = ['sedoyjan@live.com'];
-
