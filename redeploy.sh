@@ -1,24 +1,19 @@
 #!/bin/bash
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NC='\033[0m' # No Color
-
-echo -e "${GREEN}Starting redeploy process...${NC}"
+echo "Starting redeploy process..."
 
 # Fetch and pull the latest changes from Git
 echo "Pulling latest changes from Git..."
 git fetch && git pull || {
-    echo -e "${RED}Error: Git fetch/pull failed${NC}"
+    echo "Error: Git fetch/pull failed"
     exit 1
 }
 
 # Restart the PM2 process with ID/name '2'
-echo "Restarting PM2 app...»
+echo "Restarting PM2 app..."
 pm2 restart 2 || {
-    echo -e "${RED}Error: PM2 restart failed${NC}"
+    echo "Error: PM2 restart failed"
     exit 1
 }
 
-echo -e "${GREEN}Redeploy completed successfully!${NC}"
+echo "Redeploy completed successfully!"
