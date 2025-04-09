@@ -16,7 +16,7 @@ export const UserController = (app: Elysia) => {
               },
             });
 
-            const FREE_REQUESTS = 5;
+            const FREE_REQUESTS = 25;
 
             const hasFreeRequests = userRecord
               ? userRecord.requestsCount < FREE_REQUESTS
