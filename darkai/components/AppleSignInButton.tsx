@@ -7,7 +7,7 @@ import { noop } from 'lodash';
 import { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { signInWithApple } from '@/rdx/app/thunks';
+import { signInWithAppleThunk } from '@/rdx/app/thunks';
 import { useAppDispatch } from '@/rdx/store';
 
 const styles = StyleSheet.create({
@@ -38,7 +38,7 @@ export const AppleSignInButton = ({
 
   const onSignIn = useCallback(async () => {
     await dispatch(
-      signInWithApple({
+      signInWithAppleThunk({
         redirectScreen,
       }),
     );

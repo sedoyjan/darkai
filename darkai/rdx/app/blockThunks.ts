@@ -15,11 +15,11 @@ import {
   setLocale,
 } from './slice';
 
-export const setFcmTokenThunk = createAsyncThunk<
+export const updateFcmTokenThunk = createAsyncThunk<
   void,
   { fcmToken: string },
   { state: RootState }
->('app/setFcmTokenThunk', async ({ fcmToken }, { dispatch }) => {
+>('app/updateFcmTokenThunk', async ({ fcmToken }, { dispatch }) => {
   dispatch(setFcmToken({ fcmToken }));
   try {
     await apiClient.postUserUserUpdateFcmToken({ fcmToken });

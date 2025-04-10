@@ -60,11 +60,19 @@ export default function SubscriptionModalScreen() {
             onFail();
           }}
           onRestoreCompleted={({ customerInfo }) => {
+            console.log(
+              '🚀 ~ onRestoreCompleted ~ customerInfo:',
+              customerInfo,
+            );
             if (customerInfo.activeSubscriptions) {
               onSuccess();
             }
           }}
           onPurchaseCompleted={({ customerInfo }) => {
+            console.log(
+              '🚀 ~ onPurchaseCompleted ~ customerInfo:',
+              customerInfo,
+            );
             if (customerInfo.activeSubscriptions) {
               onSuccess();
             }

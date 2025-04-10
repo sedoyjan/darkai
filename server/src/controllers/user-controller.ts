@@ -10,25 +10,23 @@ export const UserController = (app: Elysia) => {
         .get(
           "/me",
           async ({ user }) => {
-            console.log("🚀 ~ /user/me", {user});
             const userRecord = await db.user.findFirst({
               where: {
                 id: user.id,
               },
             });
-            console.log("🚀 ~ userRecord:", userRecord);
 
-            const FREE_REQUESTS = 25;
+            const FREE_REQUESTS_LIMIT = 15;
 
             const hasFreeRequests = userRecord
-              ? userRecord.requestsCount < FREE_REQUESTS
+              ? userRecord.requestsCount < FREE_REQUESTS_LIMIT
               : false;
 
             console.log(
-              "🚀 ~ userRecord.requestsCount",
+              "🚀 ~ requestsCount",
               userRecord?.requestsCount || 0,
               "/",
-              FREE_REQUESTS
+              FREE_REQUESTS_LIMIT
             );
 
             return {
@@ -170,8 +168,6 @@ export const UserController = (app: Elysia) => {
         const { fcmToken, identityToken, email, uid, locale, appUserId } =
           context.body;
 
-        console.log("🚀 ~ /user/login", { fcmToken });
-
         const existingUser = await db.user.findFirst({
           where: {
             OR: [
@@ -186,17 +182,22 @@ export const UserController = (app: Elysia) => {
         });
 
         if (!existingUser) {
-          await db.user.create({
-            data: {
-              id: uid,
-              email,
-              fcmToken: [fcmToken],
-              identityToken,
-              displayName: "",
-              locale,
-              appUserId: appUserId,
-            },
-          });
+          await db.user
+            .create({
+              data: {
+                id: uid,
+                email,
+                fcmToken: [fcmToken],
+                identityToken,
+                displayName: "",
+                locale,
+                appUserId: appUserId,
+              },
+            })
+            .catch((error) => {
+              console.error("🚀 ~ await db.user.create({ error", error);
+            });
+          console.log("🚀 ~ User created");
         } else {
           if (!existingUser.fcmToken.includes(fcmToken)) {
             await db.user.update({
@@ -216,6 +217,7 @@ export const UserController = (app: Elysia) => {
                 id: existingUser.id,
               },
               data: {
+                id: uid,
                 appUserId: appUserId,
                 email,
                 identityToken,

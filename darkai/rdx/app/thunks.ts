@@ -19,8 +19,8 @@ import { getChatsThunk } from '../chat/thunks';
 import {
   getUserDataThunk,
   localeConfigThunk,
-  setFcmTokenThunk,
   setupPurchasesAndSubscription,
+  updateFcmTokenThunk,
 } from './blockThunks';
 import { selectFcmToken, selectLaunchCount, selectUser } from './selectors';
 import {
@@ -72,10 +72,9 @@ export const setupMessagingThunk = createAsyncThunk<
   try {
     await messaging.requestPermission();
     const token = await messaging.getToken();
-
-    dispatch(setFcmTokenThunk({ fcmToken: token }));
+    await dispatch(updateFcmTokenThunk({ fcmToken: token })).unwrap();
     messaging.onTokenRefresh(newToken => {
-      dispatch(setFcmTokenThunk({ fcmToken: newToken }));
+      dispatch(updateFcmTokenThunk({ fcmToken: newToken }));
     });
   } catch (error) {
     console.error('Messaging setup failed:', error);
@@ -97,48 +96,9 @@ export const signInAnonymouslyThunk = createAsyncThunk<
       dispatch(setIdentityToken({ identityToken: idToken }));
       const user = fbCredential.user.toJSON() as User;
       dispatch(setUser({ user }));
-      await dispatch(setUserOnServerThunk()).unwrap();
     }
   } catch (error) {
     console.error('Anonymous sign-in failed:', error);
-    recordError(error as Error);
-  } finally {
-    dispatch(setIsSignInFlowInProgress({ isSignInFlowInProgress: false }));
-  }
-});
-
-export const signInWithAppleThunk = createAsyncThunk<
-  void,
-  { redirectScreen?: string },
-  { state: RootState }
->('app/signInWithApple', async ({ redirectScreen }, { dispatch }) => {
-  dispatch(setIsSignInFlowInProgress({ isSignInFlowInProgress: true }));
-  try {
-    const credential = await signInAsync({
-      requestedScopes: [
-        AppleAuthenticationScope.FULL_NAME,
-        AppleAuthenticationScope.EMAIL,
-      ],
-    });
-
-    const appleCredential = auth.AppleAuthProvider.credential(
-      credential.identityToken,
-    );
-    const fbCredential = await fbAuth.signInWithCredential(appleCredential);
-    const idToken = await fbAuth.currentUser?.getIdToken(true);
-
-    if (fbCredential && idToken) {
-      dispatch(setIdentityToken({ identityToken: idToken }));
-      const user = fbCredential.user.toJSON() as User;
-      dispatch(setUser({ user }));
-      await dispatch(setUserOnServerThunk()).unwrap();
-
-      if (redirectScreen) {
-        sharedRouter.getRouter().replace(redirectScreen as Href);
-      }
-    }
-  } catch (error) {
-    console.error('Apple sign-in failed:', error);
     recordError(error as Error);
   } finally {
     dispatch(setIsSignInFlowInProgress({ isSignInFlowInProgress: false }));
@@ -180,41 +140,121 @@ export const initThunk = createAsyncThunk<
   undefined,
   { state: RootState }
 >('app/initThunk', async (_, { dispatch, getState }) => {
-  const initialState = getState();
+  try {
+    const initialState = getState();
 
-  dispatch(setLaunchCount({ count: selectLaunchCount(initialState) + 1 }));
-  dispatch(localeConfigThunk());
-  if (!IS_DEV) {
-    apiClient.postAnalyticsLaunch({});
-  }
-
-  const firebaseUser = await new Promise<User | null>(resolve => {
-    const unsubscribe = fbAuth.onAuthStateChanged(user => {
-      unsubscribe();
-      resolve(user);
-    });
-  });
-
-  if (!firebaseUser) {
-    await dispatch(signInAnonymouslyThunk()).unwrap();
-  } else {
-    const idToken = await fbAuth.currentUser?.getIdToken(true);
-    if (!idToken) {
-      console.error('No ID token found for existing user');
-      return;
+    dispatch(setLaunchCount({ count: selectLaunchCount(initialState) + 1 }));
+    await dispatch(localeConfigThunk()).unwrap();
+    if (!IS_DEV) {
+      apiClient.postAnalyticsLaunch({});
     }
-    dispatch(setIdentityToken({ identityToken: idToken }));
-    dispatch(
-      setUser({
-        user: firebaseUser.toJSON() as User,
-      }),
-    );
-  }
-  await dispatch(setUserOnServerThunk()).unwrap();
 
-  await Promise.all([
-    dispatch(setupPurchasesAndSubscription()),
-    dispatch(getUserDataThunk()),
-    dispatch(getChatsThunk()),
-  ]);
+    const firebaseUser = await new Promise<User | null>(resolve => {
+      const unsubscribe = fbAuth.onAuthStateChanged(user => {
+        unsubscribe();
+        resolve(user);
+      });
+    });
+
+    if (!firebaseUser) {
+      await dispatch(signInAnonymouslyThunk()).unwrap();
+    } else {
+      const idToken = await firebaseUser.getIdToken(true);
+      dispatch(setIdentityToken({ identityToken: idToken }));
+      dispatch(
+        setUser({
+          user: firebaseUser.toJSON() as User,
+        }),
+      );
+    }
+
+    await dispatch(setUserOnServerThunk()).unwrap();
+    await dispatch(setupMessagingThunk()).unwrap();
+    await Promise.all([
+      dispatch(setupPurchasesAndSubscription()),
+      dispatch(getUserDataThunk()),
+      dispatch(getChatsThunk()),
+    ]);
+  } catch (error) {
+    console.error('App initialization failed:', error);
+    recordError(error as Error);
+  }
+});
+
+export const subscriptionThunk = createAsyncThunk<
+  void,
+  undefined,
+  { state: RootState }
+>('app/subscriptionThunk', async (_, { dispatch, getState }) => {
+  const user = selectUser(getState());
+  if (!user) {
+    console.error('No user found for subscription');
+    return;
+  }
+
+  if (user.isAnonymous) {
+    sharedRouter.getRouter().push('/signin?redirectScreen=/subscriptionModal');
+  } else {
+    sharedRouter.getRouter().push('/subscriptionModal');
+  }
+
+  console.log('subscription thunk', user);
+});
+
+export const signInWithAppleThunk = createAsyncThunk<
+  void,
+  { redirectScreen?: string },
+  { state: RootState }
+>('app/signInWithApple', async ({ redirectScreen }, { dispatch }) => {
+  dispatch(setIsSignInFlowInProgress({ isSignInFlowInProgress: true }));
+  try {
+    const credential = await signInAsync({
+      requestedScopes: [
+        AppleAuthenticationScope.FULL_NAME,
+        AppleAuthenticationScope.EMAIL,
+      ],
+    });
+
+    const appleCredential = auth.AppleAuthProvider.credential(
+      credential.identityToken,
+    );
+    let fbCredential;
+
+    const currentUser = fbAuth.currentUser;
+    if (currentUser && currentUser.isAnonymous) {
+      try {
+        fbCredential = await currentUser.linkWithCredential(appleCredential);
+        console.log(
+          'Successfully linked Apple credential to anonymous account',
+        );
+      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((error as any).code === 'auth/credential-already-in-use') {
+          console.log('Apple credential already in use, signing in instead');
+          await fbAuth.signOut();
+          fbCredential = await fbAuth.signInWithCredential(appleCredential);
+        } else {
+          throw error;
+        }
+      }
+    } else {
+      fbCredential = await fbAuth.signInWithCredential(appleCredential);
+    }
+
+    const idToken = await fbAuth.currentUser?.getIdToken(true);
+    if (fbCredential && idToken) {
+      dispatch(setIdentityToken({ identityToken: idToken }));
+      const user = fbCredential.user.toJSON() as User;
+      dispatch(setUser({ user }));
+
+      if (redirectScreen) {
+        sharedRouter.getRouter().replace(redirectScreen as Href);
+      }
+    }
+  } catch (error) {
+    console.error('Apple sign-in failed:', error);
+    recordError(error as Error);
+  } finally {
+    dispatch(setIsSignInFlowInProgress({ isSignInFlowInProgress: false }));
+  }
 });

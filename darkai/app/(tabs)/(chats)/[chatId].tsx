@@ -23,7 +23,7 @@ import { SafeAreaKeyboardAvoidingView } from '@/components/SafeAreaKeyboardAvoid
 import { eventEmitter } from '@/EventEmitter';
 import { useKeyboardListener } from '@/hooks/useKeyboardListener';
 import { usePreviousWithInitialValue } from '@/hooks/usePrevious';
-import { setupMessagingThunk } from '@/rdx/app/thunks';
+import { setupMessagingThunk, subscriptionThunk } from '@/rdx/app/thunks';
 import { useChat } from '@/rdx/chat/hooks/useChat';
 import { getMessagesThunk } from '@/rdx/chat/thunks';
 import { useAppDispatch } from '@/rdx/store';
@@ -86,8 +86,8 @@ export default function ChatScreen() {
   }, [messages.length]);
 
   const onSubscribePress = useCallback(() => {
-    router.push('/subscriptionModal');
-  }, [router]);
+    dispatch(subscriptionThunk());
+  }, [dispatch]);
 
   const onNewMessage = useCallback(() => {
     setTimeout(() => {

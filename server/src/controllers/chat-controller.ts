@@ -15,7 +15,6 @@ export const ChatController = (app: Elysia) => {
     app
       .use(isAuthenticated)
       .onBeforeHandle(async ({ user, set }) => {
-        const freeMessageLimit = 4;
         const userData = await db.user.findUnique({
           where: { id: user.id },
         });

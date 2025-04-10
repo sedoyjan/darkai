@@ -8,6 +8,7 @@ import { Icon, IconName } from '../blocks/Icon';
 
 const styles = StyleSheet.create({
   wrapper: {
+    paddingHorizontal: 8,
     height: 44,
     flexDirection: 'row',
     width: '100%',

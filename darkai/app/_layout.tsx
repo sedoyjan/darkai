@@ -62,6 +62,7 @@ export type RootParamList = {
   SignIn: {
     text?: string;
     chatId?: string;
+    redirectScreen?: string;
   };
 };
 

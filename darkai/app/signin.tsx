@@ -1,5 +1,5 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
-import { useRouter } from 'expo-router';
+import { Href, useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Platform, StyleSheet, Text, View } from 'react-native';
@@ -58,7 +58,7 @@ export default function SignInScreen() {
   const isTermsAccepted = useAppSelector(selectIsTermsAccepted);
   const isPrivacyAccepted = useAppSelector(selectIsPrivacyAccepted);
   const route = useRoute<RouteProp<RootParamList, 'SignIn'>>();
-  const { text: messageText, chatId } = route.params;
+  const { text: messageText, chatId, redirectScreen } = route.params;
   const { sendMessage } = useChat(chatId || 'no-chat-id');
   const isSignInFlowInProgress = useAppSelector(selectIsSignInFlowInProgress);
 
@@ -97,7 +97,10 @@ export default function SignInScreen() {
     if (messageText && messageText.length > 0) {
       sendMessage({ text: messageText });
     }
-  }, [messageText, router, sendMessage]);
+    if (redirectScreen) {
+      router.push(redirectScreen as Href);
+    }
+  }, [messageText, redirectScreen, router, sendMessage]);
 
   const isButtonEnabled =
     isTermsAccepted && isPrivacyAccepted && !isSignInFlowInProgress;
