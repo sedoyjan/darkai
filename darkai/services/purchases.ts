@@ -18,10 +18,6 @@ export const configurePurchases = async () => {
   }
   if (Platform.OS === 'ios') {
     await Purchases.configure({ apiKey: APIKeys.apple });
-
-    // const offerings = await Purchases.getOfferings();
-    // console.log('🚀 ~ configurePurchases ~ offerings:', offerings);
-
     return { isConfigured: true };
   }
 

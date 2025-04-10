@@ -320,6 +320,23 @@ export const ChatController = (app: Elysia) => {
         }
       )
       .delete(
+        "deleteAllChats",
+        async ({ user }) => {
+          await db.chat.deleteMany({
+            where: {
+              userId: user.id,
+            },
+          });
+
+          return { success: true };
+        },
+        {
+          response: t.Object({
+            success: t.Boolean(),
+          }),
+        }
+      )
+      .delete(
         "/deleteChat",
         async ({ user, query }) => {
           const { chatId } = query;

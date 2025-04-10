@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { apiClient } from '@/api';
 import { Button } from '@/blocks/Button';
 import { Background } from '@/components/Background';
 import { Header } from '@/components/Header';
@@ -13,6 +14,7 @@ import { Helper } from '@/components/Helper';
 import { SettingsButton } from '@/components/SettingsButton';
 import { Colors, PremiumGradientColors } from '@/constants/Colors';
 import { LANGUAGES } from '@/i18n';
+import { useProfileNavigation } from '@/rdx/app/hooks/useProfileNavigation';
 import {
   selectHasActiveSubscription,
   selectIsDeveloper,
@@ -94,8 +96,16 @@ export default function ProfileScreen() {
   const hasActiveSubscription = useAppSelector(selectHasActiveSubscription);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const {
+    onChangeLanguage,
+    onSignIn,
+    onSubscribe,
+    openPrivacyPolicy,
+    openTerms,
+  } = useProfileNavigation();
 
-  const user = useAppSelector(selectUser);
+  const currentUser = useAppSelector(selectUser);
+  const user = currentUser && !currentUser.isAnonymous ? currentUser : null;
 
   const onRateApp = useCallback(async () => {
     if (await StoreReview.hasAction()) {
@@ -113,27 +123,12 @@ export default function ProfileScreen() {
         text: 'Clear',
         style: 'destructive',
         onPress: async () => {
-          toast('Data cleared');
+          await apiClient.deleteChatDeleteAllChats();
+          dispatch(resetChatState());
         },
       },
     ]);
-  }, []);
-
-  const onChangeLanguage = useCallback(async () => {
-    router.push('/languages');
-  }, [router]);
-
-  const openPrivacyPolicy = useCallback(async () => {
-    router.push('/privacy');
-  }, [router]);
-
-  const openTerms = useCallback(async () => {
-    router.push('/terms');
-  }, [router]);
-
-  const onSubscribe = useCallback(async () => {
-    router.push('/subscriptionModal');
-  }, [router]);
+  }, [dispatch]);
 
   const onSignOut = useCallback(async () => {
     await persistor.purge();
@@ -156,15 +151,12 @@ export default function ProfileScreen() {
           style: 'destructive',
           onPress: () => {
             dispatch(deleteAccountThunk());
+            onSignOut();
           },
         },
       ],
     );
-  }, [dispatch, t]);
-
-  const onSignIn = useCallback(async () => {
-    router.push('/signin');
-  }, [router]);
+  }, [dispatch, onSignOut, t]);
 
   const initials = user?.email?.charAt(0).toUpperCase();
   const name = user?.displayName;
@@ -245,12 +237,12 @@ export default function ProfileScreen() {
             withSeparator
             withArrow
           />
-          {/* <SettingsButton
+          <SettingsButton
             icon="trash"
             label={t('screens.profile.buttons.clearData')}
             onPress={onClearData}
             withSeparator
-          /> */}
+          />
           {user ? (
             <SettingsButton
               // iconBackgroundColor={Colors.errorColor}
@@ -262,7 +254,6 @@ export default function ProfileScreen() {
           ) : null}
           {user ? (
             <SettingsButton
-              // iconBackgroundColor={Colors.errorColor}
               icon="log-out"
               label={t('screens.profile.buttons.signOut')}
               onPress={onSignOut}
@@ -270,7 +261,6 @@ export default function ProfileScreen() {
           ) : null}
           {isDeveloper ? (
             <SettingsButton
-              // iconBackgroundColor={Colors.doneColor}
               icon="settings"
               label={t('screens.profile.buttons.devMenu')}
               onPress={() => {

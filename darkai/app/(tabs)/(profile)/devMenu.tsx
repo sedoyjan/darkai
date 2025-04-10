@@ -25,6 +25,8 @@ import {
   setIsRecordingMode,
   setLaunchCount,
 } from '@/rdx/app/slice';
+import { signOutThunk } from '@/rdx/app/thunks';
+import { resetChatState } from '@/rdx/chat/slice';
 import { persistor, useAppDispatch, useAppSelector } from '@/rdx/store';
 import { sharedStyles } from '@/sharedStyles';
 import { reloadApp } from '@/utils/reloadApp';
@@ -134,6 +136,15 @@ export default function DeveloperSettingsScreen() {
             label={'Make follow up'}
             onPress={() => {
               apiClient.postAdminTestFollowUp();
+            }}
+            withSeparator
+          />
+          <SettingsButton
+            label={'Force logout'}
+            onPress={async () => {
+              await dispatch(resetChatState());
+              await dispatch(signOutThunk());
+              reloadApp();
             }}
             withSeparator
           />

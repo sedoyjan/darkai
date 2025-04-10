@@ -150,6 +150,25 @@ export interface GetChatGetMessages200ResponsePagination {
 /**
  * 
  * @export
+ * @interface GetDebugCheck200Response
+ */
+export interface GetDebugCheck200Response {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetDebugCheck200Response
+     */
+    'message': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetDebugCheck200Response
+     */
+    'time': string;
+}
+/**
+ * 
+ * @export
  * @interface GetDebugFollowUp200Response
  */
 export interface GetDebugFollowUp200Response {
@@ -465,6 +484,35 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteChatDeleteAllChats: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/chat/deleteAllChats`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} chatId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -627,6 +675,35 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             if (limit !== undefined) {
                 localVarQueryParameter['limit'] = limit;
             }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDebugCheck: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/debug/check`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
 
 
     
@@ -1035,6 +1112,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteChatDeleteAllChats(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostAdminTestFollowUp200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteChatDeleteAllChats(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.deleteChatDeleteAllChats']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} chatId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1091,6 +1179,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getChatGetMessages(chatId, page, limit, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getChatGetMessages']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getDebugCheck(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetDebugCheck200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getDebugCheck(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getDebugCheck']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -1243,6 +1342,14 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteChatDeleteAllChats(options?: RawAxiosRequestConfig): AxiosPromise<PostAdminTestFollowUp200Response> {
+            return localVarFp.deleteChatDeleteAllChats(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} chatId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1285,6 +1392,14 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         getChatGetMessages(chatId: string, page?: number, limit?: number, options?: RawAxiosRequestConfig): AxiosPromise<GetChatGetMessages200Response> {
             return localVarFp.getChatGetMessages(chatId, page, limit, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDebugCheck(options?: RawAxiosRequestConfig): AxiosPromise<GetDebugCheck200Response> {
+            return localVarFp.getDebugCheck(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1400,6 +1515,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
 export class DefaultApi extends BaseAPI {
     /**
      * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public deleteChatDeleteAllChats(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).deleteChatDeleteAllChats(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {string} chatId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1451,6 +1576,16 @@ export class DefaultApi extends BaseAPI {
      */
     public getChatGetMessages(chatId: string, page?: number, limit?: number, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).getChatGetMessages(chatId, page, limit, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getDebugCheck(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getDebugCheck(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

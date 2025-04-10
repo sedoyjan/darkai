@@ -10,11 +10,13 @@ export const UserController = (app: Elysia) => {
         .get(
           "/me",
           async ({ user }) => {
+            console.log("🚀 ~ /user/me", {user});
             const userRecord = await db.user.findFirst({
               where: {
                 id: user.id,
               },
             });
+            console.log("🚀 ~ userRecord:", userRecord);
 
             const FREE_REQUESTS = 25;
 

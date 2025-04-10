@@ -25,6 +25,18 @@ axiosInstance.interceptors.request.use(
     } else {
       // console.error('no idToken');
     }
+
+    if (IS_DEV) {
+      const path = (config.url || '').replace(BASE_PATH, '');
+      console.log(
+        `🚀 ${idToken ? '🔒' : ''} ${config.method?.toUpperCase()} ${path}`,
+      );
+      // if (config.method?.toUpperCase() === 'POST' && config.data) {
+      //   console.log(JSON.parse(config.data));
+      //   console.log('------------------');
+      // }
+    }
+
     return config;
   },
   error => {

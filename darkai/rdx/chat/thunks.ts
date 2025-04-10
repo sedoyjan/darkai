@@ -104,6 +104,7 @@ export const sendMessageThunk = createAsyncThunk<
   await delay(200);
 
   dispatch(setIsBotTyping({ chatId, isTyping: true }));
+  console.log('getUserMe 1');
   const { data } = await apiClient.getUserMe();
   dispatch(setHasFreeRequests({ hasFreeRequests: data.hasFreeRequests }));
 
