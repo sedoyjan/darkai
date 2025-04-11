@@ -3,8 +3,8 @@ import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
 import { Cron } from "./cron";
 
-import { readFileSync } from "fs";
-import path from "path";
+// import { readFileSync } from "fs";
+// import path from "path";
 import { AdminController } from "./controllers/admin-controller";
 import { AnalyticsController } from "./controllers/analytics-controller";
 import { ChatController } from "./controllers/chat-controller";
@@ -15,14 +15,14 @@ import { telegramService } from "./services/telegram";
 import { getApplePublicKeys } from "./utils";
 
 const IS_DEV = process.env.NODE_ENV === "development";
-const CERT_DIR = "/etc/letsencrypt/live/darkai.duckdns.org";
+// const CERT_DIR = "/etc/letsencrypt/live/darkai.duckdns.org";
 
-const _tlsOptions = !IS_DEV
-  ? {
-      key: readFileSync(path.join(CERT_DIR, "privkey.pem")),
-      cert: readFileSync(path.join(CERT_DIR, "fullchain.pem")),
-    }
-  : undefined;
+// const _tlsOptions = !IS_DEV
+//   ? {
+//       key: readFileSync(path.join(CERT_DIR, "privkey.pem")),
+//       cert: readFileSync(path.join(CERT_DIR, "fullchain.pem")),
+//     }
+//   : undefined;
 
 export const app = new Elysia()
   .state({ appleKeys: [], userIds: { uid: "id" } })
