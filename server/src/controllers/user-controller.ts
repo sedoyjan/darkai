@@ -8,122 +8,6 @@ export const UserController = (app: Elysia) => {
     .group("/user", (app) =>
       app
         .use(isAuthenticated)
-        .post(
-          "/login-apple",
-          async (context) => {
-            const { fcmToken, identityToken, email, appUserId, locale, uid } =
-              context.body;
-            const anonymousUserId = context.user.id;
-
-            try {
-              const result = await db.$transaction(async (tx) => {
-                let appleUser = await tx.user.findUnique({
-                  where: { id: uid },
-                });
-
-                if (!appleUser) {
-                  const existingUser = await tx.user.findFirst({
-                    where: {
-                      appUserId,
-                    },
-                  });
-
-                  if (existingUser && existingUser.id !== uid) {
-                    console.log(
-                      `User with appUserId ${appUserId} already exists.`
-                    );
-                    await tx.user.update({
-                      where: { id: existingUser.id },
-                      data: {
-                        appUserId: `__${existingUser.appUserId}`,
-                      },
-                    });
-                  }
-
-                  appleUser = await tx.user.create({
-                    data: {
-                      id: uid,
-                      email,
-                      fcmToken: [fcmToken],
-                      identityToken,
-                      displayName: "",
-                      locale,
-                      appUserId,
-                    },
-                  });
-                } else {
-                  const updateData: Partial<User> = {
-                    email,
-                    identityToken,
-                    locale,
-                  };
-
-                  if (!appleUser.fcmToken.includes(fcmToken)) {
-                    updateData.fcmToken = [...appleUser.fcmToken, fcmToken];
-                  }
-
-                  appleUser = await tx.user.update({
-                    where: { id: appleUser.id },
-                    data: updateData,
-                  });
-                }
-
-                if (anonymousUserId !== appleUser.id) {
-                  await tx.chat.updateMany({
-                    where: { userId: anonymousUserId },
-                    data: { userId: appleUser.id },
-                  });
-
-                  await tx.message.updateMany({
-                    where: { userId: anonymousUserId },
-                    data: { userId: appleUser.id },
-                  });
-
-                  const anonymousUserChats = await tx.chat.count({
-                    where: { userId: anonymousUserId },
-                  });
-
-                  const anonymousUserMessages = await tx.message.count({
-                    where: { userId: anonymousUserId },
-                  });
-
-                  if (anonymousUserChats === 0 && anonymousUserMessages === 0) {
-                    await tx.user.delete({
-                      where: { id: anonymousUserId },
-                    }).catch((error) => {
-                      console.log(
-                        "🚀 ~ /user/login-apple ~ db.user.delete error:",
-                        error
-                      );
-                    })
-                  }
-                }
-
-                return appleUser;
-              });
-
-              console.log(
-                `User ${appUserId} logged in with Apple, data migrated from anonymous user ${anonymousUserId}`
-              );
-
-              console.log({ success: true, userId: result.id });
-              return;
-            } catch (error) {
-              console.error("Error in Apple login:", error);
-              throw new Error("Failed to process Apple login");
-            }
-          },
-          {
-            body: t.Object({
-              uid: t.String(),
-              appUserId: t.String(),
-              identityToken: t.String(),
-              fcmToken: t.String(),
-              locale: t.String(),
-              email: t.Optional(t.String()),
-            }),
-          }
-        )
         .get(
           "/me",
           async ({ user }) => {
@@ -246,11 +130,15 @@ export const UserController = (app: Elysia) => {
           }
         )
         .post("/delete-account", async ({ user }) => {
-          await db.user.delete({
-            where: {
-              id: user.id,
-            },
-          });
+          await db.user
+            .delete({
+              where: {
+                id: user.id,
+              },
+            })
+            .catch((error) => {
+              console.error("🚀 delete-account error:", error);
+            });
         })
         .post(
           "/check-subscription",
@@ -328,6 +216,146 @@ export const UserController = (app: Elysia) => {
         body: t.Object({
           appUserId: t.String(),
           uid: t.String(),
+          identityToken: t.String(),
+          fcmToken: t.String(),
+          locale: t.String(),
+          email: t.Optional(t.String()),
+        }),
+      }
+    )
+    .post(
+      "/user/login-apple",
+      async (context) => {
+        const { fcmToken, identityToken, email, appUserId, locale, uid } =
+          context.body;
+        try {
+          const existingUser = await db.user.findFirst({
+            where: { appUserId },
+          });
+          // Check for existing Apple user
+          console.log("Checking for existing Apple user with ID:", uid);
+          let appleUser = await db.user.findUnique({
+            where: { id: uid },
+          });
+          console.log("Apple user lookup result:", appleUser);
+
+          if (!appleUser) {
+            console.log("No Apple user found, checking for existing appUserId");
+
+            console.log("Existing user with appUserId check:", existingUser);
+
+            if (existingUser && existingUser.id !== uid) {
+              console.log(
+                `Found existing user with appUserId ${appUserId}, updating to avoid conflict`
+              );
+              await db.user.update({
+                where: { id: existingUser.id },
+                data: { appUserId: `__${existingUser.appUserId}` },
+              });
+              console.log("Updated existing user appUserId");
+            }
+
+            console.log("Creating new Apple user");
+            appleUser = await db.user.create({
+              data: {
+                id: uid,
+                email,
+                fcmToken: [fcmToken],
+                identityToken,
+                displayName: "",
+                locale,
+                appUserId,
+              },
+            });
+            console.log("Created new Apple user:", appleUser);
+          } else {
+            console.log("Existing Apple user found, preparing update");
+            const updateData: Partial<User> = {
+              email,
+              identityToken,
+              locale,
+            };
+
+            if (!appleUser.fcmToken.includes(fcmToken)) {
+              updateData.fcmToken = [...appleUser.fcmToken, fcmToken];
+              console.log("Adding new fcmToken to user");
+            }
+
+            console.log("Updating existing Apple user with data:", updateData);
+            appleUser = await db.user.update({
+              where: { id: appleUser.id },
+              data: updateData,
+            });
+            console.log("Updated Apple user:", appleUser);
+          }
+
+          if (existingUser && existingUser.id !== appleUser.id) {
+            console.log("Migrating data from anonymous user:", existingUser.id);
+
+            console.log("Updating chats to new user ID");
+            await db.chat.updateMany({
+              where: { userId: existingUser.id },
+              data: { userId: appleUser.id },
+            });
+            console.log("Completed chat migration");
+
+            console.log("Updating messages to new user ID");
+            await db.message.updateMany({
+              where: { userId: existingUser.id },
+              data: { userId: appleUser.id },
+            });
+            console.log("Completed message migration");
+
+            console.log("Checking if anonymous user can be deleted");
+            const anonymousUserChats = await db.chat.count({
+              where: { userId: existingUser.id },
+            });
+            console.log("Anonymous user chat count:", anonymousUserChats);
+
+            const anonymousUserMessages = await db.message.count({
+              where: { userId: existingUser.id },
+            });
+            console.log("Anonymous user message count:", anonymousUserMessages);
+
+            if (anonymousUserChats === 0 && anonymousUserMessages === 0) {
+              console.log(
+                "Deleting anonymous user as no chats or messages remain"
+              );
+              try {
+                await db.user.delete({
+                  where: { id: existingUser.id },
+                });
+                console.log("Successfully deleted anonymous user");
+              } catch (deleteError) {
+                console.error("Error deleting anonymous user:", deleteError);
+              }
+            } else {
+              console.log(
+                "Preserving anonymous user due to remaining chats or messages"
+              );
+            }
+          } else {
+            console.log("No migration needed - same user ID");
+          }
+
+          console.log(`Apple login completed successfully for user ${uid}`, {
+            migratedFrom: existingUser?.id,
+            finalUser: appleUser,
+          });
+
+          return appleUser;
+        } catch (error) {
+          console.error("Apple login failed:", {
+            error,
+            uid,
+          });
+          throw new Error("Failed to process Apple login");
+        }
+      },
+      {
+        body: t.Object({
+          uid: t.String(),
+          appUserId: t.String(),
           identityToken: t.String(),
           fcmToken: t.String(),
           locale: t.String(),

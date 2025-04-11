@@ -130,12 +130,21 @@ export default function ProfileScreen() {
     ]);
   }, [dispatch]);
 
-  const onSignOut = useCallback(async () => {
+  const onFlush = useCallback(async () => {
     await persistor.purge();
     await persistor.flush();
     dispatch(resetChatState());
-    dispatch(signOutThunk());
   }, [dispatch]);
+
+  const onSignOut = useCallback(async () => {
+    await onFlush();
+    dispatch(signOutThunk());
+  }, [dispatch, onFlush]);
+
+  const onDeleteAccountConfirmed = useCallback(async () => {
+    await dispatch(deleteAccountThunk()).unwrap();
+    onFlush();
+  }, [dispatch, onFlush]);
 
   const onDeleteAccount = useCallback(async () => {
     Alert.alert(
@@ -149,14 +158,11 @@ export default function ProfileScreen() {
         {
           text: t('common.delete'),
           style: 'destructive',
-          onPress: () => {
-            dispatch(deleteAccountThunk());
-            onSignOut();
-          },
+          onPress: onDeleteAccountConfirmed,
         },
       ],
     );
-  }, [dispatch, onSignOut, t]);
+  }, [onDeleteAccountConfirmed, t]);
 
   const initials = user?.email?.charAt(0).toUpperCase();
   const name = user?.displayName;
