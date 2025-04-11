@@ -1,10 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as Haptics from 'expo-haptics';
-import { Href } from 'expo-router';
 
 import { apiClient } from '@/api';
 import { eventEmitter } from '@/EventEmitter';
-import { sharedRouter } from '@/services/sharedRouter';
 import { ChatMessageType, RequestState } from '@/types';
 import { uuid } from '@/utils';
 import { delay } from '@/utils/utils';

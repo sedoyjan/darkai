@@ -39,6 +39,7 @@ export const setUserOnServerThunk = createAsyncThunk<
   const user = selectUser(state);
   if (!user) {
     console.error('No user found');
+    recordError(new Error('No user found'));
     return;
   }
 
@@ -181,6 +182,7 @@ export const initThunk = createAsyncThunk<
       );
     }
     await dispatch(setUserOnServerThunk()).unwrap();
+    await dispatch(afterLoginThunk()).unwrap();
     dispatch(getChatsThunk());
   } catch (error) {
     console.error('App initialization failed:', error);

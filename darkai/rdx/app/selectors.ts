@@ -6,6 +6,8 @@ import { RootState } from '..';
 
 export const selectUser = (state: RootState) => state.app.user;
 export const selectIsAuthenticated = (state: RootState) => !!state.app.user;
+export const selectIsAnonymous = (state: RootState) =>
+  state.app.user?.isAnonymous || false;
 export const selectFcmToken = (state: RootState) => state.app.fcmToken;
 export const selectIdentityToken = (state: RootState) =>
   state.app.identityToken;

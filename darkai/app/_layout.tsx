@@ -32,8 +32,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import { apiClient } from '@/api';
 import { KeyboardHeightContextProvider } from '@/components/KeyboardHeightContextProvider';
 import { RecordModeStatusBar } from '@/components/RecordModeStatusBar';
+import { IS_DEV } from '@/const';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import i18n from '@/i18n';
 import { initThunk } from '@/rdx/app/thunks';
@@ -89,39 +91,46 @@ export default function RootLayout() {
   }, [pathname, params]);
 
   const init = useCallback(async () => {
-    sharedRouter.setRouter(router);
-    await store.dispatch(initThunk());
+    try {
+      sharedRouter.setRouter(router);
+      store.dispatch(initThunk());
 
-    const initialNotification =
-      await Notifications.getLastNotificationResponseAsync();
+      const initialNotification =
+        await Notifications.getLastNotificationResponseAsync();
 
-    if (initialNotification) {
-      const chatId = get(
-        initialNotification,
-        'notification.request.trigger.payload.chatId',
-        null,
-      );
+      if (initialNotification) {
+        const chatId = get(
+          initialNotification,
+          'notification.request.trigger.payload.chatId',
+          null,
+        );
+        const notificationId =
+          initialNotification.notification.request.identifier;
+        const hasBeenHandled = await isNotificationHandled(notificationId);
 
-      const notificationId =
-        initialNotification.notification.request.identifier;
-      const hasBeenHandled = await isNotificationHandled(notificationId);
-      if (!hasBeenHandled && chatId) {
-        await markNotificationAsHandled(notificationId);
-        router.replace('/(tabs)/(chats)');
-        await navigateToChat(chatId as string);
-        SplashScreen.hideAsync();
+        if (!hasBeenHandled && chatId) {
+          await markNotificationAsHandled(notificationId);
+          router.replace('/(tabs)/(chats)');
+          await navigateToChat(chatId as string);
+        } else {
+          router.replace('/(tabs)/(chats)');
+        }
       } else {
         router.replace('/(tabs)/(chats)');
-        SplashScreen.hideAsync();
       }
-    } else {
-      router.replace('/(tabs)/(chats)');
-      SplashScreen.hideAsync();
+    } catch (error) {
+      console.error('Initialization error:', error);
+      router.replace('/(tabs)/(chats)'); // Fallback navigation
+    } finally {
+      await SplashScreen.hideAsync(); // Always hide splash screen
     }
   }, [router]);
 
   useEffect(() => {
     init();
+    if (!IS_DEV) {
+      apiClient.postAnalyticsLaunch({});
+    }
   }, [init]);
 
   return (

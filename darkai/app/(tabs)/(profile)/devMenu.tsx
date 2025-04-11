@@ -12,6 +12,7 @@ import { Colors } from '@/constants/Colors';
 import {
   selectHasActiveSubscription,
   selectHasFreeRequests,
+  selectIsAnonymous,
   selectIsAuthenticated,
   selectIsOnboardingPassed,
   selectIsOnboardingSkipped,
@@ -59,19 +60,19 @@ export default function DeveloperSettingsScreen() {
 
   const hasFreeRequests = useAppSelector(selectHasFreeRequests);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const isAnonymous = useAppSelector(selectIsAnonymous);
 
   return (
     <Background>
       <SafeAreaView style={sharedStyles.wrapper}>
         <Header title={t('screens.titles.developerSettings')} withBackButton />
         <ScrollView style={styles.content}>
-          <Text style={styles.text}>Debug Data</Text>
           <Text style={styles.text}>
             {JSON.stringify(
               {
-                hasActiveSubscription,
                 hasFreeRequests,
                 isAuthenticated,
+                isAnonymous,
               },
               null,
               1,
