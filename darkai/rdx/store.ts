@@ -29,11 +29,7 @@ const persistConfig: PersistConfig<RootState> = {
   key: 'darkai',
   version: 2,
   storage: AsyncStorage,
-  whitelist: [
-    // 'chat',
-    'settings',
-    'app',
-  ],
+  whitelist: ['chat', 'settings', 'app'],
   stateReconciler: autoMergeLevel2,
   // transforms: [
   //   createFilter(

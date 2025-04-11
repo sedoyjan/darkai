@@ -73,7 +73,7 @@ export const setupMessagingThunk = createAsyncThunk<
   try {
     await messaging.requestPermission();
     const token = await messaging.getToken();
-    await dispatch(updateFcmTokenThunk({ fcmToken: token })).unwrap();
+    dispatch(updateFcmTokenThunk({ fcmToken: token })).unwrap();
     messaging.onTokenRefresh(newToken => {
       dispatch(updateFcmTokenThunk({ fcmToken: newToken }));
     });
@@ -181,7 +181,7 @@ export const initThunk = createAsyncThunk<
         }),
       );
     }
-    await dispatch(setUserOnServerThunk()).unwrap();
+
     await dispatch(afterLoginThunk()).unwrap();
     dispatch(getChatsThunk());
   } catch (error) {
