@@ -1,12 +1,129 @@
 import Elysia, { t } from "elysia";
 import { db } from "../db";
 import { isAuthenticated } from "../middlewares/auth";
+import { User } from "../../prisma/prisma-client-js";
 
 export const UserController = (app: Elysia) => {
   app
     .group("/user", (app) =>
       app
         .use(isAuthenticated)
+        .post(
+          "/login-apple",
+          async (context) => {
+            const { fcmToken, identityToken, email, appUserId, locale, uid } =
+              context.body;
+            const anonymousUserId = context.user.id;
+
+            try {
+              const result = await db.$transaction(async (tx) => {
+                let appleUser = await tx.user.findUnique({
+                  where: { id: uid },
+                });
+
+                if (!appleUser) {
+                  const existingUser = await tx.user.findFirst({
+                    where: {
+                      appUserId,
+                    },
+                  });
+
+                  if (existingUser && existingUser.id !== uid) {
+                    console.log(
+                      `User with appUserId ${appUserId} already exists.`
+                    );
+                    await tx.user.update({
+                      where: { id: existingUser.id },
+                      data: {
+                        appUserId: `__${existingUser.appUserId}`,
+                      },
+                    });
+                  }
+
+                  appleUser = await tx.user.create({
+                    data: {
+                      id: uid,
+                      email,
+                      fcmToken: [fcmToken],
+                      identityToken,
+                      displayName: "",
+                      locale,
+                      appUserId,
+                    },
+                  });
+                } else {
+                  const updateData: Partial<User> = {
+                    email,
+                    identityToken,
+                    locale,
+                  };
+
+                  if (!appleUser.fcmToken.includes(fcmToken)) {
+                    updateData.fcmToken = [...appleUser.fcmToken, fcmToken];
+                  }
+
+                  appleUser = await tx.user.update({
+                    where: { id: appleUser.id },
+                    data: updateData,
+                  });
+                }
+
+                if (anonymousUserId !== appleUser.id) {
+                  await tx.chat.updateMany({
+                    where: { userId: anonymousUserId },
+                    data: { userId: appleUser.id },
+                  });
+
+                  await tx.message.updateMany({
+                    where: { userId: anonymousUserId },
+                    data: { userId: appleUser.id },
+                  });
+
+                  const anonymousUserChats = await tx.chat.count({
+                    where: { userId: anonymousUserId },
+                  });
+
+                  const anonymousUserMessages = await tx.message.count({
+                    where: { userId: anonymousUserId },
+                  });
+
+                  if (anonymousUserChats === 0 && anonymousUserMessages === 0) {
+                    await tx.user.delete({
+                      where: { id: anonymousUserId },
+                    }).catch((error) => {
+                      console.log(
+                        "🚀 ~ /user/login-apple ~ db.user.delete error:",
+                        error
+                      );
+                    })
+                  }
+                }
+
+                return appleUser;
+              });
+
+              console.log(
+                `User ${appUserId} logged in with Apple, data migrated from anonymous user ${anonymousUserId}`
+              );
+
+              console.log({ success: true, userId: result.id });
+              return;
+            } catch (error) {
+              console.error("Error in Apple login:", error);
+              throw new Error("Failed to process Apple login");
+            }
+          },
+          {
+            body: t.Object({
+              uid: t.String(),
+              appUserId: t.String(),
+              identityToken: t.String(),
+              fcmToken: t.String(),
+              locale: t.String(),
+              email: t.Optional(t.String()),
+            }),
+          }
+        )
         .get(
           "/me",
           async ({ user }) => {
@@ -45,14 +162,12 @@ export const UserController = (app: Elysia) => {
             const { fcmToken } = body;
             const uid = user.id;
 
-            // Find the existing user by uid
             const existingUser = await db.user.findFirst({
               where: {
                 id: uid,
               },
             });
 
-            // If the user doesn't exist, return an error
             if (!existingUser) {
               console.log(`User with uid ${uid} not found`);
               return {
@@ -61,12 +176,10 @@ export const UserController = (app: Elysia) => {
               };
             }
 
-            // Check if the fcmToken already exists in the user's fcmToken array
             if (
               !existingUser.fcmToken.includes(fcmToken) &&
               fcmToken.length > 0
             ) {
-              // Add the new fcmToken to the array
               await db.user
                 .update({
                   where: {
@@ -86,14 +199,12 @@ export const UserController = (app: Elysia) => {
                   throw new Error("Failed to update FCM token");
                 });
 
-              // console.log(`FCM token ${fcmToken} added for user ${uid}`);
               return {
                 success: true,
                 message: "FCM token updated successfully",
               };
             }
 
-            // console.log(`FCM token ${fcmToken} already exists for user ${uid}`);
             return {
               success: true,
               message: "FCM token already exists",
@@ -126,14 +237,12 @@ export const UserController = (app: Elysia) => {
               locale: t.String(),
             }),
             responses: {
-              200: t.Null(), // Define success response schema
-              401: t.Object({ error: t.String() }), // Define unauthorized response schema
+              200: t.Null(),
+              401: t.Object({ error: t.String() }),
             },
-            // tags: ["User"],
             summary: "Update user locale",
             description:
               "Endpoint to update the locale of the authenticated user",
-            // security: [{ bearerAuth: [] }],
           }
         )
         .post("/delete-account", async ({ user }) => {
@@ -171,22 +280,15 @@ export const UserController = (app: Elysia) => {
         const { fcmToken, identityToken, email, uid, locale, appUserId } =
           context.body;
 
-        const existingUser = await db.user.findFirst({
-          where: {
-            OR: [
-              {
-                id: uid,
-              },
-              {
-                appUserId: appUserId,
-              },
-            ],
-          },
-        });
+        try {
+          const existingUser = await db.user.findFirst({
+            where: {
+              OR: [{ id: uid }, { appUserId: appUserId }],
+            },
+          });
 
-        if (!existingUser) {
-          await db.user
-            .create({
+          if (!existingUser) {
+            await db.user.create({
               data: {
                 id: uid,
                 email,
@@ -194,43 +296,32 @@ export const UserController = (app: Elysia) => {
                 identityToken,
                 displayName: "",
                 locale,
-                appUserId: appUserId,
-              },
-            })
-            .catch((error) => {
-              console.error("🚀 ~ await db.user.create({ error", error);
-            });
-          console.log("🚀 ~ User created");
-        } else {
-          if (!existingUser.fcmToken.includes(fcmToken)) {
-            await db.user.update({
-              where: {
-                id: existingUser.id,
-              },
-              data: {
-                fcmToken: {
-                  push: fcmToken,
-                },
+                appUserId,
               },
             });
+            console.log("Anonymous user created");
+            return;
           }
-          await db.user
-            .update({
-              where: {
-                id: existingUser.id,
-              },
-              data: {
-                id: uid,
-                appUserId: appUserId,
-                email,
-                identityToken,
-                locale,
-              },
-            })
-            .catch((error) => {
-              console.error("🚀 SOMETHING WRONG WITH UPDATING USER", error);
-              
-            });
+
+          const updateData: Partial<User> = {
+            email,
+            identityToken,
+            locale,
+            appUserId,
+            id: uid,
+          };
+
+          if (!existingUser.fcmToken.includes(fcmToken)) {
+            updateData.fcmToken = [...existingUser.fcmToken, fcmToken];
+          }
+
+          await db.user.update({
+            where: { id: existingUser.id },
+            data: updateData,
+          });
+        } catch (error) {
+          console.error("Error processing user login:", error);
+          throw new Error("Failed to process user login");
         }
       },
       {

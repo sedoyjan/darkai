@@ -30,11 +30,27 @@ import {
   setUser,
 } from './slice';
 
-export const setUserOnServerThunk = createAsyncThunk<
+export const signOutThunk = createAsyncThunk<
   void,
   undefined,
   { state: RootState }
->('app/setUserOnServerThunk', async (_, { getState }) => {
+>('app/signOutThunk', async (_, { dispatch }) => {
+  try {
+    await fbAuth.signOut();
+  } catch (error) {
+    console.error('Sign out failed:', error);
+    recordError(error as Error);
+  }
+  dispatch(setUser({ user: null }));
+  dispatch(setIdentityToken({ identityToken: null }));
+  dispatch(initThunk());
+});
+
+export const setUserOnServerThunk = createAsyncThunk<
+  void,
+  { type?: 'apple' | 'anonymous' },
+  { state: RootState }
+>('app/setUserOnServerThunk', async ({ type }, { getState }) => {
   const state = getState();
   const user = selectUser(state);
   if (!user) {
@@ -48,14 +64,25 @@ export const setUserOnServerThunk = createAsyncThunk<
   const appUserId = isConfigured ? await Purchases.getAppUserID() : '';
 
   try {
-    await apiClient.postUserLogin({
-      appUserId,
-      fcmToken,
-      identityToken: '',
-      email: user.providerData[0]?.email || '',
-      uid: user.uid,
-      locale: state.app.locale?.languageCode || '',
-    });
+    if (type === 'apple') {
+      await apiClient.postUserLoginApple({
+        appUserId,
+        fcmToken,
+        identityToken: '',
+        email: user.providerData[0]?.email || '',
+        uid: user.uid,
+        locale: state.app.locale?.languageCode || '',
+      });
+    } else {
+      await apiClient.postUserLogin({
+        appUserId,
+        fcmToken,
+        identityToken: '',
+        email: user.providerData[0]?.email || '',
+        uid: user.uid,
+        locale: state.app.locale?.languageCode || '',
+      });
+    }
     analytics.logLogin({
       method: user.isAnonymous ? 'anonymous' : 'apple',
     });
@@ -83,6 +110,21 @@ export const setupMessagingThunk = createAsyncThunk<
   }
 });
 
+export const deleteAccountThunk = createAsyncThunk<
+  void,
+  undefined,
+  { state: RootState }
+>('app/deleteAccount', async (_, { dispatch }) => {
+  try {
+    await apiClient.postUserDeleteAccount();
+    dispatch(setIdentityToken({ identityToken: null }));
+    await dispatch(signOutThunk()).unwrap();
+  } catch (error) {
+    console.error('Delete account failed:', error);
+    recordError(error as Error);
+  }
+});
+
 export const signInAnonymouslyThunk = createAsyncThunk<
   void,
   void,
@@ -106,44 +148,12 @@ export const signInAnonymouslyThunk = createAsyncThunk<
   }
 });
 
-export const signOutThunk = createAsyncThunk<
-  void,
-  undefined,
-  { state: RootState }
->('app/signOutThunk', async (_, { dispatch }) => {
-  try {
-    await fbAuth.signOut();
-  } catch (error) {
-    console.error('Sign out failed:', error);
-    recordError(error as Error);
-  }
-  dispatch(setUser({ user: null }));
-  dispatch(setIdentityToken({ identityToken: null }));
-
-  dispatch(initThunk());
-});
-
-export const deleteAccountThunk = createAsyncThunk<
-  void,
-  undefined,
-  { state: RootState }
->('app/deleteAccount', async (_, { dispatch }) => {
-  try {
-    await apiClient.postUserDeleteAccount();
-    dispatch(setIdentityToken({ identityToken: null }));
-    await dispatch(signOutThunk()).unwrap();
-  } catch (error) {
-    console.error('Delete account failed:', error);
-    recordError(error as Error);
-  }
-});
-
 export const afterLoginThunk = createAsyncThunk<
   void,
-  undefined,
+  { type?: 'apple' | 'anonymous' },
   { state: RootState }
->('app/afterLoginThunk', async (_, { dispatch }) => {
-  await dispatch(setUserOnServerThunk()).unwrap();
+>('app/afterLoginThunk', async ({ type }, { dispatch }) => {
+  await dispatch(setUserOnServerThunk({ type })).unwrap();
   // dispatch(setupMessagingThunk());
   dispatch(setupPurchasesAndSubscription());
   await dispatch(getUserDataThunk()).unwrap();
@@ -173,8 +183,10 @@ export const initThunk = createAsyncThunk<
     if (!firebaseUser) {
       await dispatch(signInAnonymouslyThunk()).unwrap();
     } else {
-      const idToken = await firebaseUser.getIdToken(true);
-      dispatch(setIdentityToken({ identityToken: idToken }));
+      const idToken = await fbAuth.currentUser?.getIdToken(true);
+      if (idToken) {
+        dispatch(setIdentityToken({ identityToken: idToken }));
+      }
       dispatch(
         setUser({
           user: firebaseUser.toJSON() as User,
@@ -182,7 +194,7 @@ export const initThunk = createAsyncThunk<
       );
     }
 
-    await dispatch(afterLoginThunk()).unwrap();
+    await dispatch(afterLoginThunk({})).unwrap();
     dispatch(getChatsThunk());
   } catch (error) {
     console.error('App initialization failed:', error);
@@ -241,7 +253,7 @@ export const signInWithAppleThunk = createAsyncThunk<
     const user = fbCredential.user.toJSON() as User;
     dispatch(setUser({ user }));
 
-    await dispatch(afterLoginThunk()).unwrap();
+    await dispatch(afterLoginThunk({ type: 'apple' })).unwrap();
 
     if (redirectScreen) {
       sharedRouter.getRouter().replace(redirectScreen as Href);

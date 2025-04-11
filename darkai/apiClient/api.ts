@@ -340,6 +340,49 @@ export interface PostUserCheckSubscription200Response {
 /**
  * 
  * @export
+ * @interface PostUserLoginAppleRequest
+ */
+export interface PostUserLoginAppleRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PostUserLoginAppleRequest
+     */
+    'uid': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostUserLoginAppleRequest
+     */
+    'appUserId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostUserLoginAppleRequest
+     */
+    'identityToken': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostUserLoginAppleRequest
+     */
+    'fcmToken': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostUserLoginAppleRequest
+     */
+    'locale': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostUserLoginAppleRequest
+     */
+    'email'?: string;
+}
+/**
+ * 
+ * @export
  * @interface PostUserLoginRequest
  */
 export interface PostUserLoginRequest {
@@ -997,6 +1040,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {PostUserLoginAppleRequest} postUserLoginAppleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postUserLoginApple: async (postUserLoginAppleRequest: PostUserLoginAppleRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'postUserLoginAppleRequest' is not null or undefined
+            assertParamExists('postUserLoginApple', 'postUserLoginAppleRequest', postUserLoginAppleRequest)
+            const localVarPath = `/user/login-apple`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(postUserLoginAppleRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {PostUserUpdateLocaleRequest} postUserUpdateLocaleRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1296,6 +1374,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {PostUserLoginAppleRequest} postUserLoginAppleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postUserLoginApple(postUserLoginAppleRequest: PostUserLoginAppleRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postUserLoginApple(postUserLoginAppleRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.postUserLoginApple']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {PostUserUpdateLocaleRequest} postUserUpdateLocaleRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1475,6 +1565,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         postUserLogin(postUserLoginRequest: PostUserLoginRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
             return localVarFp.postUserLogin(postUserLoginRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {PostUserLoginAppleRequest} postUserLoginAppleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postUserLoginApple(postUserLoginAppleRequest: PostUserLoginAppleRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.postUserLoginApple(postUserLoginAppleRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1679,6 +1778,17 @@ export class DefaultApi extends BaseAPI {
      */
     public postUserLogin(postUserLoginRequest: PostUserLoginRequest, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).postUserLogin(postUserLoginRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {PostUserLoginAppleRequest} postUserLoginAppleRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public postUserLoginApple(postUserLoginAppleRequest: PostUserLoginAppleRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).postUserLoginApple(postUserLoginAppleRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

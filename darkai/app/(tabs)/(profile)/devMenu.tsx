@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { apiClient } from '@/api';
@@ -18,6 +18,7 @@ import {
   selectIsOnboardingSkipped,
   selectIsRecordingMode,
   selectLaunchCount,
+  selectUser,
 } from '@/rdx/app/selectors';
 import {
   setHasActiveSubscription,
@@ -46,6 +47,15 @@ const styles = StyleSheet.create({
     color: Colors.white,
     marginBottom: 8,
   },
+  input: {
+    fontSize: 16,
+    color: Colors.white,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: Colors.white,
+    padding: 8,
+    borderRadius: 4,
+  },
 });
 
 export default function DeveloperSettingsScreen() {
@@ -58,6 +68,7 @@ export default function DeveloperSettingsScreen() {
   const isOnboardingSkipped = useAppSelector(selectIsOnboardingSkipped);
   const launchCount = useAppSelector(selectLaunchCount);
 
+  const user = useAppSelector(selectUser);
   const hasFreeRequests = useAppSelector(selectHasFreeRequests);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
   const isAnonymous = useAppSelector(selectIsAnonymous);
@@ -79,6 +90,7 @@ export default function DeveloperSettingsScreen() {
             )}
           </Text>
           <Separator />
+          <TextInput style={styles.input} value={user?.uid || ''} />
 
           <SettingsButton
             label={t('screens.developerSettings.toggleSubscription')}
