@@ -199,7 +199,7 @@ export default function ChatScreen() {
     async (rawText: string) => {
       const text = rawText.trim();
       setPageTitle(title);
-      await dispatch(setupMessagingThunk());
+      await dispatch(setupMessagingThunk()).unwrap();
       sendMessage({ text });
       requestAnimationFrame(() => {
         scrollToEnd();

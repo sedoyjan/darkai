@@ -16,7 +16,7 @@ export const getAiResponse = (
   threadId: string;
 }> => {
   return new Promise(async (resolve, reject) => {
-    console.log("Generating strategy for:", prompt, "using DarkAI Sway");
+    console.log("Prompt:", prompt);
 
     const darkAIAssistant = await openai.beta.assistants.retrieve(assistantId);
 

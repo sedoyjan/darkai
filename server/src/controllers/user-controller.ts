@@ -62,7 +62,10 @@ export const UserController = (app: Elysia) => {
             }
 
             // Check if the fcmToken already exists in the user's fcmToken array
-            if (!existingUser.fcmToken.includes(fcmToken)) {
+            if (
+              !existingUser.fcmToken.includes(fcmToken) &&
+              fcmToken.length > 0
+            ) {
               // Add the new fcmToken to the array
               await db.user
                 .update({

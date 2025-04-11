@@ -82,6 +82,8 @@ export const ChatController = (app: Elysia) => {
 
           const prevThreadId = latestChat?.threadId;
 
+          console.log("prevThreadId", prevThreadId);
+
           const STATEGY_ASSISTANT_ID = process.env
             .OPENAI_API_STRATEGY_ASSISTANT_ID as string;
 

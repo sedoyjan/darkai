@@ -118,6 +118,8 @@ export const signOutThunk = createAsyncThunk<
   }
   dispatch(setUser({ user: null }));
   dispatch(setIdentityToken({ identityToken: null }));
+
+  dispatch(initThunk());
 });
 
 export const deleteAccountThunk = createAsyncThunk<
@@ -133,6 +135,17 @@ export const deleteAccountThunk = createAsyncThunk<
     console.error('Delete account failed:', error);
     recordError(error as Error);
   }
+});
+
+export const afterLoginThunk = createAsyncThunk<
+  void,
+  undefined,
+  { state: RootState }
+>('app/afterLoginThunk', async (_, { dispatch }) => {
+  await dispatch(setUserOnServerThunk()).unwrap();
+  // dispatch(setupMessagingThunk());
+  dispatch(setupPurchasesAndSubscription());
+  await dispatch(getUserDataThunk()).unwrap();
 });
 
 export const initThunk = createAsyncThunk<
@@ -167,14 +180,8 @@ export const initThunk = createAsyncThunk<
         }),
       );
     }
-
     await dispatch(setUserOnServerThunk()).unwrap();
-    await dispatch(setupMessagingThunk()).unwrap();
-    await Promise.all([
-      dispatch(setupPurchasesAndSubscription()),
-      dispatch(getUserDataThunk()),
-      dispatch(getChatsThunk()),
-    ]);
+    dispatch(getChatsThunk());
   } catch (error) {
     console.error('App initialization failed:', error);
     recordError(error as Error);
@@ -185,7 +192,7 @@ export const subscriptionThunk = createAsyncThunk<
   void,
   undefined,
   { state: RootState }
->('app/subscriptionThunk', async (_, { dispatch, getState }) => {
+>('app/subscriptionThunk', async (_, { getState }) => {
   const user = selectUser(getState());
   if (!user) {
     console.error('No user found for subscription');
@@ -197,8 +204,6 @@ export const subscriptionThunk = createAsyncThunk<
   } else {
     sharedRouter.getRouter().push('/subscriptionModal');
   }
-
-  console.log('subscription thunk', user);
 });
 
 export const signInWithAppleThunk = createAsyncThunk<
@@ -215,45 +220,34 @@ export const signInWithAppleThunk = createAsyncThunk<
       ],
     });
 
+    if (!credential.identityToken) {
+      throw new Error('No identity token received from Apple');
+    }
+
     const appleCredential = auth.AppleAuthProvider.credential(
       credential.identityToken,
     );
-    let fbCredential;
 
-    const currentUser = fbAuth.currentUser;
-    if (currentUser && currentUser.isAnonymous) {
-      try {
-        fbCredential = await currentUser.linkWithCredential(appleCredential);
-        console.log(
-          'Successfully linked Apple credential to anonymous account',
-        );
-      } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if ((error as any).code === 'auth/credential-already-in-use') {
-          console.log('Apple credential already in use, signing in instead');
-          await fbAuth.signOut();
-          fbCredential = await fbAuth.signInWithCredential(appleCredential);
-        } else {
-          throw error;
-        }
-      }
-    } else {
-      fbCredential = await fbAuth.signInWithCredential(appleCredential);
-    }
+    const fbCredential = await fbAuth.signInWithCredential(appleCredential);
 
     const idToken = await fbAuth.currentUser?.getIdToken(true);
-    if (fbCredential && idToken) {
-      dispatch(setIdentityToken({ identityToken: idToken }));
-      const user = fbCredential.user.toJSON() as User;
-      dispatch(setUser({ user }));
+    if (!fbCredential || !idToken) {
+      throw new Error('Failed to get Firebase credentials or ID token');
+    }
 
-      if (redirectScreen) {
-        sharedRouter.getRouter().replace(redirectScreen as Href);
-      }
+    dispatch(setIdentityToken({ identityToken: idToken }));
+    const user = fbCredential.user.toJSON() as User;
+    dispatch(setUser({ user }));
+
+    await dispatch(afterLoginThunk()).unwrap();
+
+    if (redirectScreen) {
+      sharedRouter.getRouter().replace(redirectScreen as Href);
     }
   } catch (error) {
     console.error('Apple sign-in failed:', error);
     recordError(error as Error);
+    throw error;
   } finally {
     dispatch(setIsSignInFlowInProgress({ isSignInFlowInProgress: false }));
   }

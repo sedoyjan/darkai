@@ -237,12 +237,14 @@ export default function ProfileScreen() {
             withSeparator
             withArrow
           />
-          <SettingsButton
-            icon="trash"
-            label={t('screens.profile.buttons.clearData')}
-            onPress={onClearData}
-            withSeparator
-          />
+          {user ? (
+            <SettingsButton
+              icon="trash"
+              label={t('screens.profile.buttons.clearData')}
+              onPress={onClearData}
+              withSeparator
+            />
+          ) : null}
           {user ? (
             <SettingsButton
               // iconBackgroundColor={Colors.errorColor}

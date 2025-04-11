@@ -74,15 +74,7 @@ export const sendMessageThunk = createAsyncThunk<
   const user = selectUser(state);
 
   if (!user) {
-    let url = '/signin';
-    if (text) {
-      url += `?text=${text}`;
-      url += `&chatId=${chatId}`;
-    }
-
-    sharedRouter.getRouter().push(url as Href);
-
-    return;
+    console.error('User not found');
   }
 
   dispatch(
@@ -104,7 +96,6 @@ export const sendMessageThunk = createAsyncThunk<
   await delay(200);
 
   dispatch(setIsBotTyping({ chatId, isTyping: true }));
-  console.log('getUserMe 1');
   const { data } = await apiClient.getUserMe();
   dispatch(setHasFreeRequests({ hasFreeRequests: data.hasFreeRequests }));
 
