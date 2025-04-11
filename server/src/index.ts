@@ -17,7 +17,7 @@ import { getApplePublicKeys } from "./utils";
 const IS_DEV = process.env.NODE_ENV === "development";
 const CERT_DIR = "/etc/letsencrypt/live/darkai.duckdns.org";
 
-const tlsOptions = !IS_DEV
+const _tlsOptions = !IS_DEV
   ? {
       key: readFileSync(path.join(CERT_DIR, "privkey.pem")),
       cert: readFileSync(path.join(CERT_DIR, "fullchain.pem")),
@@ -68,7 +68,7 @@ app
   })
   .listen({
     port: process.env.PORT || 3000,
-    tls: tlsOptions,
+    // tls: tlsOptions,
   });
 
 export type ElysiaApp = typeof app;
