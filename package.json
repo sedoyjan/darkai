@@ -1,0 +1,11 @@
+{
+  "name": "darkai",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/sedoyjan/darkai.git",
+  "author": "“Sergei Grigorev\" <sedoyjan@live.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "echo \"No build required...\""
+  }
+}

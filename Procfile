@@ -1,0 +1,1 @@
+web: cd server && bun install && NODE_ENV=production bun src/index.ts
