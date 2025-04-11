@@ -74,12 +74,12 @@ app
 export type ElysiaApp = typeof app;
 
 console.log(
-  `🤖 DarkAI server started at ${new Date().toLocaleString()} and running at https://${
+  `🤖 DarkAI server started at ${new Date().toLocaleString()} and running at http://${
     app.server?.hostname
   }:${app.server?.port}`
 );
 if (IS_DEV) {
   console.log(
-    `🚀 Swagger is running at ${tlsOptions ? "https" : "http"}://${app.server?.hostname}:${app.server?.port}/swagger`
+    `🚀 Swagger is running at http://${app.server?.hostname}:${app.server?.port}/swagger`
   );
 }
