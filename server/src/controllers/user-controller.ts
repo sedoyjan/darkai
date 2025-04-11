@@ -228,7 +228,8 @@ export const UserController = (app: Elysia) => {
               },
             })
             .catch((error) => {
-              console.error("🚀 ~ await db.user.update({ error", error);
+              console.error("🚀 SOMETHING WRONG WITH UPDATING USER", error);
+              
             });
         }
       },
