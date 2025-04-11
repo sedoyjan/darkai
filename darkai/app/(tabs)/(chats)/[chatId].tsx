@@ -59,6 +59,7 @@ export default function ChatScreen() {
     isLoading,
     isDisabled,
     title: chatTitle,
+    isChatInStore,
   } = useChat(chatId);
   const dispatch = useAppDispatch();
   const listRef = useRef<FlashList<ChatMessage>>(null);
@@ -242,8 +243,8 @@ export default function ChatScreen() {
         <Header
           title={pageTitle}
           withBackButton
-          rightButtonIcon="pencil-outline"
-          onRightButtonPress={onEdit}
+          rightButtonIcon={isChatInStore ? 'pencil-outline' : undefined}
+          onRightButtonPress={isChatInStore ? onEdit : undefined}
         />
         <View style={styles.container}>
           <View style={styles.container}>

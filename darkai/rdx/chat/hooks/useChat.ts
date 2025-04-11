@@ -7,6 +7,7 @@ import {
   selectChatTitleById,
   selectIsBotTyping,
   selectIsChatDisabled,
+  selectIsChatInStoreById,
   selectIsLoading,
 } from '../selectors';
 import { sendMessageThunk } from '../thunks';
@@ -20,6 +21,10 @@ export const useChat = (chatId: string) => {
   const selectChatMessages = makeSelectChatMessages();
   const messages = useAppSelector((state: RootState) =>
     selectChatMessages(state, chatId),
+  );
+
+  const isChatInStore = useAppSelector((state: RootState) =>
+    selectIsChatInStoreById(state, chatId),
   );
 
   const isLoading = useAppSelector((state: RootState) =>
@@ -75,5 +80,6 @@ export const useChat = (chatId: string) => {
     hasMoreMessages,
     isDisabled,
     title: chatTitle,
+    isChatInStore,
   };
 };

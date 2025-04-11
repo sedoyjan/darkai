@@ -7,7 +7,6 @@ import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
 
 import { Button } from '@/blocks/Button';
-import { Spacer } from '@/blocks/Spacer';
 import { Background } from '@/components/Background';
 import { ChatListItem } from '@/components/ChatListItem';
 import { Header } from '@/components/Header';
@@ -83,18 +82,14 @@ export default function ChatsScreen() {
       >
         <Header title="Chat List" withBackButton={false} />
 
-        {chats.length > 0 ? (
-          <FlashList
-            key={listHash}
-            data={chats}
-            renderItem={renderItem}
-            estimatedItemSize={200}
-            showsVerticalScrollIndicator={false}
-            refreshControl={refreshControl}
-          />
-        ) : (
-          <Spacer />
-        )}
+        <FlashList
+          key={listHash}
+          data={chats}
+          renderItem={renderItem}
+          estimatedItemSize={200}
+          showsVerticalScrollIndicator={false}
+          refreshControl={refreshControl}
+        />
 
         <View style={sharedStyles.bottomButton}>
           {chats.length > 0 ? (

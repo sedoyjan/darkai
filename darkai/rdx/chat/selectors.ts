@@ -13,6 +13,10 @@ export const selectChatById = (state: RootState, chatId: string) => {
   return state.chat.chatsMap[chatId];
 };
 
+export const selectIsChatInStoreById = (state: RootState, chatId: string) => {
+  return !!state.chat.chatsMap[chatId];
+};
+
 export const selectChatTitleById = (state: RootState, chatId: string) => {
   return state.chat.chatsMap[chatId]?.title || '';
 };

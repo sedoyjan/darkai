@@ -94,7 +94,7 @@ export async function makeFollowUp(userId?: string) {
       });
 
       // Send notification to the user
-      const tokens = chat.user.fcmToken || [];
+      const tokens = (chat.user.fcmToken || []).filter((t) => t?.length > 0); // Filter out empty tokens
       for (const token of tokens) {
         await sendNotification({
           fcmToken: token,
