@@ -74,7 +74,7 @@ app
 export type ElysiaApp = typeof app;
 
 console.log(
-  `🤖 DarkAI server started at ${new Date().toLocaleString()} and running at ${tlsOptions ? "https" : "http"}://${
+  `🤖 DarkAI server started at ${new Date().toLocaleString()} and running at https://${
     app.server?.hostname
   }:${app.server?.port}`
 );
