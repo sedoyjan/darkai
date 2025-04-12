@@ -28,7 +28,7 @@ export const ChatRelations = t.Object(
         fcmToken: t.Array(t.String(), { additionalProperties: false }),
         locale: t.String(),
         identityToken: t.String(),
-        appUserId: t.String(),
+        appUserId: __nullable__(t.String()),
         expirationAtMs: t.Integer(),
         createdAt: t.Date(),
         requestsCount: t.Integer(),

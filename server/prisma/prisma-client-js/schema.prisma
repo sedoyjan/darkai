@@ -36,7 +36,7 @@ model User {
   fcmToken       String[]
   locale         String
   identityToken  String
-  appUserId      String    @unique
+  appUserId      String?   @unique
   expirationAtMs Int       @default(0)
   createdAt      DateTime  @default(now())
   requestsCount  Int       @default(0)

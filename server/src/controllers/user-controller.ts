@@ -171,7 +171,7 @@ export const UserController = (app: Elysia) => {
         try {
           const existingUser = await db.user.findFirst({
             where: {
-              OR: [{ id: uid }, { appUserId: appUserId }],
+              OR: [{ id: uid }, { appUserId: `__${appUserId}` }],
             },
           });
 
@@ -184,7 +184,7 @@ export const UserController = (app: Elysia) => {
                 identityToken,
                 displayName: "",
                 locale,
-                appUserId,
+                appUserId: `__${appUserId}`,
               },
             });
             console.log("Anonymous user created");
@@ -230,7 +230,9 @@ export const UserController = (app: Elysia) => {
           context.body;
         try {
           const existingUser = await db.user.findFirst({
-            where: { appUserId },
+            where: {
+              appUserId: `__${appUserId}`,
+            },
           });
           // Check for existing Apple user
           console.log("Checking for existing Apple user with ID:", uid);
@@ -265,6 +267,7 @@ export const UserController = (app: Elysia) => {
                 displayName: "",
                 locale,
                 appUserId,
+                requestsCount: existingUser?.requestsCount || 0,
               },
             });
             console.log("Created new Apple user:", appleUser);
@@ -284,7 +287,12 @@ export const UserController = (app: Elysia) => {
             console.log("Updating existing Apple user with data:", updateData);
             appleUser = await db.user.update({
               where: { id: appleUser.id },
-              data: updateData,
+              data: {
+                ...updateData,
+                requestsCount: {
+                  increment: existingUser?.requestsCount || 0,
+                },
+              },
             });
             console.log("Updated Apple user:", appleUser);
           }

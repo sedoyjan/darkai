@@ -1340,7 +1340,7 @@ export namespace Prisma {
     fcmToken: string[]
     locale: string
     identityToken: string
-    appUserId: string
+    appUserId: string | null
     expirationAtMs: number
     createdAt: Date
     requestsCount: number
@@ -1415,7 +1415,7 @@ export namespace Prisma {
       fcmToken: string[]
       locale: string
       identityToken: string
-      appUserId: string
+      appUserId: string | null
       expirationAtMs: number
       createdAt: Date
       requestsCount: number
@@ -4417,7 +4417,7 @@ export namespace Prisma {
     fcmToken?: StringNullableListFilter<"User">
     locale?: StringFilter<"User"> | string
     identityToken?: StringFilter<"User"> | string
-    appUserId?: StringFilter<"User"> | string
+    appUserId?: StringNullableFilter<"User"> | string | null
     expirationAtMs?: IntFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     requestsCount?: IntFilter<"User"> | number
@@ -4432,7 +4432,7 @@ export namespace Prisma {
     fcmToken?: SortOrder
     locale?: SortOrder
     identityToken?: SortOrder
-    appUserId?: SortOrder
+    appUserId?: SortOrderInput | SortOrder
     expirationAtMs?: SortOrder
     createdAt?: SortOrder
     requestsCount?: SortOrder
@@ -4465,7 +4465,7 @@ export namespace Prisma {
     fcmToken?: SortOrder
     locale?: SortOrder
     identityToken?: SortOrder
-    appUserId?: SortOrder
+    appUserId?: SortOrderInput | SortOrder
     expirationAtMs?: SortOrder
     createdAt?: SortOrder
     requestsCount?: SortOrder
@@ -4486,7 +4486,7 @@ export namespace Prisma {
     fcmToken?: StringNullableListFilter<"User">
     locale?: StringWithAggregatesFilter<"User"> | string
     identityToken?: StringWithAggregatesFilter<"User"> | string
-    appUserId?: StringWithAggregatesFilter<"User"> | string
+    appUserId?: StringNullableWithAggregatesFilter<"User"> | string | null
     expirationAtMs?: IntWithAggregatesFilter<"User"> | number
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     requestsCount?: IntWithAggregatesFilter<"User"> | number
@@ -4637,7 +4637,7 @@ export namespace Prisma {
     fcmToken?: UserCreatefcmTokenInput | string[]
     locale: string
     identityToken: string
-    appUserId: string
+    appUserId?: string | null
     expirationAtMs?: number
     createdAt?: Date | string
     requestsCount?: number
@@ -4652,7 +4652,7 @@ export namespace Prisma {
     fcmToken?: UserCreatefcmTokenInput | string[]
     locale: string
     identityToken: string
-    appUserId: string
+    appUserId?: string | null
     expirationAtMs?: number
     createdAt?: Date | string
     requestsCount?: number
@@ -4667,7 +4667,7 @@ export namespace Prisma {
     fcmToken?: UserUpdatefcmTokenInput | string[]
     locale?: StringFieldUpdateOperationsInput | string
     identityToken?: StringFieldUpdateOperationsInput | string
-    appUserId?: StringFieldUpdateOperationsInput | string
+    appUserId?: NullableStringFieldUpdateOperationsInput | string | null
     expirationAtMs?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     requestsCount?: IntFieldUpdateOperationsInput | number
@@ -4682,7 +4682,7 @@ export namespace Prisma {
     fcmToken?: UserUpdatefcmTokenInput | string[]
     locale?: StringFieldUpdateOperationsInput | string
     identityToken?: StringFieldUpdateOperationsInput | string
-    appUserId?: StringFieldUpdateOperationsInput | string
+    appUserId?: NullableStringFieldUpdateOperationsInput | string | null
     expirationAtMs?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     requestsCount?: IntFieldUpdateOperationsInput | number
@@ -4697,7 +4697,7 @@ export namespace Prisma {
     fcmToken?: UserCreatefcmTokenInput | string[]
     locale: string
     identityToken: string
-    appUserId: string
+    appUserId?: string | null
     expirationAtMs?: number
     createdAt?: Date | string
     requestsCount?: number
@@ -4710,7 +4710,7 @@ export namespace Prisma {
     fcmToken?: UserUpdatefcmTokenInput | string[]
     locale?: StringFieldUpdateOperationsInput | string
     identityToken?: StringFieldUpdateOperationsInput | string
-    appUserId?: StringFieldUpdateOperationsInput | string
+    appUserId?: NullableStringFieldUpdateOperationsInput | string | null
     expirationAtMs?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     requestsCount?: IntFieldUpdateOperationsInput | number
@@ -4723,7 +4723,7 @@ export namespace Prisma {
     fcmToken?: UserUpdatefcmTokenInput | string[]
     locale?: StringFieldUpdateOperationsInput | string
     identityToken?: StringFieldUpdateOperationsInput | string
-    appUserId?: StringFieldUpdateOperationsInput | string
+    appUserId?: NullableStringFieldUpdateOperationsInput | string | null
     expirationAtMs?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     requestsCount?: IntFieldUpdateOperationsInput | number
@@ -5696,7 +5696,7 @@ export namespace Prisma {
     fcmToken?: UserCreatefcmTokenInput | string[]
     locale: string
     identityToken: string
-    appUserId: string
+    appUserId?: string | null
     expirationAtMs?: number
     createdAt?: Date | string
     requestsCount?: number
@@ -5710,7 +5710,7 @@ export namespace Prisma {
     fcmToken?: UserCreatefcmTokenInput | string[]
     locale: string
     identityToken: string
-    appUserId: string
+    appUserId?: string | null
     expirationAtMs?: number
     createdAt?: Date | string
     requestsCount?: number
@@ -5767,7 +5767,7 @@ export namespace Prisma {
     fcmToken?: UserUpdatefcmTokenInput | string[]
     locale?: StringFieldUpdateOperationsInput | string
     identityToken?: StringFieldUpdateOperationsInput | string
-    appUserId?: StringFieldUpdateOperationsInput | string
+    appUserId?: NullableStringFieldUpdateOperationsInput | string | null
     expirationAtMs?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     requestsCount?: IntFieldUpdateOperationsInput | number
@@ -5781,7 +5781,7 @@ export namespace Prisma {
     fcmToken?: UserUpdatefcmTokenInput | string[]
     locale?: StringFieldUpdateOperationsInput | string
     identityToken?: StringFieldUpdateOperationsInput | string
-    appUserId?: StringFieldUpdateOperationsInput | string
+    appUserId?: NullableStringFieldUpdateOperationsInput | string | null
     expirationAtMs?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     requestsCount?: IntFieldUpdateOperationsInput | number
@@ -5828,7 +5828,7 @@ export namespace Prisma {
     fcmToken?: UserCreatefcmTokenInput | string[]
     locale: string
     identityToken: string
-    appUserId: string
+    appUserId?: string | null
     expirationAtMs?: number
     createdAt?: Date | string
     requestsCount?: number
@@ -5842,7 +5842,7 @@ export namespace Prisma {
     fcmToken?: UserCreatefcmTokenInput | string[]
     locale: string
     identityToken: string
-    appUserId: string
+    appUserId?: string | null
     expirationAtMs?: number
     createdAt?: Date | string
     requestsCount?: number
@@ -5898,7 +5898,7 @@ export namespace Prisma {
     fcmToken?: UserUpdatefcmTokenInput | string[]
     locale?: StringFieldUpdateOperationsInput | string
     identityToken?: StringFieldUpdateOperationsInput | string
-    appUserId?: StringFieldUpdateOperationsInput | string
+    appUserId?: NullableStringFieldUpdateOperationsInput | string | null
     expirationAtMs?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     requestsCount?: IntFieldUpdateOperationsInput | number
@@ -5912,7 +5912,7 @@ export namespace Prisma {
     fcmToken?: UserUpdatefcmTokenInput | string[]
     locale?: StringFieldUpdateOperationsInput | string
     identityToken?: StringFieldUpdateOperationsInput | string
-    appUserId?: StringFieldUpdateOperationsInput | string
+    appUserId?: NullableStringFieldUpdateOperationsInput | string | null
     expirationAtMs?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     requestsCount?: IntFieldUpdateOperationsInput | number
