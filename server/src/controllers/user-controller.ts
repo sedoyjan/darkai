@@ -17,7 +17,9 @@ export const UserController = (app: Elysia) => {
               },
             });
 
-            const FREE_REQUESTS_LIMIT = 15;
+            const FREE_REQUESTS_LIMIT = process.env.FREE_REQUESTS_LIMIT
+              ? parseInt(process.env.FREE_REQUESTS_LIMIT, 10)
+              : 10;
 
             const hasFreeRequests = userRecord
               ? userRecord.requestsCount < FREE_REQUESTS_LIMIT
