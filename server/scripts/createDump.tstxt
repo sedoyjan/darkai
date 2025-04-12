@@ -1,0 +1,57 @@
+import * as fs from "fs/promises";
+import * as path from "path";
+import { prisma } from "../src/db";
+
+async function createDump() {
+  try {
+    // Get all keys from the Prisma client
+    const allKeys = Object.keys(prisma);
+
+    // Filter keys to include only those with a valid findMany method (i.e., models)
+    const modelKeys = allKeys.filter((key) => {
+      return (
+        !key.startsWith("_") && // Exclude internal properties (e.g., _middlewares)
+        !key.startsWith("$") && // Exclude methods like $extends, $parent
+        prisma[key] &&
+        typeof prisma[key].findMany === "function" // Ensure it's a model with findMany
+      );
+    });
+
+    // Fetch all data from all valid models
+    const dumpData: { [key: string]: any[] } = {};
+    for (const key of modelKeys) {
+      try {
+        dumpData[key] = await prisma[key].findMany();
+      } catch (error) {
+        console.warn(`Failed to fetch data for model ${key}:`, error.message);
+      }
+    }
+
+    // Define output file path with timestamp
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const outputDir = path.join(__dirname, "dumps");
+    const outputFile = path.join(outputDir, `db-dump-${timestamp}.json`);
+
+    // Ensure the dumps directory exists
+    await fs.mkdir(outputDir, { recursive: true });
+
+    // Write the dump data to a JSON file
+    await fs.writeFile(outputFile, JSON.stringify(dumpData, null, 2), "utf-8");
+
+    console.log(`Database dump successfully saved to ${outputFile}`);
+
+    // Print statistics for the dump
+    console.log("Dump statistics:");
+    for (const [table, records] of Object.entries(dumpData)) {
+      console.log(`${table}: ${records.length} records`);
+    }
+  } catch (error) {
+    console.error("Error creating dump:", error);
+  } finally {
+    // Disconnect Prisma client
+    await prisma.$disconnect();
+  }
+}
+
+// Execute the dump function
+createDump();

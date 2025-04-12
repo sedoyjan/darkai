@@ -1,0 +1,94 @@
+import { PrismaClient } from '@prisma/client';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+
+const prisma = new PrismaClient();
+
+async function restoreFromLatestDump() {
+  try {
+    // Define the dumps directory
+    const outputDir = path.join(__dirname, 'dumps');
+
+    // Read all files in the dumps directory
+    const files = await fs.readdir(outputDir);
+
+    // Filter for JSON dump files and sort to find the latest
+    const dumpFiles = files
+      .filter((file) => file.match(/^db-dump-.*\.json$/))
+      .sort((a, b) => {
+        // Extract timestamps from filenames (e.g., db-dump-2025-04-11T12-34-56.json)
+        const timeA = a.replace('db-dump-', '').replace('.json', '');
+        const timeB = b.replace('db-dump-', '').replace('.json', '');
+        return new Date(timeB).getTime() - new Date(timeA).getTime();
+      });
+
+    if (dumpFiles.length === 0) {
+      console.error('No dump files found in the dumps directory.');
+      return;
+    }
+
+    // Get the latest dump file
+    const latestDumpFile = path.join(outputDir, dumpFiles[0]);
+    console.log(`Restoring from latest dump: ${latestDumpFile}`);
+
+    // Read and parse the JSON file
+    const dumpData = JSON.parse(await fs.readFile(latestDumpFile, 'utf-8'));
+
+    // Validate that dumpData is an object
+    if (typeof dumpData !== 'object' || dumpData === null) {
+      console.error('Invalid dump file format: Expected an object.');
+      return;
+    }
+
+    // Get valid model keys from Prisma client
+    const validModelKeys = Object.keys(prisma).filter(
+      (key) =>
+        !key.startsWith('_') &&
+        !key.startsWith('$') &&
+        prisma[key] &&
+        typeof prisma[key].createMany === 'function',
+    );
+
+    // Iterate through dump data keys and restore each model
+    for (const [modelKey, records] of Object.entries(dumpData)) {
+      if (!validModelKeys.includes(modelKey)) {
+        console.warn(`Skipping unknown or invalid model: ${modelKey}`);
+        continue;
+      }
+
+      if (!Array.isArray(records)) {
+        console.warn(`Skipping ${modelKey}: Data is not an array.`);
+        continue;
+      }
+
+      console.log(`Restoring ${records.length} records for ${modelKey}...`);
+
+      try {
+        // Optional: Clear existing data for the model (uncomment if needed)
+        // await prisma[modelKey].deleteMany({});
+
+        // Use createMany to insert records (skip duplicates if ID exists)
+        await prisma[modelKey].createMany({
+          data: records,
+          skipDuplicates: true, // Skips records with duplicate unique fields (e.g., ID)
+        });
+
+        console.log(
+          `Successfully restored ${records.length} records for ${modelKey}`,
+        );
+      } catch (error) {
+        console.error(`Error restoring ${modelKey}:`, error.message);
+      }
+    }
+
+    console.log('Database restoration completed successfully.');
+  } catch (error) {
+    console.error('Error during restoration:', error);
+  } finally {
+    // Disconnect Prisma client
+    await prisma.$disconnect();
+  }
+}
+
+// Execute the restore function
+restoreFromLatestDump();

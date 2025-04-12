@@ -1,0 +1,189 @@
+{
+  "user": [
+    {
+      "id": "ie4GnnruHvSkwIEyrgJjGVxNUgr1",
+      "email": "",
+      "displayName": "",
+      "fcmToken": [
+        ""
+      ],
+      "locale": "en",
+      "identityToken": "",
+      "appUserId": "$RCAnonymousID:ac837f00ebca45c89c48369785a4fe7a",
+      "expirationAtMs": 0,
+      "createdAt": "2025-04-12T06:43:59.136Z",
+      "requestsCount": 0
+    },
+    {
+      "id": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "email": "sedoyjan@live.com",
+      "displayName": "",
+      "fcmToken": [
+        "dHxgMdgNrEgGgap_JXMNUu:APA91bGQKfmr5Ls7GfoTOafYj3Yv8xpkdJZ2Xa4XwM4JV7Syd7Rg8IOkGgOgRcs8PB7MBciZue966LUeNvmoE84FRTU1XbnDVYEi-Yda10OMn4tcy8l8jRk",
+        "f3gLMsCM5EUplCB7fTPg1a:APA91bFmyFIJSC9yhoHO47PfUVhOEiW0ekIZyiO-9HX26pFqzWxIg_NKLaBe25DNtKfB6gTrAOIygGev4AI7vgOkAHIO6I17NIhBk8XUA0z37wQhbrUBpeM"
+      ],
+      "locale": "ru",
+      "identityToken": "",
+      "appUserId": "$RCAnonymousID:ff39daffd4fb4cc2bc17e8ff232f3002",
+      "expirationAtMs": 0,
+      "createdAt": "2025-04-12T05:44:09.118Z",
+      "requestsCount": 6
+    }
+  ],
+  "message": [
+    {
+      "id": "cm9duccmu0000nbqb8v07h6zd",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "Обычный дом 150 м",
+      "createdAt": "2025-04-12T06:34:36.151Z",
+      "type": "USER",
+      "chatId": "906b74dc-69b4-42dd-bc7c-347bee41c7e0"
+    },
+    {
+      "id": "cm9duchuw0001nbqbmi1msill",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "План известен, пора действовать! 📏🏠  \nИзучи рынок: выбери лучших строителей по соотношению цены и качества.  \n\nЗалог успеха – надёжный проект и немного контроля! 📋🔍\n\nКакой у тебя бюджет на эту авантюру? 💰",
+      "createdAt": "2025-04-12T06:34:42.253Z",
+      "type": "BOT",
+      "chatId": "906b74dc-69b4-42dd-bc7c-347bee41c7e0"
+    },
+    {
+      "id": "cm9ducy8g0002nbqboe8o32cn",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "Ну не щнаю 400000 €",
+      "createdAt": "2025-04-12T06:35:04.145Z",
+      "type": "USER",
+      "chatId": "906b74dc-69b4-42dd-bc7c-347bee41c7e0"
+    },
+    {
+      "id": "cm9dud2i90003nbqbs0b6pfoj",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "Отлично, такого бюджета хватит для стильного и комфортного дома! 💶✨  \nРассмотри энергоэффективные технологии: сэкономишь в будущем и вложишь в экологию. 🌿🔋\n\nТы думал о том, где именно будет твой идеальный дом? Горы или берег моря? 🌊🏞️",
+      "createdAt": "2025-04-12T06:35:09.586Z",
+      "type": "BOT",
+      "chatId": "906b74dc-69b4-42dd-bc7c-347bee41c7e0"
+    },
+    {
+      "id": "cm9dsiuh30000dnfanohrfe3s",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "I need a house",
+      "createdAt": "2025-04-12T05:43:39.976Z",
+      "type": "USER",
+      "chatId": "784fd489-89d5-49ef-aaad-a25cc5c9d16a"
+    },
+    {
+      "id": "cm9dsiyts0001dnfaz0f9w28s",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "Looking for a new lair? 🏡 Let's play it smart!  \n\n1. Craft a list of must-haves and dealbreakers.  \n\n2. Start hunting for deals and leverage relationships for insider info.  \nWhat's your vibe: city slicker or country chill? 🌆🌳",
+      "createdAt": "2025-04-12T05:43:45.400Z",
+      "type": "BOT",
+      "chatId": "784fd489-89d5-49ef-aaad-a25cc5c9d16a"
+    },
+    {
+      "id": "cm9dskc1i0002dnfab8sw03js",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "I need a boat",
+      "createdAt": "2025-04-12T05:44:49.398Z",
+      "type": "USER",
+      "chatId": "cc5ffc7f-faa0-4c8c-b018-636be12b9320"
+    },
+    {
+      "id": "cm9dskgbz0003dnfak8vkrle6",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "Need a boat, huh? 🚤 Let's sail through some options!  \n\nFirst, check out local listings and online marketplaces.  \n\nThen, negotiate like a sea captain who's just spotted treasure! 🏴‍☠️\n\nWhat kind of boat are we talking about here—speed, sail, or something else? 🌊",
+      "createdAt": "2025-04-12T05:44:54.932Z",
+      "type": "BOT",
+      "chatId": "cc5ffc7f-faa0-4c8c-b018-636be12b9320"
+    },
+    {
+      "id": "cm9dudsxk0004nbqbuan4b42r",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "На море",
+      "createdAt": "2025-04-12T06:35:43.928Z",
+      "type": "USER",
+      "chatId": "906b74dc-69b4-42dd-bc7c-347bee41c7e0"
+    },
+    {
+      "id": "cm9dudyx90005nbqbt3uojjxh",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "Морской бриз и шум волн — идеальная картина жизни! 🌊🏖️  \nУбедись, что участок защищён от штормов и есть доступ к инфраструктуре.  \n\nКакую террасу хочешь — для утреннего кофе или вечеринки на закате? ☕🌅",
+      "createdAt": "2025-04-12T06:35:51.609Z",
+      "type": "BOT",
+      "chatId": "906b74dc-69b4-42dd-bc7c-347bee41c7e0"
+    },
+    {
+      "id": "cm9dsnyqb0000mws5t1qabp3b",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "I want lux sneakers",
+      "createdAt": "2025-04-12T05:47:38.771Z",
+      "type": "USER",
+      "chatId": "1ff011ee-ad97-47b7-9313-3b5714e7f12e"
+    },
+    {
+      "id": "cm9dso3un0001mws5ufa38kon",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "Craving those luxe kicks, huh? 🎯 Time for a smooth strategy!  \n\nStart buzzing about them whenever you can, and subtly slip in how they’d boost your style game. 🎩✨\n\nWhat’s the occasion you’re eyeing them for? 🎉👟",
+      "createdAt": "2025-04-12T05:47:45.172Z",
+      "type": "BOT",
+      "chatId": "1ff011ee-ad97-47b7-9313-3b5714e7f12e"
+    },
+    {
+      "id": "cm9dt7hjv0000s87y119sv41w",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "Хочу свой дом",
+      "createdAt": "2025-04-12T06:02:49.628Z",
+      "type": "USER",
+      "chatId": "906b74dc-69b4-42dd-bc7c-347bee41c7e0"
+    },
+    {
+      "id": "cm9dt7p240001s87y32dtawdi",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "text": "Вперед, будущий домовладелец! 🏡✨  \nНачни с поиска участка: атмосфера и вид имеют значение!  \n\nСоздай мудборд мечты – пусть дизайнеры завидуют. 💡\n\nКакой стиль дома тебе по душе? Скромный коттедж или замок мечты? 🏰",
+      "createdAt": "2025-04-12T06:02:58.583Z",
+      "type": "BOT",
+      "chatId": "906b74dc-69b4-42dd-bc7c-347bee41c7e0"
+    }
+  ],
+  "chat": [
+    {
+      "id": "1ff011ee-ad97-47b7-9313-3b5714e7f12e",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "title": "I want lux sneakers",
+      "createdAt": "2025-04-12T05:47:38.771Z",
+      "updatedAt": "2025-04-12T05:48:11.574Z",
+      "threadId": "thread_0MpgMgN4EdKsF0Nol37woY0M",
+      "lastFollowUpSentAt": null,
+      "followUpCount": 0
+    },
+    {
+      "id": "906b74dc-69b4-42dd-bc7c-347bee41c7e0",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "title": "Хочу свой дом",
+      "createdAt": "2025-04-12T06:02:49.628Z",
+      "updatedAt": "2025-04-12T06:35:51.609Z",
+      "threadId": "thread_0IOzcS5NUDAYcrQWIQrUUBlX",
+      "lastFollowUpSentAt": null,
+      "followUpCount": 0
+    },
+    {
+      "id": "784fd489-89d5-49ef-aaad-a25cc5c9d16a",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "title": "I need a house",
+      "createdAt": "2025-04-12T05:43:39.976Z",
+      "updatedAt": "2025-04-12T05:44:09.181Z",
+      "threadId": "thread_RUl6vDZFsnC7i39ppyTNaYnw",
+      "lastFollowUpSentAt": null,
+      "followUpCount": 0
+    },
+    {
+      "id": "cc5ffc7f-faa0-4c8c-b018-636be12b9320",
+      "userId": "nLB9gihEWRYFooxTLY9jXGUaC0p1",
+      "title": "I need a boat",
+      "createdAt": "2025-04-12T05:44:49.398Z",
+      "updatedAt": "2025-04-12T05:45:26.015Z",
+      "threadId": "thread_REoq2lzSLXuO2DctqxS5dsDc",
+      "lastFollowUpSentAt": null,
+      "followUpCount": 0
+    }
+  ]
+}
