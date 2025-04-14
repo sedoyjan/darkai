@@ -56,7 +56,8 @@ export default function SubscriptionModalScreen() {
           onRestoreStarted={() => {
             console.log('🚀 ~ onRestoreStarted');
           }}
-          onRestoreError={() => {
+          onRestoreError={e => {
+            console.log('🚀 ~ onRestoreError:', e);
             onFail();
           }}
           onRestoreCompleted={({ customerInfo }) => {
@@ -69,10 +70,6 @@ export default function SubscriptionModalScreen() {
             }
           }}
           onPurchaseCompleted={({ customerInfo }) => {
-            console.log(
-              '🚀 ~ onPurchaseCompleted ~ customerInfo:',
-              customerInfo,
-            );
             if (customerInfo.activeSubscriptions) {
               onSuccess();
             }

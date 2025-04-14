@@ -9,7 +9,7 @@ const LOCAL_SERVER = 'http://localhost:3000';
 // const REMOTE_SERVER = 'https://darkai.duckdns.org:5005';
 const REMOTE_SERVER = 'https://darkai-a966676ae085.herokuapp.com';
 
-const BASE_PATH = IS_DEV ? LOCAL_SERVER : REMOTE_SERVER;
+const BASE_PATH = !IS_DEV ? LOCAL_SERVER : REMOTE_SERVER;
 console.info('🚀 ~ BASE_PATH:', BASE_PATH);
 
 const config = new Configuration({

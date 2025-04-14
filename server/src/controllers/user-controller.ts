@@ -267,12 +267,13 @@ export const UserController = (app: Elysia) => {
               data: {
                 id: uid,
                 email,
-                fcmToken: [fcmToken],
+                fcmToken: fcmToken?.length > 0 ? [fcmToken] : [],
                 identityToken,
                 displayName: "",
                 locale,
                 appUserId,
                 requestsCount: existingUser?.requestsCount || 0,
+                expirationAtMs: existingUser?.expirationAtMs || 0,
               },
             });
             console.log("Created new Apple user:", appleUser);
