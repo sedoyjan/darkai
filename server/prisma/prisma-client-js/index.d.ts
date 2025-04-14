@@ -4442,7 +4442,6 @@ export namespace Prisma {
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    appUserId?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -4451,12 +4450,13 @@ export namespace Prisma {
     fcmToken?: StringNullableListFilter<"User">
     locale?: StringFilter<"User"> | string
     identityToken?: StringFilter<"User"> | string
+    appUserId?: StringNullableFilter<"User"> | string | null
     expirationAtMs?: IntFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     requestsCount?: IntFilter<"User"> | number
     Message?: MessageListRelationFilter
     Chat?: ChatListRelationFilter
-  }, "id" | "appUserId">
+  }, "id">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder

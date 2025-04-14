@@ -1,8 +1,9 @@
-import { generateDarkAIStrategy } from "../src/ai";
+import { getAiResponse } from "../src/ai";
 
 const main = async () => {
   try {
-    const { data, threadId } = await generateDarkAIStrategy(
+    const { data, threadId } = await getAiResponse(
+      "fakeId",
       "How to convince my boss for a raise?"
     );
     console.log("Generated Strategy:", data);

@@ -213,11 +213,10 @@ export const subscriptionThunk = createAsyncThunk<
     return;
   }
 
-  if (user.isAnonymous) {
-    sharedRouter.getRouter().push('/signin?redirectScreen=/subscriptionModal');
-  } else {
-    sharedRouter.getRouter().push('/subscriptionModal');
-  }
+  // if (user.isAnonymous) {
+  //   sharedRouter.getRouter().push('/signin?redirectScreen=/subscriptionModal');
+
+  sharedRouter.getRouter().push('/subscriptionModal');
 });
 
 export const signInWithAppleThunk = createAsyncThunk<

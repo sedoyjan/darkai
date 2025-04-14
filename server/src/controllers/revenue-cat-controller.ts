@@ -4,7 +4,6 @@ import { db } from "../db";
 
 export const RevenueCatController = (app: Elysia) => {
   app.post("/hooks/revenue-cat", async (context) => {
-    // console.log("RevenueCat Hook", JSON.stringify(context.body, null, 2));
     const appUserID = get(context.body, "event.app_user_id", "");
     const expirationAtMs = get(context.body, "event.expiration_at_ms", 0);
     const productId = get(context.body, "event.product_id", "");
@@ -25,14 +24,15 @@ export const RevenueCatController = (app: Elysia) => {
       console.log("Product ID", productId);
       console.log("Type", type);
 
-      const user = await db.user.findUnique({
+      const users = await db.user.findMany({
         where: {
           appUserId: appUserID,
         },
       });
-      console.log("User", user);
-      if (user) {
-        db.user.update({
+      console.log("Users to update", users);
+
+      for (const user of users) {
+        await db.user.update({
           where: {
             id: user.id,
           },

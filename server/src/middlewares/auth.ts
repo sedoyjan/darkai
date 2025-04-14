@@ -58,6 +58,7 @@ const getUserFromToken = async (
 };
 
 export const isAuthenticated = (app: ElysiaApp) =>
+  // @ts-ignore
   app.use(bearer()).derive(async ({ bearer, set, store }) => {
     if (!bearer) {
       return unauthorizedResponse(set);

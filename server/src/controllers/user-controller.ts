@@ -173,7 +173,7 @@ export const UserController = (app: Elysia) => {
         try {
           const existingUser = await db.user.findFirst({
             where: {
-              OR: [{ id: uid }, { appUserId: `__${appUserId}` }],
+              OR: [{ id: uid }, { appUserId }],
             },
           });
 
@@ -182,33 +182,36 @@ export const UserController = (app: Elysia) => {
               data: {
                 id: uid,
                 email,
-                fcmToken: [fcmToken],
+                fcmToken: fcmToken.length > 0 ? [fcmToken] : [],
                 identityToken,
                 displayName: "",
                 locale,
-                appUserId: `__${appUserId}`,
+                appUserId,
               },
             });
             console.log("Anonymous user created");
             return;
           }
 
-          const updateData: Partial<User> = {
-            email,
-            identityToken,
-            locale,
-            appUserId,
-            id: uid,
-          };
+          // const updateData: Partial<User> = {
+          //   email,
+          //   identityToken,
+          //   locale,
+          //   appUserId,
+          //   id: uid,
+          // };
 
-          if (!existingUser.fcmToken.includes(fcmToken)) {
-            updateData.fcmToken = [...existingUser.fcmToken, fcmToken];
-          }
+          // if (
+          //   !existingUser.fcmToken.includes(fcmToken) &&
+          //   fcmToken.length > 0
+          // ) {
+          //   updateData.fcmToken = [...existingUser.fcmToken, fcmToken];
+          // }
 
-          await db.user.update({
-            where: { id: existingUser.id },
-            data: updateData,
-          });
+          // await db.user.update({
+          //   where: { id: existingUser.id },
+          //   data: updateData,
+          // });
         } catch (error) {
           console.error("Error processing user login:", error);
           throw new Error("Failed to process user login");
@@ -233,7 +236,7 @@ export const UserController = (app: Elysia) => {
         try {
           const existingUser = await db.user.findFirst({
             where: {
-              appUserId: `__${appUserId}`,
+              appUserId,
             },
           });
           // Check for existing Apple user

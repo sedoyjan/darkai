@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development bun run --watch --inspect src/index.ts",
     "db": "docker-compose up",
+    "lint": "tsc -p tsconfig.json --noEmit --skipLibCheck",
     "dev:concurrently": "concurrently \"docker-compose up\" \"bun run dev\"",
     "start": "NODE_ENV=production bun src/index.ts",
     "generate": "bun prisma generate",
@@ -43,7 +44,8 @@
     "bun-types": "latest",
     "instagram-private-api": "^1.46.1",
     "prisma": "^5.17.0",
-    "prismabox": "^1.1.8"
+    "prismabox": "^1.1.8",
+    "typescript": "^5.8.2"
   },
   "module": "src/index.js"
 }
