@@ -1,3 +1,7 @@
+# SMM
+
+https://smm.media/kupit-ustanovka-prilozeniia-na-ios-v-android-i-ios
+
 # Info
 
 dark.ai.app@outlook.com
