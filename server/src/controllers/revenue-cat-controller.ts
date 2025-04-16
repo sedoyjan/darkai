@@ -9,8 +9,9 @@ export const RevenueCatController = (app: Elysia) => {
     const productId = get(context.body, "event.product_id", "");
     const type = get(context.body, "event.type", "");
 
-    console.log("************ Handling RevenueCat Event ************");
-    // console.log(JSON.stringify(context.body, null, 1));
+    console.log("************ Handling RevenueCat Event START ************");
+    console.log(JSON.stringify(context.body, null, 1));
+    console.log("************ Handling RevenueCat Event END   ************");
 
     if (
       appUserID &&
