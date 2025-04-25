@@ -1,3 +1,5 @@
+https://apple.co/3Er7h9g
+
 title: Dark AI: Cunning Chat
 subtitle: Witty Plans for Goals
 keywords: strategy,coach,negotiation,clever,career,chatbot,personal,growth,success,tips,insights,mindset,win

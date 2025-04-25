@@ -75,12 +75,6 @@ export const formSheetOptions = {
   // sheetGrabberVisible: true,
 } as const;
 
-if (!IS_DEV) {
-  apiClient.postAnalyticsLaunch({});
-} else {
-  console.log('Analytics launch event skipped in dev mode');
-}
-
 export default function RootLayout() {
   const router = useRouter();
   const colorScheme = useColorScheme();
@@ -88,6 +82,14 @@ export default function RootLayout() {
   const params = useGlobalSearchParams();
   const navigationRef = useNavigationContainerRef();
   useReactNavigationDevTools(navigationRef);
+
+  useEffect(() => {
+    if (!IS_DEV) {
+      apiClient.postAnalyticsLaunch({});
+    } else {
+      console.log('Analytics launch event skipped in dev mode');
+    }
+  }, []);
 
   useEffect(() => {
     analytics.logScreenView({
