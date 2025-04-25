@@ -27,6 +27,7 @@ export const ChatController = (app: Elysia) => {
       .post(
         "/sendMessage",
         async ({ body, user }) => {
+          const start = Date.now();
           const { chatId, text, locale } = body;
 
           const chat = await db.chat.findFirst({
@@ -82,8 +83,6 @@ export const ChatController = (app: Elysia) => {
 
           const prevThreadId = latestChat?.threadId;
 
-          console.log("prevThreadId", prevThreadId);
-
           const STATEGY_ASSISTANT_ID = process.env
             .OPENAI_API_STRATEGY_ASSISTANT_ID as string;
 
@@ -129,6 +128,9 @@ export const ChatController = (app: Elysia) => {
               },
             }),
           ]);
+
+          const end = Date.now();
+          console.log("Time taken to get message response:", end - start, "ms");
 
           return {
             message: responseMessage,
