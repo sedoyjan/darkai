@@ -8,7 +8,7 @@ import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import { RootState } from './index';
 import { rootReducer } from './rootReducer';
 
-const logger = createLogger({
+export const logger = createLogger({
   collapsed: true,
   diff: true,
   predicate: (_getState, action) =>
@@ -20,7 +20,7 @@ const logger = createLogger({
 const middlewares: Middleware[] = [];
 
 if (__DEV__) {
-  middlewares.push(logger);
+  // middlewares.push(logger);
 }
 
 // middlewares.push(syncMiddleware);

@@ -71,6 +71,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         backgroundColor: '#020202',
       },
     ],
+    '@react-native-firebase/app',
+    '@react-native-firebase/auth',
+    // '@react-native-firebase/analytics',
+    '@react-native-firebase/crashlytics',
     [
       'expo-build-properties',
       {
@@ -81,14 +85,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     'expo-localization',
-    // [
-    //   'expo-tracking-transparency',
-    //   {
-    //     userTrackingPermission:
-    //       'We value your privacy. Allow tracking to provide you with a personalized experience.',
-    //   },
-    // ],
-    '@react-native-firebase/app',
     [
       'react-native-permissions',
       {

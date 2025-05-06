@@ -1,3 +1,50 @@
+2.2.0
+
+Title
+Dark AI: Fame & Self-Help
+
+Subtitle
+Motivation, Wellness & Growth
+
+Keywords
+self help, fame, happyo, effecto, shmoody, me grow, today is the day motivation, self care app, mellow flow, wellness, ai coach, personal growth, success mentor
+
+Description
+Dark AI — Your Personal Success Advisor
+
+Looking for an AI-powered self-help app that goes beyond basic chat? Meet Dark AI, the smart companion engineered to help you rise to fame, boost your wellness, and crush every goal—starting today is the day motivation style.
+
+Why Dark AI?
+All-in-One Growth – Combines mindset coaching, business strategy, and daily self-care check-ins.
+
+Real Conversations – Feels more like chatting with a mentor than talking to a bot.
+
+Personalized Roadmaps – Tailored action plans that evolve as you do.
+
+Progress Tracking & Follow-Ups – Gentle nudges keep you moving forward—no more stalled dreams.
+
+Constant Motivation – Daily boosts to maintain a mellow flow of momentum.
+
+Perfect if you love apps like
+Happyo, Effecto, Shmoody, Me Grow, or Mellow Flow—but want a single powerhouse that unites them all in one sleek package.
+
+What You’ll Achieve
+Clarify your vision and map concrete steps to fame or financial freedom.
+
+Upgrade habits with bite-sized wellness tasks and self-care rituals.
+
+Spark creativity and fresh business ideas on demand.
+
+Build a magnetic personal brand—online and offline.
+
+Get Started Today
+Download Dark AI free and unlock your full potential. Whether you’re scaling a startup, polishing your personal brand, or simply leveling up your life, Dark AI is the self-help coach that turns possibility into reality.
+
+Ready? Today is the day—let’s grow.
+
+
+------
+
 https://apple.co/3Er7h9g
 
 title: Dark AI: Cunning Chat

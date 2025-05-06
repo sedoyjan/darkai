@@ -2,7 +2,6 @@ import {
   getAnalytics,
   setUserId as analyticsSetUserId,
 } from '@react-native-firebase/analytics';
-import { getApps, initializeApp } from '@react-native-firebase/app';
 import { getAuth } from '@react-native-firebase/auth';
 import {
   getCrashlytics,
@@ -10,12 +9,6 @@ import {
   setUserId as crashlyticsSetUserId,
 } from '@react-native-firebase/crashlytics';
 import { getMessaging } from '@react-native-firebase/messaging';
-
-import firebaseConfig from '@/firebaseConfig.json';
-
-if (!getApps().length) {
-  initializeApp(firebaseConfig);
-}
 
 export const fbAuth = getAuth();
 export const messaging = getMessaging();
