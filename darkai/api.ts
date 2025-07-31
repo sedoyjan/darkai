@@ -4,13 +4,15 @@ import { DefaultApi } from './apiClient/api';
 import { Configuration } from './apiClient/configuration';
 import { IS_DEV } from './const';
 import { fbAuth } from './services/firebase';
+import { logger } from './utils/logger';
 
 const LOCAL_SERVER = 'http://localhost:3000';
 // const REMOTE_SERVER = 'https://darkai.duckdns.org:5005';
 const REMOTE_SERVER = 'https://darkai-a966676ae085.herokuapp.com';
 
-const BASE_PATH = IS_DEV ? LOCAL_SERVER : REMOTE_SERVER;
-console.info('🚀 ~ BASE_PATH:', BASE_PATH);
+// const BASE_PATH = IS_DEV ? LOCAL_SERVER : REMOTE_SERVER;
+const BASE_PATH = REMOTE_SERVER;
+logger.info('🚀 ~ BASE_PATH:', BASE_PATH);
 
 const config = new Configuration({
   basePath: BASE_PATH,
@@ -24,17 +26,17 @@ axiosInstance.interceptors.request.use(
     if (idToken) {
       config.headers.Authorization = `Bearer ${idToken}`;
     } else {
-      // console.error('no idToken');
+      // logger.error('no idToken');
     }
 
     if (IS_DEV) {
       const path = (config.url || '').replace(BASE_PATH, '');
-      console.log(
+      logger.log(
         `🚀 ${idToken ? '🔒' : ''} ${config.method?.toUpperCase()} ${path}`,
       );
       // if (config.method?.toUpperCase() === 'POST' && config.data) {
-      //   console.log(JSON.parse(config.data));
-      //   console.log('------------------');
+      //   logger.log(JSON.parse(config.data));
+      //   logger.log('------------------');
       // }
     }
 

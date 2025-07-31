@@ -8,6 +8,7 @@ import { Background } from '@/components/Background';
 import { setHasActiveSubscription } from '@/rdx/app/slice';
 import { useAppDispatch } from '@/rdx/store';
 import { sharedStyles } from '@/sharedStyles';
+import { logger } from '@/utils/logger';
 
 import { RootParamList } from './_layout';
 
@@ -44,27 +45,24 @@ export default function SubscriptionModalScreen() {
           }}
           onDismiss={onClose}
           onPurchaseError={error => {
-            console.log('🚀 ~ SubscriptionModalScreen ~ error:', error);
+            logger.log('🚀 ~ SubscriptionModalScreen ~ error:', error);
             onFail();
           }}
           onPurchaseCancelled={() => {
             onFail();
           }}
           onPurchaseStarted={() => {
-            console.log('🚀 ~ onPurchaseStarted');
+            logger.log('🚀 ~ onPurchaseStarted');
           }}
           onRestoreStarted={() => {
-            console.log('🚀 ~ onRestoreStarted');
+            logger.log('🚀 ~ onRestoreStarted');
           }}
           onRestoreError={e => {
-            console.log('🚀 ~ onRestoreError:', e);
+            logger.log('🚀 ~ onRestoreError:', e);
             onFail();
           }}
           onRestoreCompleted={({ customerInfo }) => {
-            console.log(
-              '🚀 ~ onRestoreCompleted ~ customerInfo:',
-              customerInfo,
-            );
+            logger.log('🚀 ~ onRestoreCompleted ~ customerInfo:', customerInfo);
             if (customerInfo.activeSubscriptions) {
               onSuccess();
             }

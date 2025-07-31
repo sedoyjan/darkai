@@ -32,10 +32,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { apiClient } from '@/api';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { KeyboardHeightContextProvider } from '@/components/KeyboardHeightContextProvider';
 import { RecordModeStatusBar } from '@/components/RecordModeStatusBar';
-import { IS_DEV } from '@/const';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import i18n from '@/i18n';
 import { initThunk } from '@/rdx/app/thunks';
@@ -82,14 +81,6 @@ export default function RootLayout() {
   const params = useGlobalSearchParams();
   const navigationRef = useNavigationContainerRef();
   useReactNavigationDevTools(navigationRef);
-
-  useEffect(() => {
-    if (!IS_DEV) {
-      apiClient.postAnalyticsLaunch({});
-    } else {
-      console.log('Analytics launch event skipped in dev mode');
-    }
-  }, []);
 
   useEffect(() => {
     analytics.logScreenView({
@@ -148,67 +139,69 @@ export default function RootLayout() {
             <I18nextProvider i18n={i18n}>
               <RootSiblingParent>
                 <KeyboardHeightContextProvider>
-                  <GestureHandlerRootView style={sharedStyles.wrapper}>
-                    <SafeAreaProvider>
-                      <ThemeProvider
-                        value={
-                          colorScheme === 'dark' ? DarkTheme : DefaultTheme
-                        }
-                      >
-                        <Stack
-                          screenOptions={{
-                            headerShown: false,
-                          }}
+                  <ErrorBoundary>
+                    <GestureHandlerRootView style={sharedStyles.wrapper}>
+                      <SafeAreaProvider>
+                        <ThemeProvider
+                          value={
+                            colorScheme === 'dark' ? DarkTheme : DefaultTheme
+                          }
                         >
-                          <Stack.Screen
-                            name="(tabs)"
-                            options={{
-                              animation: 'fade',
+                          <Stack
+                            screenOptions={{
+                              headerShown: false,
                             }}
-                          />
-                          <Stack.Screen name="index" />
-                          <Stack.Screen
-                            name="signin"
-                            options={{
-                              presentation: 'modal',
-                            }}
-                          />
-                          <Stack.Screen
-                            name="subscriptionModal"
-                            options={{
-                              presentation: 'modal',
-                            }}
-                          />
-                          <Stack.Screen
-                            name="onboardingModal"
-                            options={{
-                              presentation: 'modal',
-                              gestureEnabled: false,
-                            }}
-                          />
+                          >
+                            <Stack.Screen
+                              name="(tabs)"
+                              options={{
+                                animation: 'fade',
+                              }}
+                            />
+                            <Stack.Screen name="index" />
+                            <Stack.Screen
+                              name="signin"
+                              options={{
+                                presentation: 'modal',
+                              }}
+                            />
+                            <Stack.Screen
+                              name="subscriptionModal"
+                              options={{
+                                presentation: 'modal',
+                              }}
+                            />
+                            <Stack.Screen
+                              name="onboardingModal"
+                              options={{
+                                presentation: 'modal',
+                                gestureEnabled: false,
+                              }}
+                            />
 
-                          <Stack.Screen
-                            name="termsModal"
-                            options={{
-                              presentation: 'modal',
-                            }}
-                          />
-                          <Stack.Screen
-                            name="privacyModal"
-                            options={{
-                              presentation: 'modal',
-                            }}
-                          />
-                          <Stack.Screen
-                            name="editChatModal"
-                            options={{
-                              presentation: 'modal',
-                            }}
-                          />
-                        </Stack>
-                      </ThemeProvider>
-                    </SafeAreaProvider>
-                  </GestureHandlerRootView>
+                            <Stack.Screen
+                              name="termsModal"
+                              options={{
+                                presentation: 'modal',
+                              }}
+                            />
+                            <Stack.Screen
+                              name="privacyModal"
+                              options={{
+                                presentation: 'modal',
+                              }}
+                            />
+                            <Stack.Screen
+                              name="editChatModal"
+                              options={{
+                                presentation: 'modal',
+                              }}
+                            />
+                          </Stack>
+                        </ThemeProvider>
+                      </SafeAreaProvider>
+                    </GestureHandlerRootView>
+                  </ErrorBoundary>
                 </KeyboardHeightContextProvider>
               </RootSiblingParent>
             </I18nextProvider>

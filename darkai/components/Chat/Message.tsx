@@ -1,5 +1,5 @@
 import LottieView from 'lottie-react-native';
-import { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Message = ({
+const MessageComponent = ({
   text,
   type,
   children,
@@ -143,3 +143,6 @@ export const Message = ({
     </View>
   );
 };
+
+// Memoize the component to prevent unnecessary re-renders
+export const Message = React.memo(MessageComponent);

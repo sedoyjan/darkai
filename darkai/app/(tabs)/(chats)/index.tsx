@@ -86,7 +86,8 @@ export default function ChatsScreen() {
           key={listHash}
           data={chats}
           renderItem={renderItem}
-          estimatedItemSize={200}
+          keyExtractor={item => item.id}
+          estimatedItemSize={120}
           showsVerticalScrollIndicator={false}
           refreshControl={refreshControl}
         />

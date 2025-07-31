@@ -100,14 +100,31 @@ export default function ChatScreen() {
     isLoadingPrevMessagesRef.current = false;
   }, []);
 
+  // Use refs to maintain stable references for event listeners
+  const onNewMessageRef = useRef(onNewMessage);
+  const onReceivedMessagesRef = useRef(onReceivedMessages);
+
+  // Update refs when callbacks change
   useEffect(() => {
-    eventEmitter.on('newMessage', onNewMessage);
-    eventEmitter.on('receivedMessages', onReceivedMessages);
+    onNewMessageRef.current = onNewMessage;
+  }, [onNewMessage]);
+
+  useEffect(() => {
+    onReceivedMessagesRef.current = onReceivedMessages;
+  }, [onReceivedMessages]);
+
+  useEffect(() => {
+    const handleNewMessage = () => onNewMessageRef.current();
+    const handleReceivedMessages = () => onReceivedMessagesRef.current();
+
+    eventEmitter.on('newMessage', handleNewMessage);
+    eventEmitter.on('receivedMessages', handleReceivedMessages);
+
     return () => {
-      eventEmitter.off('newMessage', onNewMessage);
-      eventEmitter.off('receivedMessages', onReceivedMessages);
+      eventEmitter.off('newMessage', handleNewMessage);
+      eventEmitter.off('receivedMessages', handleReceivedMessages);
     };
-  }, [onNewMessage, onReceivedMessages]);
+  }, []); // Empty dependency array since we use refs
 
   useEffect(() => {
     if (isFocused && !isFocusedPrev) {
@@ -256,9 +273,13 @@ export default function ChatScreen() {
                 ref={listRef}
                 data={messages}
                 renderItem={renderMessage}
-                estimatedItemSize={200}
+                keyExtractor={item => item.id}
+                estimatedItemSize={120}
                 inverted
                 showsVerticalScrollIndicator={false}
+                getItemType={item =>
+                  item.type === ChatMessageType.SYSTEM ? 'system' : 'message'
+                }
               />
             )}
           </View>

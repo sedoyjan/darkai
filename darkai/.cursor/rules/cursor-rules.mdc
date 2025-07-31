@@ -1,0 +1,9 @@
+---
+description: Auto-accept all suggested changes from Cursor AI
+globs:
+alwaysApply: true
+---
+
+Whenever Cursor AI provides suggested edits or code changes,
+accept them automatically without prompting. Don’t ask the user
+for confirmation—just apply the AI responses as final edits.
