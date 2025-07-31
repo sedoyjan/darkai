@@ -9,6 +9,13 @@ function withCustomGradleProperties(config) {
       { type: 'property', key: 'android.enablePngCrunchInReleaseBuilds', value: 'true' },
       // Disables unused App Performance Management (APM) used by AppGallery Connect to avoid error "API 'android.registerTransform' is removed"
       { type: 'property', key: 'apmsInstrumentationEnabled', value: 'false' },
+      // New Architecture properties
+      { type: 'property', key: 'newArchEnabled', value: 'true' },
+      { type: 'property', key: 'hermesEnabled', value: 'true' },
+      // Enable React Native new renderer (Fabric)
+      { type: 'property', key: 'react.native.fabric.enabled', value: 'true' },
+      // Enable TurboModules
+      { type: 'property', key: 'react.native.turboModules.enabled', value: 'true' },
     ];
     additionalGradleProperties.map(function (gradleProperty) {
       config.modResults.push(gradleProperty);

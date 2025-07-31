@@ -6,7 +6,7 @@
 
 - **App Name**: Dark AI
 - **Bundle ID**: com.sedoyjan.darkai
-- **Version**: 2.2.0
+- **Version**: 2.3.0
 - **Platform**: React Native with Expo (iOS/Android)
 - **Backend**: Node.js/Elysia API (Heroku deployment)
 

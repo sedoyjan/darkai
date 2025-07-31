@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Image from 'react-native-fast-image';
+
+import { Image } from 'expo-image';
 
 import { IconButton } from '@/blocks/IconButton';
 import { Colors } from '@/constants/Colors';

@@ -1,31 +1,16 @@
-import { StyleSheet, View } from 'react-native';
-import Image from 'react-native-fast-image';
+import { Image } from 'expo-image';
+import { StyleSheet } from 'react-native';
 
-import avatarImage from '@/assets/images/avatar.png';
-import { Colors } from '@/constants/Colors';
+import assistantImage from '@/assets/images/assistant.png';
 
 const styles = StyleSheet.create({
-  avatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: Colors.white,
-    borderWidth: 1.5,
-    borderCurve: 'continuous',
-    borderColor: Colors.white,
-    alignItems: 'center',
-    overflow: 'hidden',
-  },
-  avatarImage: {
-    width: '100%',
-    height: '100%',
+  image: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
   },
 });
 
 export const Avatar = () => {
-  return (
-    <View style={styles.avatar}>
-      <Image style={styles.avatarImage} source={avatarImage} />
-    </View>
-  );
+  return <Image source={assistantImage} style={styles.image} />;
 };

@@ -11,7 +11,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: 'darkai',
   orientation: 'portrait',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: false,
+  newArchEnabled: true, // Enable React Native new architecture (Fabric + TurboModules)
   ios: {
     supportsTablet: false,
     usesAppleSignIn: true,

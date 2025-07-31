@@ -1,7 +1,8 @@
 import { AnimatePresence, MotiView } from 'moti';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+
+import { Image } from 'expo-image';
 
 import AssistantImage from '@/assets/images/avatar.png';
 import { IconButton } from '@/blocks/IconButton';
@@ -101,7 +102,7 @@ export const Helper = ({
         >
           <Panel style={styles.panel}>
             <View style={styles.wrapper}>
-              <FastImage style={styles.image} source={AssistantImage} />
+              <Image style={styles.image} source={AssistantImage} />
               <View style={styles.content}>
                 <View style={styles.contentHeader}>
                   <Text style={styles.title}>{title}</Text>
