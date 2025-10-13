@@ -8,7 +8,8 @@ import { logger } from './utils/logger';
 
 const LOCAL_SERVER = 'http://localhost:3000';
 // const REMOTE_SERVER = 'https://darkai.duckdns.org:5005';
-const REMOTE_SERVER = 'https://darkai-a966676ae085.herokuapp.com';
+// const REMOTE_SERVER = 'https://darkai-a966676ae085.herokuapp.com';
+const REMOTE_SERVER = 'https://uvn-235-31.ams01.zonevs.eu:5005';
 
 // const BASE_PATH = IS_DEV ? LOCAL_SERVER : REMOTE_SERVER;
 const BASE_PATH = REMOTE_SERVER;

@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  env: {
+    TARGET_SERVER_URL: process.env.TARGET_SERVER_URL || 'https://api.example.com',
+  },
 };
 
 export default nextConfig;
