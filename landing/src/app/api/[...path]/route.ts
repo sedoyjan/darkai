@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import https from "https";
 
-const TARGET_SERVER_URL = "https://uvn-235-31.ams01.zonevs.eu:5005";
+const TARGET_SERVER_URL = "http://uvn-235-31.ams01.zonevs.eu:5005";
 
 // Configure HTTPS agent to ignore SSL certificate errors
 const httpsAgent = new https.Agent({
