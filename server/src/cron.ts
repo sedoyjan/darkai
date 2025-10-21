@@ -1,5 +1,6 @@
 import cron, { Patterns } from "@elysiajs/cron";
 import Elysia from "elysia";
+import { makeFollowUp } from "./utils/makeFollowUp";
 
 const toMB = (bytes: number) => (bytes / (1024 * 1024)).toFixed(2);
 
@@ -14,5 +15,26 @@ export const Cron = (app: Elysia) => {
       },
     })
   );
+
+  // Follow-up cron job - runs every minute
+  app.use(
+    cron({
+      name: "follow-up-messages",
+      pattern: Patterns.everyMinute(),
+      async run() {
+        try {
+          const result = await makeFollowUp();
+          if (result.followUpSent) {
+            console.log(`🔔 Follow-up cron: Follow-up sent to chat ${result.chatId}`);
+          } else {
+            console.log(`⏰ Follow-up cron: No eligible chats for follow-up at ${new Date().toISOString()}`);
+          }
+        } catch (error) {
+          console.error("❌ Follow-up cron error:", error);
+        }
+      },
+    })
+  );
+
   return Promise.resolve(app);
 };
