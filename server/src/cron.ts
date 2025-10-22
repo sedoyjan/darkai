@@ -20,7 +20,7 @@ export const Cron = (app: Elysia) => {
   app.use(
     cron({
       name: "follow-up-messages",
-      pattern: Patterns.everyMinute(),
+      pattern: Patterns.everyHours(3),
       async run() {
         try {
           const result = await makeFollowUp();
