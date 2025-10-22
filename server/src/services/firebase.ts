@@ -35,28 +35,34 @@ export const sendNotification = async ({
   message: string;
   data?: any;
 }) => {
-  await admin.messaging().send({
-    token: fcmToken,
-    data: data || {},
-    apns: {
-      headers: {
-        "apns-priority": "10",
+  await admin
+    .messaging()
+    .send({
+      token: fcmToken,
+      data: data || {},
+      apns: {
+        headers: {
+          "apns-priority": "10",
+        },
+        payload: {
+          aps: {
+            sound: "default",
+          },
+        },
       },
-      payload: {
-        aps: {
+      android: {
+        priority: "high",
+        notification: {
           sound: "default",
         },
       },
-    },
-    android: {
-      priority: "high",
       notification: {
-        sound: "default",
+        title,
+        body: message,
       },
-    },
-    notification: {
-      title,
-      body: message,
-    },
-  });
+    })
+    .catch((error) => {
+      console.error("Error sending notification:", error);
+      throw error;
+    });
 };
