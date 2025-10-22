@@ -61,6 +61,9 @@ export const sendNotification = async ({
         body: message,
       },
     })
+    .then((response) => {
+      console.log("Notification sent successfully:", response);
+    })
     .catch((error) => {
       console.error("Error sending notification:", error);
       throw error;
